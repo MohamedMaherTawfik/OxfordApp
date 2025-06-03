@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\SuperAdminController;
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Middleware\CheckAdmin;
-use App\Http\Middleware\CheckSuper;
 
 Route::get('/', function () {
     return view('welcome');

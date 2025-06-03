@@ -35,7 +35,7 @@
                     <!-- Email -->
                     <div>
                         <label class="block text-sm font-medium mb-1">Email</label>
-                        <input type="email" name="email" placeholder="you@example.com"
+                        <input type="email" name="email" placeholder="<i class='fa-solid fa-at'></i>"
                             class="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500">
                         @error('email')
                             <span class="text-red-400 text-sm">{{ $message }}</span>
