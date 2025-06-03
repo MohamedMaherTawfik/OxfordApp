@@ -6,13 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    {{-- FontAwesome cdn --}}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+        integrity="sha512-1z5Z2b7k8d9e3f5a5c8f8b7e3f8d9e3f5a5c8f8b7e3f8d9e3f5a5c8f8b7e3f8d9e3f5a5c8f8b7e3f8d9e3f5a5c8f8b7e3f8d9e3f5a5c8f8b7e3f8d9e3f5a5c8f8b7e3f"
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
 </head>
 
 <body class="bg-gray-50 font-sans">
 
-    <!-- Header -->
-    <x-header />
     <!-- Main Layout -->
     <div class="flex h-screen overflow-hidden">
 
@@ -20,7 +23,50 @@
         <x-sidebar />
 
         <!-- Main Content -->
-        {{ $slot }}
+        <div class="flex-1 flex flex-col overflow-hidden">
+            <!-- Top Navigation -->
+            <header class="bg-white shadow-sm">
+                <div class="flex justify-end px-6 py-4">
+                    <div class="relative" id="userDropdown">
+                        <button id="dropdownButton" class="flex items-center focus:outline-none">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg"
+                                class="w-8 h-8 rounded-full mr-2" alt="User profile">
+                            <span class="text-sm font-medium">{{ Auth::user()->name }}</span>
+                            <i class="fas fa-chevron-down ml-2 text-xs text-gray-500" id="dropdownArrow"></i>
+                        </button>
+
+                        <!-- Dropdown Menu -->
+                        <div id="dropdownMenu"
+                            class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 hidden">
+                            <ul>
+                                <li>
+                                    <a href="#"
+                                        class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-user mr-2"></i> Profile
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#"
+                                        class="flex items-center px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-cog mr-2"></i> Settings
+                                    </a>
+                                </li>
+                                <li>
+                                    <form action="{{ route('logout') }}" method="POST">
+                                        @csrf
+                                        <button type="submit"
+                                            class="flex items-center w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none">
+                                            <i class="fas fa-sign-out-alt mr-2"></i> Logout
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            {{ $slot }}
+        </div>
     </div>
 
     <script>

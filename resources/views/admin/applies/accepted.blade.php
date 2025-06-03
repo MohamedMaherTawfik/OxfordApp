@@ -1,5 +1,6 @@
 <x-panel>
 
+
     <div class="p-6 bg-gray-50 min-h-screen">
         <!-- Search & Add Button -->
         <div class="flex justify-between items-center mb-4">
@@ -18,48 +19,35 @@
             <div>Email</div>
             <div>role</div>
             <div>Join Date</div>
-            <div class="text-right">Action</div>
+            <div class="text-right mr-10">Status</div>
         </div>
 
 
         <!-- User List Container -->
-        @foreach ($teachers as $teacher)
+        @foreach ($applies as $apply)
             <div class="grid grid-cols-7 gap-4 items-center bg-white p-4 rounded-lg shadow mb-2">
-                <!-- teacher Info -->
+                <!-- apply Info -->
                 <div class="flex items-center gap-2">
                     <div class="w-10 h-10 bg-gray-300 rounded-full">
-                        <img src="{{ $teacher->photo ? asset('storage/' . $teacher->photo) : asset('images/default-avatar.png') }}"
-                            alt="teacher Photo" class="w-full h-full object-cover rounded-full">
+                        <img src="{{ $apply->user->photo ? asset('storage/' . $apply->user->photo) : asset('images/default-avatar.png') }}"
+                            alt="apply Photo" class="w-full h-full object-cover rounded-full">
                     </div>
                     <div>
-                        <div class="font-medium">{{ $teacher->name }}</div>
+                        <div class="font-medium">{{ $apply->user->name }}</div>
                     </div>
                 </div>
 
                 <!-- Email -->
-                <div class="text-gray-700">{{ $teacher->email }}</div>
+                <div class="text-gray-700">{{ $apply->user->email }}</div>
 
                 <!-- role -->
-                <div class="text-gray-700">{{ $teacher->role }}</div>
+                <div class="text-gray-700">{{ $apply->user->role }}</div>
 
                 <!-- Join Date -->
-                <div class="text-gray-700">{{ $teacher->created_at }}</div>
+                <div class="text-gray-700">{{ $apply->user->created_at }}</div>
 
-                <!-- Actions -->
-                <div class="flex justify-end items-center space-x-3 text-gray-600 text-lg">
-                    {{-- <a href="{{ route('admin.users.show', $teacher->id) }}" class="hover:text-blue-600"><i
-                            class="fas fa-eye"></i></a> --}}
-                    <a href="{{ route('admin.users.edit', $teacher->id) }}" class="hover:text-yellow-600"><i
-                            class="fas fa-edit"></i></a>
-                    <form action="{{ route('admin.users.delete', $teacher->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button onclick="return confirm('Are you sure you want to delete this teacher?');"
-                            type="submit" class="hover:text-red-600">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form>
-                </div>
+                <!-- Status -->
+                <div class="text-gray-700 text-right mr-5">{{ $apply->status }}</div>
             </div>
         @endforeach
 
