@@ -16,10 +16,14 @@ class userSeeder extends Seeder
             [
                 [
                     'name' => 'Super Admin',
-                    'email' => 'm7md@gmail.com',
-                    'password' => bcrypt('12345678'),
+                    'email' => 'm7mdellham77@gmail.com',
+                    'password' => bcrypt('M7mdmaher11'),
                     'role' => 'admin',
                 ]
             ];
+
+        foreach ($users as $user) {
+            \App\Models\User::create($user);
+        }
     }
 }

@@ -19,6 +19,7 @@ class AuthController extends Controller
     public function register(userRequest $request)
     {
         $validatedData = $request->validated();
+        // dd($validatedData);
         $validatedData['password'] = bcrypt($validatedData['password']);
         $validatedData['photo'] = $request->file('photo')->store('photos', 'public');
         if ($validatedData['role'] == 'teacher') {
