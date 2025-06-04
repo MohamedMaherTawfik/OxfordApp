@@ -1,5 +1,5 @@
 <!-- Main Content Area -->
-<main class="flex-1 overflow-y-auto p-6 bg-gray-50">
+<main class="flex-1 overflow-y-auto p-6 bg-gray-50" style="background-color #e4ce96">
     <!-- Stats Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         <div class="bg-white rounded-lg shadow p-6">

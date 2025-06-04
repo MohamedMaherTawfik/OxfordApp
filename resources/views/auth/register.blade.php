@@ -38,7 +38,7 @@
                     <div>
                         <label class="block text-sm font-medium mb-1">UserName</label>
                         <input type="text" name="name" placeholder="UserName"
-                            class="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            class="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#73131d]">
                         @error('name')
                             <span class="text-red-400 text-sm">{{ $message }}</span>
                         @enderror
@@ -48,7 +48,7 @@
                     <div>
                         <label class="block text-sm font-medium mb-1">Register As</label>
                         <select name="role"
-                            class="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            class="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-[#73131d]">
                             <option value="">Select Role</option>
                             <option value="student">Student</option>
                             <option value="teacher">Teacher</option>
@@ -62,23 +62,23 @@
                     <div>
                         <label class="block text-sm font-medium mb-1">Email</label>
                         <input type="email" name="email" placeholder="you@example.com"
-                            class="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            class="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#73131d]">
                         @error('email')
                             <span class="text-red-400 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
 
                     <div class="w-full space-y-4">
-                        <label for="photo" class="block text-sm font-medium text-gray-700">
+                        <label for="photo" class="block text-sm font-medium text-white">
                             Upload Photo
                         </label>
                         <input type="file" name="photo"
-                            class="block w-full text-sm text-gray-500
+                            class="block w-full text-sm text-white
                file:mr-4 file:py-2 file:px-4
                file:rounded-lg file:border-0
                file:text-sm file:font-semibold
-               file:bg-purple-600 file:text-white
-               hover:file:bg-purple-700" />
+               file:bg-[#73131DD2] file:text-white
+               hover:file:bg-[#73131d]" />
                         @error('photo')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
@@ -88,7 +88,7 @@
                     <div>
                         <label class="block text-sm font-medium mb-1">Password</label>
                         <input type="password" name="password" placeholder="••••••••"
-                            class="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            class="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#73131d]">
                         @error('password')
                             <span class="text-red-400 text-sm">{{ $message }}</span>
                         @enderror
@@ -98,13 +98,13 @@
                     <div>
                         <label class="block text-sm font-medium mb-1">Confirm Password</label>
                         <input type="password" name="password_confirmation" placeholder="••••••••"
-                            class="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500">
+                            class="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-[#73131d]">
                     </div>
 
                     <!-- Submit Button -->
                     <div class="flex justify-center">
                         <button type="submit"
-                            class="py-2 px-6 rounded-lg bg-purple-600 hover:bg-purple-800 transition  text-white font-semibold">
+                            class="py-2 px-6 rounded-lg bg-[#73131DCB] hover:bg-[#73131d] transition  text-white font-semibold">
                             Create Account
                         </button>
                     </div>
@@ -130,7 +130,7 @@
                 <!-- Login Link -->
                 <p class="text-center text-sm text-gray-400">
                     Already have an account?
-                    <a href="{{ route('login') }}" class="text-purple-400 hover:underline">Login</a>
+                    <a href="{{ route('login') }}" class="text-[#FFFFFFFF] hover:underline">Login</a>
                 </p>
 
             </div>

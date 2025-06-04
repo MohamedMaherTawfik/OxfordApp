@@ -1,4 +1,4 @@
-<header class="bg-white shadow-sm">
+<header class="bg-white shadow-sm" style="background-color: #e4ce96">
     <div class="flex items-center justify-between px-6 py-4">
         <!-- Search Bar -->
         <div class="flex items-center w-full max-w-md">

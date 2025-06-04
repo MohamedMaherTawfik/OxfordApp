@@ -44,7 +44,7 @@
                 <!-- Submit -->
                 <div class="text-center">
                     <button type="submit"
-                        class="w-full py-2 px-4 rounded-md font-semibold text-white bg-purple-600 hover:bg-purple-700 transition">
+                        class="w-50 py-2 px-4 rounded-md font-semibold text-white bg-[#73131DC2] hover:bg-[#73131d] transition">
                         Update User
                     </button>
                 </div>

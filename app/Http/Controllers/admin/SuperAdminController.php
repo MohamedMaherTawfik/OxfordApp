@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\admin;
 
+use App\Events\notifyTeacher;
 use App\Http\Controllers\Controller;
 use App\Models\applyTeacher;
 use Illuminate\Http\Request;
 use App\Http\Requests\adminRequest;
 use App\Models\User;
 use App\Http\Requests\updateRequest;
+use Illuminate\Support\Facades\Event;
 
 class SuperAdminController extends Controller
 {
@@ -121,9 +123,9 @@ class SuperAdminController extends Controller
         $apply = applyTeacher::findOrFail(request('id'));
         $apply->status = 'accepted';
         $apply->save();
-        // dd($apply->user_id);
-        User::findOrFail($apply->user_id)->update(['role' => 'teacher']);
-
+        $user = User::findOrFail('id', $apply->user_id)->update(['role' => 'teacher']);
+        dd($user);
+        Event::dispatch(new notifyTeacher($user));
         return redirect()->back()->with('success', 'Apply accepted successfully.');
     }
 

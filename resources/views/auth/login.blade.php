@@ -55,7 +55,7 @@
                     <!-- Submit Button -->
                     <div class="flex justify-center">
                         <button type="submit"
-                            class="py-2 px-6 rounded-lg bg-purple-600 hover:bg-purple-800 transition text-white font-semibold">
+                            class="py-2 px-6 rounded-lg bg-[#73131DCB] hover:bg-[#73131d] transition text-white font-semibold">
                             Login
                         </button>
                     </div>
@@ -81,7 +81,7 @@
                 <!-- Register Link -->
                 <p class="text-center text-sm text-gray-400">
                     Don't have an account?
-                    <a href="{{ route('register') }}" class="text-purple-400 hover:underline">Register</a>
+                    <a href="{{ route('register') }}" class="text-[#FFFFFFFF] hover:underline">Register</a>
                 </p>
 
             </div>
