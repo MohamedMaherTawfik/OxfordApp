@@ -25,7 +25,7 @@ return [
     | services the application utilizes. Set this in your ".env" file.
     |
     */
-
+    'api_key' => env('API_KEY'),
     'env' => env('APP_ENV', 'production'),
 
     /*

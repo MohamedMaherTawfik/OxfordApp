@@ -2,27 +2,33 @@
 
 namespace App\Http\Controllers\api\auth;
 
+use Illuminate\Http\JsonResponse;
+
 
 trait apiResponse
 {
-    public function apiResponse($data = null, $message = '', $status = 200)
+    public static function success($data = [], $message = 'Successfully Fetched', ): JsonResponse
     {
-        $array = [
-            'success' => true,
-            'status' => $status,
+        return response()->json([
+            'status' => 'success',
             'message' => $message,
             'data' => $data,
-        ];
-        return response($array);
+        ], 200);
     }
 
-    public function sendError($error, $code = 401)
+    public static function unauthorized($message = 'Unauthorized'): JsonResponse
     {
-        $response = [
-            'success' => false,
-            'message' => $error,
-        ];
+        return response()->json([
+            'status' => 'error',
+            'message' => $message,
+        ], 401);
+    }
 
-        return response()->json($response, $code);
+    public static function notFound($message = 'Resource not found'): JsonResponse
+    {
+        return response()->json([
+            'status' => 'error',
+            'message' => $message,
+        ], 404);
     }
 }

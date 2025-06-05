@@ -3,78 +3,100 @@
 namespace App\Http\Controllers\api\auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\addressRequest;
-use App\Http\Requests\userRequest;
-use App\Mail\RegisterMail;
+use App\Http\Requests\userApiRequest;
+use App\Models\applyTeacher;
 use App\Models\User;
-use App\Models\UserAddress;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
     use apiResponse;
 
-    public function register(userRequest $request)
+    public function register(userApiRequest $request)
     {
         $fields = $request->validated();
-        $user = $fields;
-        $user['password'] = bcrypt($user['password']);
-        $user = User::create($user);
-        if (!$user) {
-            return $this->sendError('Register Failed');
+        $fields['password'] = bcrypt($fields['password']);
+        $fields['photo'] = $request->file('photo')->store('photos', 'public');
+        $user = User::create([
+            'name' => $fields['name'],
+            'email' => $fields['email'],
+            'password' => $fields['password'],
+            'role' => $fields['role'],
+            'photo' => $fields['photo']
+        ]);
+        if ($user->role === 'teacher') {
+            $fields['cv'] = $request->file('cv')->store('CVs', 'public');
+            $fields['certificate'] = $request->file('certificate')->store('certificatess', 'public');
+            applyTeacher::create([
+                'user_id' => $user->id,
+                'cv' => $fields['cv'],
+                'certificate' => $fields['certificate'],
+                'topic' => $fields['topics'],
+                'phone' => $fields['phone'],
+            ]);
         }
-        // Mail::to($user->email)->send(new RegisterMail($user));
-        return $this->apiResponse($user, __('messages.register'));
+
+        return $this->success($user, __('messages.register'));
     }
 
     public function login()
     {
-        $token = Auth::attempt(request(['email', 'password']));
+        $credentials = request(['email', 'password']);
+        $token = Auth::guard('api')->attempt($credentials);
+
         if (!$token) {
-            return $this->sendError(__('messages.Error_login'), ['error' => __('messages.Error_login')]);
+            return $this->unauthorized(__('messages.Error_login'));
         }
+
         $success = $this->respondWithToken($token);
 
-        return $this->apiResponse($success->original, __('messages.login'));
+        return $this->success($success->original, __('messages.login'));
     }
+
+
     public function profile()
     {
-        $user = User::with('addresses')->find(Auth::user()->id);
+        $user = User::find(Auth::guard('api')->id());
+
         if (!$user) {
-            return $this->sendError('User Not Found');
+            return $this->unauthorized('User Not Found');
         }
-        return $this->apiResponse($user, 'Profile');
+
+        return $this->success($user, 'Profile');
     }
 
     public function logout()
     {
-        Auth::logout();
+        Auth::guard('api')->logout();
 
-        return $this->apiResponse([], __('messages.logout'));
+        return $this->success([], __('messages.logout'));
     }
 
     public function refresh()
     {
-        $token = $this->respondWithToken(Auth::refresh());
-        return $this->apiResponse($token->original, 'Refresh Successfully');
+        $token = $this->respondWithToken(Auth::guard('api')->refresh());
+
+        return $this->success($token->original, 'Refresh Successfully');
     }
+
 
     protected function respondWithToken($token)
     {
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => Auth::factory()->getTTL() * 60
+            'expires_in' => Auth::guard('api')->factory()->getTTL() * 60,
+            'user' => Auth::guard('api')->user(),
         ]);
     }
+
 
     public function userCourses()
     {
         $user = user::with('courses')->find(Auth::user()->id);
         if (!$user) {
-            return $this->sendError('user Not Found');
+            return $this->unauthorized('user Not Found');
         }
-        return $this->apiResponse($user, 'User Courses');
+        return $this->success($user, 'User Courses');
     }
 }

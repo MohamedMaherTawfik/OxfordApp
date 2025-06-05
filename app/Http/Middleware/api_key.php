@@ -1,13 +1,15 @@
 <?php
 
-namespace App\Http\Middleware\api;
+namespace App\Http\Middleware;
 
+use App\Http\Controllers\api\auth\apiResponse;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class languageMiddleware
+class api_key
 {
+    use apiResponse;
     /**
      * Handle an incoming request.
      *
@@ -15,9 +17,9 @@ class languageMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if ($request->hasHeader('Accept-Language')) {
-            $lang = $request->header('Accept-Language');
-            app()->setLocale($lang);
+        $apikey = config('app.api_key');
+        if ($request->header('x-api-key') != $apikey) {
+            return $this->unauthorized('Invalid Api Key');
         }
         return $next($request);
     }
