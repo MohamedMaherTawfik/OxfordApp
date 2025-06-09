@@ -14,8 +14,8 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        $middleware->api(languageMiddleware::class);
-        $middleware->api(api_key::class);
+        // $middleware->api(languageMiddleware::class);
+        // $middleware->api(api_key::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

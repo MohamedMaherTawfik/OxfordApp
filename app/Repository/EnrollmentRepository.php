@@ -4,14 +4,15 @@
 namespace App\Repository;
 
 use App\Interfaces\EnrollmentsInterface;
+use App\Models\Courses;
 use App\Models\Enrollments;
 use Illuminate\Support\Facades\Auth;
 
 class EnrollmentRepository implements EnrollmentsInterface
 {
-    public function index()
+    public function index($id)
     {
-        $enrollments = Enrollments::get();
+        $enrollments = Courses::with('enrollments')->where('id', $id)->get();
         return $enrollments;
     }
     public function store($course_id, $price)

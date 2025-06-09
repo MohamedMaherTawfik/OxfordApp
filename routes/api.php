@@ -63,7 +63,7 @@ Route::group([
 ], function () {
     Route::controller(enrollmentController::class)->group(
         function () {
-            Route::get('/all', 'allEnrollments')->middleware('jwt.auth');
+            Route::get('/all/{courseId}', 'allEnrollments');
             Route::post('/enroll/{courseId}', 'enrollCourse')->middleware('jwt.auth');
         }
     );

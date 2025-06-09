@@ -19,7 +19,7 @@ class enrollmentController extends Controller
 
     public function allEnrollments()
     {
-        $enrollments = $this->enrollmentRepository->index();
+        $enrollments = $this->enrollmentRepository->index(request('courseId'));
         try {
             if (count($enrollments) == 0) {
                 return $this->noContent();
