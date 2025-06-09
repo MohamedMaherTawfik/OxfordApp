@@ -16,7 +16,6 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('jwt.auth');
     Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('jwt.auth');
     Route::post('/profile', [AuthController::class, 'profile'])->middleware('jwt.auth');
-    Route::get('/user/course', [AuthController::class, 'userCourses'])->middleware('jwt.auth');
 });
 
 Route::group([

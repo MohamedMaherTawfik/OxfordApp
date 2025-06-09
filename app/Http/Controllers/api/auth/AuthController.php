@@ -5,6 +5,8 @@ namespace App\Http\Controllers\api\auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\userApiRequest;
 use App\Models\applyTeacher;
+use App\Models\Courses;
+use App\Models\Enrollments;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -56,13 +58,12 @@ class AuthController extends Controller
 
     public function profile()
     {
-        $user = User::find(Auth::guard('api')->id());
-
-        if (!$user) {
+        $enrollments = Enrollments::where('user_id', Auth::guard('api')->id())->get();
+        $courses = Courses::whereIn('id', $enrollments->pluck('courses_id'))->get();
+        if (!$enrollments) {
             return $this->unauthorized('User Not Found');
         }
-
-        return $this->success($user, 'Profile');
+        return $this->success($courses, 'Profile');
     }
 
     public function logout()
@@ -90,13 +91,4 @@ class AuthController extends Controller
         ]);
     }
 
-
-    public function userCourses()
-    {
-        $user = user::with('courses')->find(Auth::user()->id);
-        if (!$user) {
-            return $this->unauthorized('user Not Found');
-        }
-        return $this->success($user, 'User Courses');
-    }
 }
