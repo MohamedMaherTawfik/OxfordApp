@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\api\responses;
+namespace App\Http\Controllers\api\student;
 
 use Illuminate\Http\JsonResponse;
 
@@ -53,20 +53,17 @@ trait ApiResponse
             'message' => $message,
         ], 403);
     }
-    public static function created($data, $message = 'Resource created successfully'): JsonResponse
+    public static function created($data = [], $message = 'Resource created successfully'): JsonResponse
     {
         return response()->json([
             'status' => 'success',
             'message' => $message,
-            'data' => $data = [],
+            'data' => $data,
         ], 201);
     }
-    public static function noContent($message = 'No Content'): JsonResponse
+    public static function noContent(): JsonResponse
     {
-        return response()->json([
-            'status' => 'success',
-            'message' => $message,
-        ], 204);
+        return response()->json([], 204);
     }
 
 }

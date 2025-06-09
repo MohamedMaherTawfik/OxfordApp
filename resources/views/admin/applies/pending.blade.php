@@ -18,7 +18,7 @@
         <div class="hidden md:grid grid-cols-7 gap-4 font-semibold text-gray-700 mb-2">
             <div class="text-[#79131d]">User</div>
             <div class="text-[#79131d]">Email</div>
-            <div class="text-[#79131d]">role</div>
+            <div class="text-[#79131d]">phone</div>
             <div class="text-[#79131d]">Join Date</div>
             <div class="text-right mr-10 text-color text-[#79131d]">Action</div>
         </div>
@@ -42,7 +42,7 @@
                 <div class="text-gray-700">{{ $apply->user->email }}</div>
 
                 <!-- role -->
-                <div class="text-gray-700">{{ $apply->user->role }}</div>
+                <div class="text-gray-700">{{ $apply->phone }}</div>
 
                 <!-- Join Date -->
                 <div class="text-gray-700">{{ $apply->user->created_at }}</div>

@@ -3,6 +3,7 @@
 return [
     'index_Message'=>'Tout a été récupéré avec succès',
     'Error_index_Message'=>'Aucune donnée trouvée',
+    'Empty_Message' => 'Le modèle est vide',
 
     'show_Message'=>'Récupéré avec succès',
     'Error_show_Message'=>'Aucune donnée trouvée',

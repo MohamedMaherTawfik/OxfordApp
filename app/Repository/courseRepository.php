@@ -8,10 +8,11 @@ use App\Models\Courses;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 
-class CourseRepository implements CoursesInterface{
+class CourseRepository implements CoursesInterface
+{
     public function allCourses()
     {
-        return Courses::paginate(3);
+        return Courses::all();
     }
 
     public function newCourses()
@@ -22,18 +23,18 @@ class CourseRepository implements CoursesInterface{
 
     public function getCourse($id)
     {
-        $data=Courses::findOrFail($id);
+        $data = Courses::with('lessons')->find($id);
         return $data;
     }
 
     public function createCourse($data)
     {
-        $data= Courses::create([
-            'title'=>$data['title'],
-            'description'=>$data['description'],
-            'image'=>$data['image'],
-            'price'=>$data['price'],
-            'user_id'=>Auth::user()->id
+        $data = Courses::create([
+            'title' => $data['title'],
+            'description' => $data['description'],
+            'image' => $data['image'],
+            'price' => $data['price'],
+            'user_id' => Auth::user()->id
         ]);
         // Event::dispatch(new NewDataEvent($data));
         return $data;
@@ -41,14 +42,14 @@ class CourseRepository implements CoursesInterface{
 
     public function updateCourse($id, $data)
     {
-        $data=Courses::find($id);
+        $data = Courses::find($id);
         $data->update($data);
         return $data;
     }
 
     public function deleteCourse($id)
     {
-        $data=Courses::findOrFail($id);
+        $data = Courses::findOrFail($id);
         $data->delete();
         return $data;
     }

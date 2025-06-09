@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Models\Comments;
 use App\Interfaces\CommentInterface;
+use Illuminate\Support\Facades\Auth;
 
 class CommentRepository implements CommentInterface
 {
@@ -17,16 +18,16 @@ class CommentRepository implements CommentInterface
         return Comments::find($id);
     }
 
-    public function storeComment(array $data,$id)
+    public function storeComment($data, $id)
     {
         return Comments::create([
             'lesson_id' => $id,
             'comment' => $data['comment'],
-            'user_id' => auth()->user()->id
+            'user_id' => Auth::user()->id
         ]);
     }
 
-    public function updateComment(array $data,$id)
+    public function updateComment($data, $id)
     {
         $comment = Comments::find($id);
         $comment->update($data);
@@ -35,7 +36,7 @@ class CommentRepository implements CommentInterface
 
     public function deleteComment($id)
     {
-        $data= Comments::find($id);
+        $data = Comments::find($id);
         $data->delete();
         return $data;
     }

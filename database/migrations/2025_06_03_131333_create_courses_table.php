@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->string('start_Date');
             $table->string('duration');
+            $table->double('rating')->default(0);
             $table->string('cover_photo')->nullable();
             $table->string('video')->nullable();
             $table->double('price')->nullable();
