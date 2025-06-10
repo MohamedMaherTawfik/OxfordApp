@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\api\auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\updateUserRequest;
 use App\Http\Requests\userApiRequest;
 use App\Models\applyTeacher;
-use App\Models\Courses;
-use App\Models\Enrollments;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
@@ -38,7 +37,7 @@ class AuthController extends Controller
             ]);
         }
 
-        return $this->success($user, __('messages.register'));
+        return $this->success($user->load('applyTeacher'), __('messages.register'));
     }
 
     public function login()
@@ -58,12 +57,8 @@ class AuthController extends Controller
 
     public function profile()
     {
-        $enrollments = Enrollments::where('user_id', Auth::guard('api')->id())->get();
-        $courses = Courses::whereIn('id', $enrollments->pluck('courses_id'))->get();
-        if (!$enrollments) {
-            return $this->unauthorized('User Not Found');
-        }
-        return $this->success($courses, 'Profile');
+        $user = Auth::guard('api')->user()->load('course');
+        return $this->success($user, 'Profile');
     }
 
     public function logout()
@@ -80,7 +75,6 @@ class AuthController extends Controller
         return $this->success($token->original, 'Refresh Successfully');
     }
 
-
     protected function respondWithToken($token)
     {
         return response()->json([
@@ -89,6 +83,19 @@ class AuthController extends Controller
             'expires_in' => Auth::guard('api')->factory()->getTTL() * 60,
             'user' => Auth::guard('api')->user(),
         ]);
+    }
+
+    public function updateProfile(updateUserRequest $request)
+    {
+        $fields = $request->validated();
+        if ($request->hasFile('photo')) {
+            $fields['photo'] = $request->file('photo')->store('photos', 'public');
+        }
+        $user = User::where('id', Auth::guard('api')->id())->update($fields);
+        if (!$user) {
+            return $this->unauthorized(__('messages.Error_update_profile'));
+        }
+        return $this->success($user, __('messages.update_profile'));
     }
 
 }

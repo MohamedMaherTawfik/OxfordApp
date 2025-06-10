@@ -2,7 +2,10 @@
     <div class="flex flex-col w-64 text-white" style="background-color: #79131d">
         <div class="flex items-center h-16 px-4 border-b border-[#e4ce96]">
             <i class="fas fa-chart-line mr-2" style="color: #e4ce96"></i>
-            <h1 class="text-xl font-bold" style="color: #e4ce96">Oxford Dashboard</h1>
+            <a href="#" class="text-xl font-bold hover:opacity-80 transition"
+                style="color: #e4ce96; text-decoration: none; display: inline-block; cursor: pointer;">
+                Oxford Dashboard
+            </a>
         </div>
 
         <div class="flex-1 overflow-y-auto">
@@ -11,7 +14,8 @@
                     <h2 class="text-xs uppercase tracking-wider text-[#e4ce96] mb-2" style="color: #e4ce96">Main</h2>
                     <ul>
                         <li class="mb-1">
-                            <a href="#" class="flex items-center px-3 py-2 rounded-lg text-white"
+                            <a href="{{ route('admin.index') }}"
+                                class="flex items-center px-3 py-2 rounded-lg text-white"
                                 style="background-color: #e4ce96">
                                 <i class="fas fa-tachometer-alt mr-3" style="color: #79131d;"></i>
                                 <span style="color: #79131d; font-weight: 600;">Dashboard</span>

@@ -16,6 +16,7 @@ Route::group([
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('jwt.auth');
     Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('jwt.auth');
     Route::post('/profile', [AuthController::class, 'profile'])->middleware('jwt.auth');
+    Route::post('/updateProfile', [AuthController::class, 'updateProfile'])->middleware('jwt.auth');
 });
 
 Route::group([
@@ -27,7 +28,6 @@ Route::group([
             Route::get('/all', 'allCourses');
             Route::get('/detail/{id}', 'courseDetail');
         }
-
     );
 });
 
