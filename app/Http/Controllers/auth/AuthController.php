@@ -49,7 +49,7 @@ class AuthController extends Controller
                 return redirect('/admin');
             } elseif (Auth::user()->role == 'teacher') {
                 request()->session()->regenerate();
-                return redirect()->route('home');
+                return redirect()->route('dashboard');
             }
             request()->session()->regenerate();
             return redirect()->route('admin.index');

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\admin\teacherController;
+use App\Http\Middleware\Teacher;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\SuperAdminController;
 use App\Http\Controllers\auth\AuthController;
@@ -38,4 +40,20 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'signin')->name('signin');
     Route::post('/logout', 'logout')->name('logout');
+});
+
+
+Route::group([
+    'middleware' => ['auth', Teacher::class],
+], function () {
+    Route::controller(teacherController::class)->group(function () {
+        Route::get('/dashboard', 'dashboard')->name('dashboard');
+        Route::get('/dashboard/courses', 'showCourses')->name('teacher.courses');
+        Route::get('/dashboard/courses/create', 'createCourse')->name('teacher.courses.create');
+        Route::post('/dashboard/courses/create', 'storeCourse')->name('teacher.courses.store');
+        Route::get('/dashboard/courses/edit/{slug}', 'editCourse')->name('teacher.courses.edit');
+        Route::post('/dashboard/courses/edit/{slug}', 'updateCourse')->name('teacher.courses.update');
+        Route::delete('/dashboard/courses/delete/{slug}', 'deleteCourse')->name('teacher.courses.delete');
+        Route::get('/dashboard/courses/{slug}', 'showCourse')->name('teacher.courses.show');
+    });
 });

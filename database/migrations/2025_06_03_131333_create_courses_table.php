@@ -22,6 +22,7 @@ return new class extends Migration {
             $table->string('cover_photo')->nullable();
             $table->string('video')->nullable();
             $table->double('price')->nullable();
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }
