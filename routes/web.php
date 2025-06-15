@@ -48,12 +48,17 @@ Route::group([
 ], function () {
     Route::controller(teacherController::class)->group(function () {
         Route::get('/dashboard', 'dashboard')->name('dashboard');
-        Route::get('/dashboard/courses', 'showCourses')->name('teacher.courses');
         Route::get('/dashboard/courses/create', 'createCourse')->name('teacher.courses.create');
         Route::post('/dashboard/courses/create', 'storeCourse')->name('teacher.courses.store');
         Route::get('/dashboard/courses/edit/{slug}', 'editCourse')->name('teacher.courses.edit');
         Route::post('/dashboard/courses/edit/{slug}', 'updateCourse')->name('teacher.courses.update');
-        Route::delete('/dashboard/courses/delete/{slug}', 'deleteCourse')->name('teacher.courses.delete');
+        Route::delete('/dashboard/courses/delete/{id}', 'deleteCourse')->name('teacher.courses.delete');
         Route::get('/dashboard/courses/{slug}', 'showCourse')->name('teacher.courses.show');
+        Route::get('dashboard/courses/lessons/create/{slug}', 'createLesson')->name('teacher.lessons.create');
+        Route::post('dashboard/courses/lessons/create/{slug}', 'storeLesson')->name('teacher.lessons.store');
+        Route::get('dashboard/courses/lessons/edit/{slug}', 'editLesson')->name('teacher.lessons.edit');
+        Route::post('dashboard/courses/lessons/edit/{slug}', 'updateLesson')->name('teacher.lessons.update');
+        Route::delete('dashboard/courses/lessons/delete/{id}', 'deleteLesson')->name('teacher.lessons.delete');
+        Route::get('dashboard/courses/lessons/{slug}', 'showLesson')->name('teacher.lessons.show');
     });
 });

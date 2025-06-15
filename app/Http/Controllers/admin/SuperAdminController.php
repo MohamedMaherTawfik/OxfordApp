@@ -123,9 +123,7 @@ class SuperAdminController extends Controller
         $apply = applyTeacher::findOrFail(request('id'));
         $apply->status = 'accepted';
         $apply->save();
-        $user = User::findOrFail('id', $apply->user_id)->update(['role' => 'teacher']);
-        dd($user);
-        Event::dispatch(new notifyTeacher($user));
+        User::find($apply->user_id)->update(['role' => 'teacher']);
         return redirect()->back()->with('success', 'Apply accepted successfully.');
     }
 
@@ -137,8 +135,6 @@ class SuperAdminController extends Controller
         $apply = applyTeacher::findOrFail(request('id'));
         $apply->status = 'rejected';
         $apply->save();
-        ;
-
         return redirect()->back()->with('success', 'Apply rejected successfully.');
     }
 

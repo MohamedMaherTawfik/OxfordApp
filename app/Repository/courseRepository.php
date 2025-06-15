@@ -27,23 +27,31 @@ class CourseRepository implements CoursesInterface
         return $data;
     }
 
+    public function getCourseBySlug($slug)
+    {
+        $data = Courses::with('lessons')->where('slug', $slug)->first();
+        return $data;
+    }
     public function createCourse($data)
     {
         $data = Courses::create([
             'title' => $data['title'],
             'description' => $data['description'],
-            'image' => $data['image'],
             'price' => $data['price'],
+            'categorey' => $data['categorey'],
+            'duration' => $data['duration'],
+            'start_date' => $data['start_date'],
+            'slug' => str_replace(' ', '-', strtolower($data['title'])),
+            'cover_photo' => $data['cover_photo']->store('courses', 'public'),
+            'rating' => 4,
             'user_id' => Auth::user()->id
         ]);
-        // Event::dispatch(new NewDataEvent($data));
         return $data;
     }
 
     public function updateCourse($id, $data)
     {
-        $data = Courses::find($id);
-        $data->update($data);
+        $data = Courses::find($id)->update($data);
         return $data;
     }
 

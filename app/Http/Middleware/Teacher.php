@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class Teacher
@@ -15,12 +16,13 @@ class Teacher
      */
     public function handle(Request $request, Closure $next): Response
     {
+        // dd(Auth::user());
         if (auth()->check()) {
-            if (auth()->user()->role === 'teacher') {
+            if (auth()->user()->role == 'teacher' && auth()->user()->applyTeacher->status == 'accepted') {
                 return $next($request);
             }
-            return redirect()->route('dashboard');
         }
+
         abort(403, 'Unauthorized action.');
     }
 }

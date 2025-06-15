@@ -28,7 +28,8 @@ class lessonRepository implements LessonInterface
             'video' => $data['video'],
             'courses_id' => $id,
             'image' => $data['image'],
-            'user_id' => Auth::user()->id
+            'user_id' => Auth::user()->id,
+            'slug' => str_replace(' ', '-', strtolower($data['title'])),
         ]);
         return $lesson;
     }
@@ -42,10 +43,13 @@ class lessonRepository implements LessonInterface
 
     public function deleteLesson($id)
     {
-        $data = Lesson::find($id);
-        $data->delete($id);
+        $data = Lesson::find($id)->delete();
         return $data;
     }
 
+    public function getLessonBySlug($slug)
+    {
+        return Lesson::where('slug', $slug)->first();
+    }
 
 }

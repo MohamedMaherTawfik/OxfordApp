@@ -5,7 +5,7 @@
     <div class="flex flex-col w-64 text-white" style="background-color: #79131d">
         <div class="flex items-center h-16 px-4 border-b border-[#e4ce96]">
             <i class="fas fa-chart-line mr-2" style="color: #e4ce96"></i>
-            <a href="#" class="text-xl font-bold hover:opacity-80 transition"
+            <a href="{{ route('dashboard') }}" class="text-xl font-bold hover:opacity-80 transition"
                 style="color: #e4ce96; text-decoration: none; display: inline-block; cursor: pointer;">
                 Oxford Dashboard
             </a>
@@ -17,8 +17,7 @@
                     <h2 class="text-xs uppercase tracking-wider text-[#e4ce96] mb-2" style="color: #e4ce96">Main</h2>
                     <ul>
                         <li class="mb-1">
-                            <a href="{{ route('admin.index') }}"
-                                class="flex items-center px-3 py-2 rounded-lg text-white"
+                            <a href="{{ route('dashboard') }}" class="flex items-center px-3 py-2 rounded-lg text-white"
                                 style="background-color: #e4ce96">
                                 <i class="fas fa-tachometer-alt mr-3" style="color: #79131d;"></i>
                                 <span style="color: #79131d; font-weight: 600;">Dashboard</span>
@@ -42,20 +41,59 @@
                                     class="fas fa-chevron-down text-xs transform group-hover:rotate-180 transition-transform"></i>
                             </a>
                             <ul class="ml-6 mt-1 hidden group-hover:block">
+
                                 <li class="mb-1">
-                                    <a href="{{ route('admin.users') }}"
-                                        class="flex items-center px-3 py-2 rounded-lg text-sm hover:bg-[#E4CE9648]"
-                                        style="color: #e4ce96;">
-                                        <i class="fa-solid fa-users mr-2"></i>
-                                        All Courses
-                                    </a>
-                                </li>
-                                <li class="mb-1">
-                                    <a href="{{ route('admin.users.create') }}"
+                                    <a href="{{ route('teacher.courses.create') }}"
                                         class="flex items-center px-3 py-2 rounded-lg text-sm hover:bg-[#E4CE9648]"
                                         style="color: #e4ce96;">
                                         <i class="fa-solid fa-user mr-2"></i>
                                         Add New Course
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="mb-1 group">
+                            <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg"
+                                style="color: #e4ce96">
+                                <div class="flex items-center">
+                                    <i class="fas fa-users mr-3"></i>
+                                    Quizes
+                                </div>
+                                <i
+                                    class="fas fa-chevron-down text-xs transform group-hover:rotate-180 transition-transform"></i>
+                            </a>
+                            <ul class="ml-6 mt-1 hidden group-hover:block">
+
+                                <li class="mb-1">
+                                    <a href="{{ route('teacher.courses.create') }}"
+                                        class="flex items-center px-3 py-2 rounded-lg text-sm hover:bg-[#E4CE9648]"
+                                        style="color: #e4ce96;">
+                                        <i class="fa-solid fa-user mr-2"></i>
+                                        Add New Quiz
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li class="mb-1 group">
+                            <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg"
+                                style="color: #e4ce96">
+                                <div class="flex items-center">
+                                    <i class="fas fa-users mr-3"></i>
+                                    Graduation Projects
+                                </div>
+                                <i
+                                    class="fas fa-chevron-down text-xs transform group-hover:rotate-180 transition-transform"></i>
+                            </a>
+                            <ul class="ml-6 mt-1 hidden group-hover:block">
+
+                                <li class="mb-1">
+                                    <a href="{{ route('teacher.courses.create') }}"
+                                        class="flex items-center px-3 py-2 rounded-lg text-sm hover:bg-[#E4CE9648]"
+                                        style="color: #e4ce96;">
+                                        <i class="fa-solid fa-user mr-2"></i>
+                                        Add New Prooject
                                     </a>
                                 </li>
                             </ul>

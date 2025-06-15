@@ -21,11 +21,29 @@ class userSeeder extends Seeder
                     'role' => 'admin',
                 ],
                 [
-                    'name' => 'User One',
+                    'name' => 'Teacher',
                     'email' => 'teacher@gmail.com',
                     'password' => bcrypt('M7mdmaher11'),
                     'role' => 'teacher',
-                ]
+                ],
+                [
+                    'name' => 'Student',
+                    'email' => 'student@gmail.com',
+                    'password' => bcrypt('M7mdmaher11'),
+                    'role' => 'user',
+                ],
+                [
+                    'name' => 'Student1',
+                    'email' => 'student1@gmail.com',
+                    'password' => bcrypt('M7mdmaher11'),
+                    'role' => 'user',
+                ],
+                [
+                    'name' => 'Student2',
+                    'email' => 'student2@gmail.com',
+                    'password' => bcrypt('M7mdmaher11'),
+                    'role' => 'user',
+                ],
             ];
 
         foreach ($users as $user) {

@@ -14,13 +14,13 @@ return new class extends Migration {
         Schema::create('courses', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->string('categorey')->default('general');
             $table->string('title');
             $table->text('description')->nullable();
             $table->string('start_Date');
             $table->string('duration');
             $table->double('rating')->default(0);
             $table->string('cover_photo')->nullable();
-            $table->string('video')->nullable();
             $table->double('price')->nullable();
             $table->string('slug')->unique();
             $table->timestamps();

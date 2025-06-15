@@ -42,7 +42,6 @@ class AuthController extends Controller
     public function signin(loginRequest $request)
     {
         $credentials = $request->only('email', 'password');
-        // dd($credentials);
 
         if (Auth::attempt($credentials)) {
             if (Auth::user()->role == 'admin') {
