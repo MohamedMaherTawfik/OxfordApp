@@ -1,23 +1,22 @@
 <?php
 
-use App\Models\questions;
+use App\Models\quizes;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
-        Schema::create('answers', function (Blueprint $table) {
+        Schema::create('questions', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(questions::class)->constrained()->cascadeOnDelete();
-            $table->string('answer');
-            $table->boolean('is_correct')->default(false);
+            $table->foreignIdFor(quizes::class)->constrained()->cascadeOnDelete();
+            $table->string('question');
+            $table->enum('type', ['MCQ', 'TF'])->default('MCQ');
             $table->timestamps();
         });
     }
@@ -27,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('answers');
+        Schema::dropIfExists('questions');
     }
 };
