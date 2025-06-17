@@ -38,6 +38,10 @@
                                     Delete
                                 </button>
                             </form>
+                            <a href="{{ route('teacher.lessons.create', $course->slug) }}"
+                                class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Make Quiz</a>
+                            <a href="{{ route('teacher.project.all', $course->slug) }}"
+                                class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Graduation Projects </a>
 
                         </div>
                     </div>

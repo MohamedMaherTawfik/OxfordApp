@@ -35,7 +35,7 @@
                     <!-- Email -->
                     <div>
                         <label class="block text-sm font-medium mb-1">Email</label>
-                        <input type="email" name="email" placeholder="<i class='fa-solid fa-at'></i>"
+                        <input type="email" name="email" placeholder="Your Email"
                             class="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500">
                         @error('email')
                             <span class="text-red-400 text-sm">{{ $message }}</span>
@@ -61,7 +61,7 @@
                     </div>
                 </form>
 
-                <!-- Social Buttons -->
+                {{-- <!-- Social Buttons -->
                 <div class="flex items-center justify-center gap-4">
                     <button
                         class="bg-white text-black px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-200"
@@ -76,7 +76,7 @@
                         <img src="https://img.icons8.com/ios-filled/24/ffffff/facebook-new.png" alt="Facebook" />
                         Facebook
                     </button>
-                </div>
+                </div> --}}
 
                 <!-- Register Link -->
                 <p class="text-center text-sm text-gray-400">

@@ -73,4 +73,11 @@ class User extends Authenticatable implements JWTSubject
         return [];
     }
 
+    /**
+     * Get the graduation projects associated with the user.
+     */
+    public function graduationProjects()
+    {
+        return $this->hasMany(graduationProject::class, 'teacher_id');
+    }
 }

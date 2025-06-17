@@ -10,7 +10,6 @@
                 <!-- Title and Timestamp -->
                 <div class="text-left">
                     <h1 class="text-3xl font-bold text-gray-800 mb-2">{{ $lesson->title }}</h1>
-                    <p class="text-gray-500 text-sm">Posted on {{ $lesson->created_at }}</p>
                 </div>
 
                 <!-- Dropdown Menu -->
@@ -50,23 +49,19 @@
 
             <!-- Video Player -->
             <div class="mb-8 mx-4 bg-black rounded-lg overflow-hidden">
-                <div class="aspect-w-16 aspect-h-9">
-                    <video controls class="w-full h-full object-cover rounded-md">
-                        <source src="{{ asset('storage/' . $lesson->video) }}" type="video/mp4">
+                <div style="height: 500px; width: 100%;">
+                    <video id="lessonVideo" controls class="w-full h-full object-cover rounded-md">
+                        <source src="{{ asset('storage/' . $lesson->video) }}">
                         Your browser does not support the video tag.
                     </video>
                 </div>
 
+
                 <div class="p-4 bg-gray-100 flex justify-between items-center">
-                    <div class="flex space-x-4">
-                        <button class="text-gray-700 hover:text-blue-500">
-                            <i class="fas fa-thumbs-up mr-1"></i> Like
-                        </button>
-                        <button class="text-gray-700 hover:text-blue-500">
-                            <i class="fas fa-share mr-1"></i> Share
-                        </button>
-                    </div>
-                    <span class="text-sm text-gray-500">1,245 views</span>
+
+                    <p class="text-gray-500 text-sm">Created At:
+                        {{ \Carbon\Carbon::parse($lesson->created_at)->format('Y, d F') }}
+                    </p>
                 </div>
             </div>
 
@@ -75,6 +70,35 @@
                 <h3 class="text-xl font-semibold mb-4 text-gray-800">Comments ({{ count($comments) }})</h3>
             </div>
         </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                const video = document.getElementById('lessonVideo');
+
+                // Handle keydown globally
+                window.addEventListener('keydown', function(e) {
+                    // Make sure no input/textarea is focused
+                    const active = document.activeElement;
+                    if (active.tagName === 'INPUT' || active.tagName === 'TEXTAREA') return;
+
+                    if (e.key === 'ArrowRight') {
+                        e.preventDefault(); // prevent horizontal scroll
+                        video.currentTime = Math.min(video.duration, video.currentTime + 5);
+                    } else if (e.key === 'ArrowLeft') {
+                        e.preventDefault();
+                        video.currentTime = Math.max(0, video.currentTime - 5);
+                    }
+                });
+
+                // Allow clicking on progress bar to seek
+                video.addEventListener('click', function(e) {
+                    const rect = video.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const ratio = x / rect.width;
+                    video.currentTime = video.duration * ratio;
+                });
+            });
+        </script>
 
 
 

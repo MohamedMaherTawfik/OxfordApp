@@ -50,7 +50,7 @@
                         <select name="role"
                             class="w-full px-4 py-2 border border-gray-600 rounded-lg bg-gray-800 text-white focus:outline-none focus:ring-2 focus:ring-[#73131d]">
                             <option value="">Select Role</option>
-                            <option value="student">Student</option>
+                            <option value="user">Student</option>
                             <option value="teacher">Teacher</option>
                         </select>
                         @error('role')
@@ -111,7 +111,7 @@
                 </form>
 
                 <!-- Social Buttons -->
-                <div class="flex items-center justify-center gap-4">
+                {{-- <div class="flex items-center justify-center gap-4">
                     <button
                         class="bg-white text-black px-4 py-2 rounded-lg flex items-center justify-center gap-2 hover:bg-gray-200"
                         style="width: 40%;">
@@ -125,7 +125,7 @@
                         <img src="https://img.icons8.com/ios-filled/24/ffffff/facebook-new.png" alt="Facebook" />
                         Facebook
                     </button>
-                </div>
+                </div> --}}
 
                 <!-- Login Link -->
                 <p class="text-center text-sm text-gray-400">

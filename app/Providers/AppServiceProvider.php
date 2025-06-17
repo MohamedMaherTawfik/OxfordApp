@@ -4,17 +4,21 @@ namespace App\Providers;
 
 use App\interfaces\AnsewerInterface;
 use App\Interfaces\AssignmentInterface;
+use App\Interfaces\categoreyInterface;
 use App\Interfaces\CertificateInterface;
 use App\Interfaces\commentInterface;
 use App\Interfaces\EnrollmentsInterface;
+use App\Interfaces\GraduationProjectInterface;
 use App\Interfaces\LessonInterface;
 use App\Interfaces\PaymentInterface;
 use App\Interfaces\QuizesInterface;
 use App\Repository\AnswerRepository;
 use App\Repository\AssignmentRepository;
+use App\Repository\Categoreyrepository;
 use App\Repository\CertificateRepository;
 use App\Repository\CommentRepository;
 use App\Repository\EnrollmentRepository;
+use App\Repository\GraduationProjectRepository;
 use App\Repository\lessonRepository;
 use App\Repository\PaymentRepository;
 use App\Repository\QuizRepository;
@@ -31,16 +35,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(CoursesInterface::class,CourseRepository::class);
-        $this->app->bind(LessonInterface::class,lessonRepository::class);
-        $this->app->bind(QuizesInterface::class,QuizRepository::class);
-        $this->app->bind(QuestionInterface::class,QuestionRepository::class);
-        $this->app->bind(AnsewerInterface::class,AnswerRepository::class);
-        $this->app->bind(commentInterface::class,CommentRepository::class);
-        $this->app->bind(CertificateInterface::class,CertificateRepository::class);
-        $this->app->bind(AssignmentInterface::class,AssignmentRepository::class);
-        $this->app->bind(EnrollmentsInterface::class,EnrollmentRepository::class);
-        $this->app->bind(PaymentInterface::class,PaymentRepository::class);
+        $this->app->bind(CoursesInterface::class, CourseRepository::class);
+        $this->app->bind(LessonInterface::class, lessonRepository::class);
+        $this->app->bind(QuizesInterface::class, QuizRepository::class);
+        $this->app->bind(QuestionInterface::class, QuestionRepository::class);
+        $this->app->bind(AnsewerInterface::class, AnswerRepository::class);
+        $this->app->bind(commentInterface::class, CommentRepository::class);
+        $this->app->bind(CertificateInterface::class, CertificateRepository::class);
+        $this->app->bind(AssignmentInterface::class, AssignmentRepository::class);
+        $this->app->bind(EnrollmentsInterface::class, EnrollmentRepository::class);
+        $this->app->bind(PaymentInterface::class, PaymentRepository::class);
+        $this->app->bind(GraduationProjectInterface::class, GraduationProjectRepository::class);
+        $this->app->bind(categoreyInterface::class, Categoreyrepository::class);
     }
 
     /**

@@ -5,11 +5,13 @@ namespace App\Http\Controllers\admin;
 use App\Events\notifyTeacher;
 use App\Http\Controllers\Controller;
 use App\Models\applyTeacher;
+use App\Models\Courses;
 use Illuminate\Http\Request;
 use App\Http\Requests\adminRequest;
 use App\Models\User;
 use App\Http\Requests\updateRequest;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Str;
 
 class SuperAdminController extends Controller
 {
@@ -159,5 +161,92 @@ class SuperAdminController extends Controller
             $apply->user = User::find($apply->user_id);
         }
         return view('admin.applies.rejected', compact('applies'));
+    }
+
+    /**
+     * Show all courses.
+     */
+    public function allCourses()
+    {
+        $courses = Courses::get();
+        return view('admin.courses.allCourses', compact('courses'));
+    }
+
+    /**
+     * Delete a course.
+     */
+    public function deleteCourse()
+    {
+        Courses::findOrFail(request('id'))->delete();
+        return redirect()->back()->with('success', 'Course deleted successfully.');
+    }
+
+    /**
+     * Show the categories.
+     */
+    public function categories()
+    {
+        $categories = \App\Models\categories::get();
+        return view('admin.categories.index', compact('categories'));
+    }
+
+    /**
+     * Show the form for creating a new category.
+     */
+    public function createCategory()
+    {
+        return view('admin.categories.create');
+    }
+
+    /**
+     * Store a newly created category in storage.
+     */
+    public function storeCategory(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+        \App\Models\categories::create([
+            'name' => $request->name,
+            'slug' => Str::slug($request->name),
+        ]);
+        return redirect()->route('admin.categories')->with('success', 'Category created successfully.');
+    }
+
+    /**
+     * Show the form for editing the specified category.
+     */
+    public function editCategory()
+    {
+        $category = \App\Models\categories::find(request('id'));
+        return view('admin.categories.edit', compact('category'));
+    }
+
+    /**
+     * Update the specified category in storage.
+     */
+    public function updateCategory(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ]);
+        $category = \App\Models\categories::findOrFail(request('id'));
+        $category->name = $request->name;
+        $category->slug = Str::slug($request->name);
+        $category->save();
+        return redirect()->route('admin.categories')->with('success', 'Category updated successfully.');
+    }
+
+    /**
+     * Remove the specified category from storage.
+     */
+    public function deleteCategory()
+    {
+        $category = \App\Models\categories::findOrFail(request('id'));
+        if ($category->courses()->count() > 0) {
+            return redirect()->back()->with('error', 'Category cannot be deleted as it has associated courses.');
+        }
+        $category->delete();
+        return redirect()->back()->with('success', 'Category deleted successfully.');
     }
 }

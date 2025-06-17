@@ -7,10 +7,17 @@ use App\Http\Controllers\admin\SuperAdminController;
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Middleware\CheckAdmin;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
-
+Route::group([
+    'middleware' => ['auth'],
+], function () {
+    Route::get('/', [\App\Http\Controllers\home\homeController::class, 'index'])->name('home');
+    Route::get('/courses', [\App\Http\Controllers\home\homeController::class, 'courses'])->name('courses');
+    Route::get('/courses/{slug}', [\App\Http\Controllers\home\homeController::class, 'showCourse'])->name('course.show');
+    Route::get('/courses/lessons/{slug}', [\App\Http\Controllers\home\homeController::class, 'showLesson'])->name('lesson.show');
+    Route::get('/courses/quiz/{id}', [\App\Http\Controllers\home\homeController::class, 'showQuiz'])->name('quiz.show');
+    Route::post('/courses/quiz/{id}', [\App\Http\Controllers\home\homeController::class, 'submitQuiz'])->name('quiz.submit');
+    Route::get('/courses/project/{slug}', [\App\Http\Controllers\home\homeController::class, 'showProject'])->name('project.show');
+});
 Route::group([
     'middleware' => ['auth', CheckAdmin::class],
 ], function () {
@@ -29,6 +36,14 @@ Route::group([
         Route::get('admin/applies/rejected', 'rejected')->name('admin.rejects');
         Route::get('admin/applies/accept/{id}', 'acceptApply')->name('admin.applies.accept');
         Route::get('admin/applies/reject/{id}', 'rejectApply')->name('admin.applies.reject');
+        Route::get('admin/courses/all', 'allCourses')->name('admin.courses.all');
+        Route::delete('admin/courses/delete', 'deleteCourse')->name('admin.courses.delete');
+        Route::get('admin/categories', 'categories')->name('admin.categories');
+        Route::get('admin/categories/create', 'createCategory')->name('admin.categories.create');
+        Route::post('admin/categories/create', 'storeCategory')->name('admin.categories.store');
+        Route::get('admin/categories/edit/{id}', 'editCategory')->name('admin.categories.edit');
+        Route::post('admin/categories/edit/{id}', 'updateCategory')->name('admin.categories.update');
+        Route::delete('admin/categories/delete/{id}', 'deleteCategory')->name('admin.categories.delete');
     });
 });
 
@@ -60,5 +75,13 @@ Route::group([
         Route::post('dashboard/courses/lessons/edit/{slug}', 'updateLesson')->name('teacher.lessons.update');
         Route::delete('dashboard/courses/lessons/delete/{id}', 'deleteLesson')->name('teacher.lessons.delete');
         Route::get('dashboard/courses/lessons/{slug}', 'showLesson')->name('teacher.lessons.show');
+        Route::get('dashboard/courses/lessons/quiz/create/{slug}', 'createQuiz')->name('teacher.quiz.create');
+        Route::post('dashboard/courses/quiz/create/{slug}', 'storeQuiz')->name('teacher.quiz.store');
+        Route::post('dashboard/courses/quiz/{id}', 'deleteQuiz')->name('teacher.quiz.delete');
+        Route::get('dashboard/courses/project/all/{slug}', 'allProjects')->name('teacher.project.all');
+        Route::get('dashboard/courses/project/create/{slug}', 'createProject')->name('teacher.project.create');
+        Route::post('dashboard/courses/project/create/{slug}', 'storeProject')->name('teacher.project.store');
+        Route::get('dashboard/courses/project/show/{slug}', 'showProject')->name('teacher.project.show');
+        Route::post('dashboard/courses/project/{id}', 'deleteProject')->name('teacher.project.delete');
     });
 });

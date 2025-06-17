@@ -32,7 +32,7 @@
                             <!-- Dropdown button -->
                             <button id="dropdownButton" class="flex items-center focus:outline-none"
                                 onclick="toggleDropdown()">
-                                <img src="https://randomuser.me/api/portraits/women/44.jpg"
+                                <img src="{{ asset('storage/' . Auth::user()->photo) }}"
                                     class="w-8 h-8 rounded-full mr-2" alt="User profile">
                                 <span class="text-sm font-medium">{{ Auth::user()->name }}</span>
                                 <i class="fas fa-chevron-down ml-2 text-xs text-gray-500 transition-transform duration-200"

@@ -12,15 +12,15 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('lessons', function (Blueprint $table) {
+        Schema::create('graduation_projects', function (Blueprint $table) {
             $table->id();
             $table->string('title')->unique();
-            $table->text('description')->nullable();
-            $table->string('video');
-            $table->string('image')->nullable();
+            $table->text('description');
+            $table->string('status')->default('pending');
+            $table->foreignIdFor(User::class, 'teacher_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignIdFor(Courses::class, 'courses_id')->constrained('courses')->cascadeOnDelete();
             $table->string('slug')->unique();
-            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Courses::class)->constrained()->cascadeOnDelete();
+            $table->string('file')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('lessons');
+        Schema::dropIfExists('graduation_projects');
     }
 };

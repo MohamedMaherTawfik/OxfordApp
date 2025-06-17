@@ -1,5 +1,8 @@
-<x-teacher-panel>
+<?php #
+use App\Models\categories;
+$categories = categories::all(); ?>
 
+<x-teacher-panel>
     <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-2xl w-full bg-white p-8 rounded-lg shadow-md">
             <form method="POST" action="{{ route('teacher.courses.store') }}" enctype="multipart/form-data">
@@ -38,13 +41,19 @@
 
                     <!-- Category Dropdown -->
                     <div>
-                        <label for="categorey" class="block text-sm font-medium text-gray-700">categorey</label>
-                        <input type="text" id="categorey" name="categorey"
-                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
-                        @error('categorey')
+                        <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
+                        <select id="category_id" name="category_id"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#79131d] focus:border-[#79131d]">
+                            <option value="" disabled selected>Select a category</option>
+                            @foreach ($categories as $category)
+                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                            @endforeach
+                        </select>
+                        @error('category_id')
                             <span class="text-red-500 text-sm">{{ $message }}</span>
                         @enderror
                     </div>
+
 
                     <div>
                         <label for="start_date" class="block text-sm font-medium text-gray-700">start_date</label>

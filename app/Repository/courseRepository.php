@@ -15,6 +15,11 @@ class CourseRepository implements CoursesInterface
         return Courses::all();
     }
 
+    public function allCoursesPaginated()
+    {
+        return Courses::paginate(3);
+    }
+
     public function newCourses()
     {
         // Get the newest 3 courses
@@ -38,7 +43,7 @@ class CourseRepository implements CoursesInterface
             'title' => $data['title'],
             'description' => $data['description'],
             'price' => $data['price'],
-            'categorey' => $data['categorey'],
+            'categorey_id' => $data['category_id'],
             'duration' => $data['duration'],
             'start_date' => $data['start_date'],
             'slug' => str_replace(' ', '-', strtolower($data['title'])),

@@ -5,7 +5,9 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\courseRequest;
 use App\Http\Requests\lessonRequest;
+use App\Http\Requests\projectRequest;
 use App\Interfaces\CoursesInterface;
+use App\Interfaces\GraduationProjectInterface;
 use App\Interfaces\LessonInterface;
 use App\Models\Courses;
 use App\Models\Enrollments;
@@ -14,16 +16,18 @@ class teacherController extends Controller
 {
     private $courseRepository;
     private $lessonRepository;
+    private $graduationProjectRepository;
     /**
      * Create a new interface instance.
      *
      * @param CoursesInterface $courseRepository
      * @param LessonInterface $lessonRepository
      */
-    public function __construct(CoursesInterface $courseRepository, LessonInterface $lessonRepository)
+    public function __construct(CoursesInterface $courseRepository, LessonInterface $lessonRepository, GraduationProjectInterface $graduationProjectRepository)
     {
         $this->courseRepository = $courseRepository;
         $this->lessonRepository = $lessonRepository;
+        $this->graduationProjectRepository = $graduationProjectRepository;
     }
     public function dashboard()
     {
@@ -126,4 +130,39 @@ class teacherController extends Controller
         $this->lessonRepository->deleteLesson($lesson->id);
         return redirect()->route('teacher.courses.show', ['slug' => $course->slug])->with('success', 'Lesson deleted successfully!');
     }
+
+    public function allProjects()
+    {
+        $course = $this->courseRepository->getCourseBySlug(request('slug'));
+        $projects = $this->graduationProjectRepository->getGraduationProjects(request('slug'));
+        return view('teacherDashboard.projects.allprojects', compact('projects', 'course'));
+    }
+
+    public function createProject()
+    {
+        return view('teacherDashboard.projects.createProject');
+    }
+
+    public function storeProject(projectRequest $request)
+    {
+        $course = $this->courseRepository->getCourseBySlug(request('slug'));
+        $fields = $request->validated();
+        $fields['file'] = request()->file('file')->store('projectsfile', 'public');
+        $this->graduationProjectRepository->createGraduationProject($fields, $course->id);
+        return redirect()->route('teacher.project.all', ['slug' => request('slug')])->with('success', 'Project created successfully!');
+    }
+
+    public function showProject()
+    {
+        $project = $this->graduationProjectRepository->getGraduationProjectBySlug(request('slug'));
+        $course = $this->courseRepository->getCourse($project->courses_id);
+        return view('teacherDashboard.projects.showProject', compact('project', 'course'));
+    }
+    // public function deleteProject()
+    // {
+    //     $project = $this->graduationProjectRepository->getGraduationProject(request('id'));
+    //     $course = $this->courseRepository->getCourse($project->courses_id);
+    //     $this->graduationProjectRepository->deleteGraduationProject($project->id);
+    //     return redirect()->route('teacher.project.all', ['slug' => $course->slug])->with('success', 'Project deleted successfully!');
+    // }
 }

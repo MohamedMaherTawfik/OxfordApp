@@ -33,8 +33,8 @@
                             <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg"
                                 style="color: #e4ce96">
                                 <div class="flex items-center">
-                                    <i class="fas fa-users mr-3"></i>
-                                    <span>Students</span>
+                                    <i class="fas fa-users mr-3 "></i>
+                                    <span> Students</span>
                                 </div>
                                 <i
                                     class="fas fa-chevron-down text-xs transform group-hover:rotate-180 transition-transform"></i>
@@ -44,7 +44,7 @@
                                     <a href="{{ route('admin.users') }}"
                                         class="flex items-center px-3 py-2 rounded-lg text-sm hover:bg-[#E4CE9648]"
                                         style="color: #e4ce96;">
-                                        <i class="fa-solid fa-users mr-2"></i>
+                                        <i class="fa-solid fa-users mr-1"></i>
                                         All Student
                                     </a>
                                 </li>
@@ -52,7 +52,7 @@
                                     <a href="{{ route('admin.users.create') }}"
                                         class="flex items-center px-3 py-2 rounded-lg text-sm hover:bg-[#E4CE9648]"
                                         style="color: #e4ce96;">
-                                        <i class="fa-solid fa-user mr-2"></i>
+                                        <i class="fa-solid fa-user-plus mr-1"></i>
                                         Add New Student
                                     </a>
                                 </li>
@@ -63,7 +63,7 @@
                             <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg"
                                 style="color: #e4ce96">
                                 <div class="flex items-center">
-                                    <i class="fas fa-users mr-3"></i>
+                                    <i class="fa-solid fa-chalkboard-user mr-1"></i>
                                     Teachers
                                 </div>
                                 <i
@@ -74,7 +74,7 @@
                                     <a href="{{ route('admin.teachers') }}"
                                         class="flex items-center px-3 py-2 rounded-lg text-sm hover:bg-[#E4CE9648]"
                                         style="color: #e4ce96;">
-                                        <i class="fa-solid fa-users mr-2"></i>
+                                        <i class="fa-solid fa-users mr-1"></i>
                                         All Teachers
                                     </a>
                                 </li>
@@ -82,7 +82,7 @@
                                     <a href="{{ route('admin.users.create') }}"
                                         class="flex items-center px-3 py-2 rounded-lg text-sm hover:bg-[#E4CE9648]"
                                         style="color: #e4ce96;">
-                                        <i class="fa-solid fa-user mr-2"></i>
+                                        <i class="fa-solid fa-user-plus mr-1"></i>
                                         Add New Teachers
                                     </a>
                                 </li>
@@ -93,7 +93,7 @@
                             <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg"
                                 style="color: #e4ce96">
                                 <div class="flex items-center">
-                                    <i class="fas fa-users mr-3"></i>
+                                    <i class="fas fa-th-list mr-2"></i>
                                     Applies
                                 </div>
                                 <i
@@ -104,7 +104,7 @@
                                     <a href="{{ route('admin.applies') }}"
                                         class="flex items-center px-3 py-2 rounded-lg text-sm hover:bg-[#E4CE9648]"
                                         style="color: #e4ce96;">
-                                        <i class="fa-solid fa-users mr-2"></i>
+                                        <i class="fa-regular fa-clock mr-2"></i>
                                         Pending
                                     </a>
                                 </li>
@@ -112,7 +112,7 @@
                                     <a href="{{ route('admin.accepts') }}"
                                         class="flex items-center px-3 py-2 rounded-lg text-sm hover:bg-[#E4CE9648]"
                                         style="color: #e4ce96;">
-                                        <i class="fa-solid fa-user mr-2"></i>
+                                        <i class="fa-solid fa-check mr-2"></i>
                                         Accepted
                                     </a>
                                 </li>
@@ -120,7 +120,7 @@
                                     <a href="{{ route('admin.rejects') }}"
                                         class="flex items-center px-3 py-2 rounded-lg text-sm hover:bg-[#E4CE9648]"
                                         style="color: #e4ce96;">
-                                        <i class="fa-solid fa-user mr-2"></i>
+                                        <i class="fa-solid fa-xmark mr-2"></i>
                                         Rejected
                                     </a>
                                 </li>
@@ -131,7 +131,7 @@
                             <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg"
                                 style="color: #e4ce96">
                                 <div class="flex items-center">
-                                    <i class="fas fa-users mr-3"></i>
+                                    <i class="fas fa-book text-xl mr-2"></i>
                                     Courses
                                 </div>
                                 <i
@@ -139,21 +139,45 @@
                             </a>
                             <ul class="ml-6 mt-1 hidden group-hover:block">
                                 <li class="mb-1">
-                                    <a href="{{ route('admin.users') }}"
+                                    <a href="{{ route('admin.courses.all') }}"
                                         class="flex items-center px-3 py-2 rounded-lg text-sm hover:bg-[#E4CE9648]"
-                                        style="color: #e4ce96;">
-                                        <i class="fa-solid fa-users mr-2"></i>
+                                        style="color: #e4ce96;"><i
+                                            class="fas fa-folder-open mr-2 text-white text-lg"></i>
                                         All Courses
                                     </a>
                                 </li>
+
+                            </ul>
+                        </li>
+                        <li class="mb-1 group">
+                            <a href="" class="flex items-center justify-between px-3 py-2 rounded-lg"
+                                style="color: #e4ce96">
+                                <div class="flex items-center">
+                                    <i class="fa-solid fa-list mr-2"></i>
+                                    categories
+                                </div>
+                                <i
+                                    class="fas fa-chevron-down text-xs transform group-hover:rotate-180 transition-transform"></i>
+                            </a>
+                            <ul class="ml-6 mt-1 hidden group-hover:block">
                                 <li class="mb-1">
-                                    <a href="{{ route('admin.users.create') }}"
+                                    <a href="{{ route('admin.categories') }}"
                                         class="flex items-center px-3 py-2 rounded-lg text-sm hover:bg-[#E4CE9648]"
                                         style="color: #e4ce96;">
-                                        <i class="fa-solid fa-user mr-2"></i>
-                                        Add New Course
+                                        <i class="fa-solid fa-list mr-2"></i>
+                                        All Categories
                                     </a>
                                 </li>
+
+                                <li class="mb-1">
+                                    <a href="{{ route('admin.categories.create') }}"
+                                        class="flex items-center px-3 py-2 rounded-lg text-sm hover:bg-[#E4CE9648]"
+                                        style="color: #e4ce96;">
+                                        <i class="fa-solid fa-book-medical mr-2"></i>
+                                        Create Categorey
+                                    </a>
+                                </li>
+
                             </ul>
                         </li>
 

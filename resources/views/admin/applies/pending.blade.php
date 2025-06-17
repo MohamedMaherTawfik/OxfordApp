@@ -19,7 +19,8 @@
             <div class="text-[#79131d]">User</div>
             <div class="text-[#79131d]">Email</div>
             <div class="text-[#79131d]">phone</div>
-            <div class="text-[#79131d]">Join Date</div>
+            <div class="text-[#79131d]">CV</div>
+            <div class="text-[#79131d]">certificate</div>
             <div class="text-right mr-10 text-color text-[#79131d]">Action</div>
         </div>
 
@@ -41,11 +42,23 @@
                 <!-- Email -->
                 <div class="text-gray-700">{{ $apply->user->email }}</div>
 
-                <!-- role -->
+                <!-- phone -->
                 <div class="text-gray-700">{{ $apply->phone }}</div>
 
-                <!-- Join Date -->
-                <div class="text-gray-700">{{ $apply->user->created_at }}</div>
+                <!-- CV -->
+                <a href="{{ asset('storage/' . $apply->cv) }}" target="_blank"
+                    class="inline-flex items-center justify-center w-10 h-10 bg-[#79131DD0] text-white rounded-md hover:bg-[#79131d] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
+                    <!-- PDF icon from Heroicons (Solid) -->
+                    <i class="fa-solid fa-file-pdf text-[#e4ce96] text-xl"></i>
+                </a>
+
+                <!-- CV -->
+                <a href="{{ asset('storage/' . $apply->certificate) }}" target="_blank"
+                    class="inline-flex items-center justify-center w-10 h-10 bg-[#79131DD0] text-white rounded-md hover:bg-[#79131d] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
+                    <!-- PDF icon from Heroicons (Solid) -->
+                    <i class="fa-solid fa-file-image text-[#e4ce96] text-xl"></i>
+                </a>
+
 
                 <!-- Actions -->
                 <div class="flex justify-end items-center space-x-3 text-gray-600 text-lg" style="width: 110%">
