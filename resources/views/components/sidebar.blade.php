@@ -33,7 +33,7 @@
                             <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg"
                                 style="color: #e4ce96">
                                 <div class="flex items-center">
-                                    <i class="fas fa-users mr-3 "></i>
+                                    <i class="fas fa-users mr-2"></i>
                                     <span> Students</span>
                                 </div>
                                 <i
@@ -63,7 +63,7 @@
                             <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg"
                                 style="color: #e4ce96">
                                 <div class="flex items-center">
-                                    <i class="fa-solid fa-chalkboard-user mr-1"></i>
+                                    <i class="fa-solid fa-chalkboard-user mr-2"></i>
                                     Teachers
                                 </div>
                                 <i
@@ -179,6 +179,30 @@
                                 </li>
 
                             </ul>
+
+                        </li>
+                        <li class="mb-1 group">
+                            <a href="" class="flex items-center justify-between px-3 py-2 rounded-lg"
+                                style="color: #e4ce96">
+                                <div class="flex items-center">
+                                    <img src="https://openai.com/favicon.ico" class="w-7 mr-2" alt="">
+                                    Chatgpt
+                                </div>
+                                <i
+                                    class="fas fa-chevron-down text-xs transform group-hover:rotate-180 transition-transform"></i>
+                            </a>
+                            <ul class="ml-6 mt-1 hidden group-hover:block">
+                                <li class="mb-1">
+                                    <a href="{{ route('admin.chat') }}"
+                                        class="flex items-center px-3 py-2 rounded-lg text-sm hover:bg-[#E4CE9648]"
+                                        style="color: #e4ce96;">
+                                        <i class="fas fa-comments mr-2"></i>
+
+                                        Speak with Ai
+                                    </a>
+                                </li>
+                            </ul>
+
                         </li>
 
                     </ul>

@@ -39,9 +39,7 @@ class GraduationProjectRepository implements GraduationProjectInterface
 
     public function updateGraduationProject($id, $data)
     {
-        $graduationProject = graduationProject::findOrFail($id);
-        $graduationProject->update($data);
-        return $graduationProject;
+        return graduationProject::findOrFail($id)->update($data);
     }
 
     public function deleteGraduationProject($id)

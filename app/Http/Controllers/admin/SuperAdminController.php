@@ -249,4 +249,9 @@ class SuperAdminController extends Controller
         $category->delete();
         return redirect()->back()->with('success', 'Category deleted successfully.');
     }
+
+    public function speakWithAi()
+    {
+        return view('admin.chat.sepakAi');
+    }
 }

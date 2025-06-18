@@ -11,6 +11,7 @@ use App\Interfaces\GraduationProjectInterface;
 use App\Interfaces\LessonInterface;
 use App\Models\Courses;
 use App\Models\Enrollments;
+use App\Models\graduationProject;
 
 class teacherController extends Controller
 {
@@ -154,15 +155,27 @@ class teacherController extends Controller
 
     public function showProject()
     {
-        $project = $this->graduationProjectRepository->getGraduationProjectBySlug(request('slug'));
-        $course = $this->courseRepository->getCourse($project->courses_id);
-        return view('teacherDashboard.projects.showProject', compact('project', 'course'));
+        $course = $this->courseRepository->getCourseBySlug(request('slug'));
+        $projects = $this->graduationProjectRepository->getGraduationProjects(request('slug'));
+        return view('teacherDashboard.projects.showProject', compact('projects', 'course'));
     }
-    // public function deleteProject()
-    // {
-    //     $project = $this->graduationProjectRepository->getGraduationProject(request('id'));
-    //     $course = $this->courseRepository->getCourse($project->courses_id);
-    //     $this->graduationProjectRepository->deleteGraduationProject($project->id);
-    //     return redirect()->route('teacher.project.all', ['slug' => $course->slug])->with('success', 'Project deleted successfully!');
-    // }
+
+    public function editProject()
+    {
+        $project = $this->graduationProjectRepository->getGraduationProjectBySlug(request('slug'));
+        return view('teacherDashboard.projects.editProject', compact('project'));
+    }
+
+    public function updateProject()
+    {
+        $data = request()->all();
+        graduationProject::find(request('id'))->update($data);
+        return redirect()->route('teacher.project.show', ['slug' => request('slug')])->with('success', 'Project created successfully!');
+    }
+
+    public function deleteProject()
+    {
+        graduationProject::find(request('id'))->delete();
+        return redirect()->back();
+    }
 }
