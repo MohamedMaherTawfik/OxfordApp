@@ -40,6 +40,6 @@ class Categoreyrepository implements categoreyInterface
 
     public function getCategoryBySlug($slug)
     {
-        return Categories::where('slug', $slug)->firstOrFail();
+        return Categories::with('courses')->where('slug', $slug)->firstOrFail();
     }
 }

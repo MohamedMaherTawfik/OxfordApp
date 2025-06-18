@@ -13,120 +13,7 @@
 <body class="bg-white font-sans">
 
     <!-- Header -->
-    <!-- Header / Navbar -->
-    <header class="bg-white shadow-sm">
-        <div class="container mx-auto px-4 py-2 flex items-center justify-between">
-            <!-- Logo -->
-            <div class="flex items-center gap-2">
-                <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="h-10 w-10">
-                <span class="font-bold text-lg">Oxford Platform</span>
-            </div>
-
-            <!-- Navigation Links -->
-            <nav class="hidden md:flex items-center gap-6 font-semibold text-gray-800">
-                <a href="/" class="hover:text-blue-600">Home</a>
-                @auth
-                    <a href="#" class="hover:text-blue-600">My Courses</a>
-                @endauth
-                <a href="" class="hover:text-blue-600">Courses</a>
-
-                <!-- Dropdowns -->
-                <div class="relative group">
-                    <button class="hover:text-blue-600 flex items-center gap-1">
-                        Learning Fields
-                        <svg class="w-4 h-4 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <!-- Dropdown Menu -->
-                    <div
-                        class="absolute top-full left-0 mt-2 w-40 bg-white border rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">Science</a>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">Math</a>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">Technology</a>
-                    </div>
-                </div>
-
-                <div class="relative group">
-                    <button class="hover:text-blue-600 flex items-center gap-1">
-                        More
-                        <svg class="w-4 h-4 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div
-                        class="absolute top-full left-0 mt-2 w-40 bg-white border rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">About</a>
-                        <a href="#" class="block px-4 py-2 hover:bg-gray-100">Contact</a>
-                    </div>
-                </div>
-            </nav>
-
-            <!-- Right Side: Search, Notification, Profile -->
-            <div class="flex items-center gap-4">
-                <!-- Search -->
-                <button class="bg-[#79131DD0] text-white p-2 rounded-full hover:bg-[#79131d]">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
-                </button>
-
-                <!-- company profile -->
-                <a href="{{ asset('storage/pdf/oxforden.pdf') }}" target="_blank"
-                    class="px-4 py-2 bg-[#79131DD0] text-white rounded-md hover:bg-[#79131d] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
-                    Company Profile
-                </a>
-
-                <!-- User Profile -->
-                <!-- Add Alpine.js in your <head> or before closing </body> -->
-                <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
-                <!-- Dropdown component -->
-                @auth
-                    <div x-data="{ open: false }" class="relative flex items-center gap-2">
-                        <!-- Static Profile Image (no JS interaction) -->
-                        <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
-                            class="w-8 h-8 rounded-full object-cover">
-
-                        <!-- Dropdown Toggle Button (text only) -->
-                        <button @click="open = !open" class="text-sm text-left focus:outline-none">
-                            <div class="font-bold">{{ Auth::user()->name }}</div>
-                        </button>
-
-                        <!-- Dropdown Menu -->
-                        <div x-show="open" @click.away="open = false"
-                            class="absolute right-0 mt-12 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
-                            <a href="" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button type="submit"
-                                    class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
-                            </form>
-                        </div>
-                    </div>
-                @else
-                    <div x-data="{ open: false }" class="relative">
-                        <button @click="open = !open" class="flex items-center gap-2 focus:outline-none">
-                            <img src="user-avatar.jpg" alt="User" class="w-8 h-8 rounded-full">
-                            <div class="text-sm leading-tight text-right">
-                                <div class="font-bold">Guest</div>
-                                <div class="text-gray-500">Login / Register</div>
-                            </div>
-                        </button>
-
-                        <!-- Dropdown content -->
-                        <div x-show="open" @click.away="open = false"
-                            class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-50">
-                            <a href="/login" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">login</a>
-                            <a href="/register" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Register</a>
-                        </div>
-                    </div>
-                @endauth
-
-            </div>
-        </div>
-    </header>
+    <x-navbar />
 
     <!-- Hero Section -->
     <div class="relative bg-cover bg-center h-[500px]"
@@ -197,8 +84,6 @@
         </div>
     </section>
 
-    <!-- Courses Preview Slider -->
-
     <!-- Suggested Courses Section -->
     <section class="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto">
@@ -209,7 +94,7 @@
 
             <!-- Courses Container -->
             <div id="courses-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Courses will be loaded here by JavaScript -->
+                <!-- Loaded dynamically by JS -->
             </div>
 
             <!-- Pagination Tabs -->
@@ -221,7 +106,7 @@
                 </button>
 
                 <div id="page-tabs" class="flex space-x-1 rounded-md p-1">
-                    <!-- Page tabs will be generated here by JavaScript -->
+                    <!-- Page tabs by JS -->
                 </div>
 
                 <button id="next-btn"
@@ -244,145 +129,132 @@
         </div>
     </section>
 
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // Get all courses from PHP
             const allCourses = @json($courses);
+            const subscribeRoute = "{{ route('course.show', ':id') }}";
+            const assetBase = "{{ asset('storage') }}";
+
             const coursesPerPage = 3;
             let currentPage = 1;
-
-            // Calculate total pages
             const totalPages = Math.ceil(allCourses.length / coursesPerPage);
 
-            // DOM elements
             const coursesContainer = document.getElementById('courses-container');
             const pageTabsContainer = document.getElementById('page-tabs');
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
 
-            // Initialize pagination
-            function initPagination() {
-                // Generate page tabs
-                pageTabsContainer.innerHTML = '';
-                for (let i = 1; i <= totalPages; i++) {
-                    const tab = document.createElement('button');
-                    tab.className =
-                        `w-10 h-10 flex items-center justify-center rounded-md text-sm font-semibold transition-colors duration-200 ${
-            i === 1
-                ? 'bg-[#79131d] text-white'
-                : 'bg-transparent text-gray-700 border border-[#79131d] hover:bg-[#79131d] hover:text-white'
-        }`;
-                    tab.textContent = i;
-                    tab.dataset.page = i;
-                    tab.addEventListener('click', () => goToPage(i));
-                    pageTabsContainer.appendChild(tab);
-                }
+            function createCourseCard(course) {
+                const imgSrc = course.cover_photo ? `${assetBase}/${course.cover_photo}` :
+                    'https://via.placeholder.com/400x225';
+                const category = course.categorey?.title ?? 'General';
+                const description = course.description ? course.description.substring(0, 50) + (course.description
+                    .length > 50 ? '...' : '') : '';
+                const duration = course.duration ?? 0;
+                const instructor = course.user?.name ?? 'Unknown';
+                const rating = course.rating ?? '0';
+                const reviews = course.reviews_count ?? '0';
+                const price = course.price ?? '0';
+                const subscribeUrl = subscribeRoute.replace(':id', course.slug);
 
-                // Load first page
-                loadCourses(currentPage);
-            }
-
-            // Load courses for a specific page
-            function loadCourses(page) {
-                const startIndex = (page - 1) * coursesPerPage;
-                const endIndex = startIndex + coursesPerPage;
-                const pageCourses = allCourses.slice(startIndex, endIndex);
-
-                // Clear container
-                coursesContainer.innerHTML = '';
-
-                // Add courses to container
-                pageCourses.forEach(course => {
-                    const courseCard = document.createElement('div');
-                    courseCard.className =
-                        'bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300';
-                    courseCard.innerHTML = `
-                <div class="h-48 overflow-hidden">
-                    <img src="${course.cover_photo ? '{{ asset('storage/') }}/' + course.cover_photo : 'https://via.placeholder.com/400x225'}"
-                         alt="${course.title}" class="w-full h-full object-cover">
-                </div>
-                <div class="p-6">
-                    <div class="flex items-center">
-                        <span class="inline-block px-3 py-1 text-xs font-semibold text-[#e4ce96] bg-[#79131d] rounded-full">
-                            ${course.categorey ? course.categorey.title : 'General'}
-                        </span>
+                return `
+                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                    <div class="h-48 overflow-hidden">
+                        <img src="${imgSrc}" alt="${course.title}" class="w-full h-full object-cover">
                     </div>
-                    <h3 class="mt-2 text-xl font-semibold text-gray-900">${course.title}</h3>
-                    <p class="mt-3 text-gray-600 text-sm">${course.description ? course.description.substring(0, 50) + (course.description.length > 50 ? '...' : '') : ''}</p>
-
-                    <div class="mt-4 flex items-center text-sm text-gray-500">
-                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                            <path fill-rule="evenodd"
-                                d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z"
-                                clip-rule="evenodd" />
-                        </svg>
-                        ${course.duration ? course.duration : 0} Hours
-                    </div>
-
-                    <div class="mt-6 flex items-center justify-between">
+                    <div class="p-6">
                         <div class="flex items-center">
-                            <div class="flex-shrink-0">
+                            <span class="inline-block px-3 py-1 text-xs font-semibold text-[#e4ce96] bg-[#79131d] rounded-full">${category}</span>
+                        </div>
+                        <h3 class="mt-2 text-xl font-semibold text-gray-900">${course.title}</h3>
+                        <p class="mt-3 text-gray-600 text-sm">${description}</p>
+
+                        <div class="mt-4 flex items-center text-sm text-gray-500">
+                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
+                            </svg>
+                            ${duration}
+                        </div>
+
+                        <div class="mt-6 flex items-center justify-between">
+                            <div class="flex items-center">
                                 <svg class="h-5 w-5 text-[#79131d]" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"
-                                        clip-rule="evenodd" />
+                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
                                 </svg>
+                                <div class="ml-2">
+                                    <p class="text-sm font-medium text-gray-900">Eng. ${instructor}</p>
+                                </div>
                             </div>
-                            <div class="ml-2">
-                                <p class="text-sm font-medium text-gray-900">Eng. ${course.user ? course.user.name : 'Unknown'}</p>
+                            <div class="flex items-center">
+                                <span class="text-yellow-400">★</span>
+                                <span class="ml-1 text-gray-600">${rating} (${reviews})</span>
                             </div>
                         </div>
-                        <div class="flex items-center">
-                            <span class="text-yellow-400">★</span>
-                            <span class="ml-1 text-gray-600">${course.rating || '0'} (${course.reviews_count || '0'})</span>
-                        </div>
-                    </div>
 
-                    <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
-                        <span class="text-lg font-bold text-gray-900">${course.price || '0'} EGP</span>
-                        <button class="px-4 py-2 bg-[#79131DD2] text-[#e4ce96] text-sm font-medium rounded-md hover:bg-[#79131d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            Subscribe Now
-                        </button>
+                        <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+                            <span class="text-lg font-bold text-gray-900">${price} EGP</span>
+                            <a href="${subscribeUrl}" class="px-4 py-2 bg-[#79131DD2] text-[#e4ce96] text-sm font-medium rounded-md hover:bg-[#79131d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                                Subscribe Now
+                            </a>
+                        </div>
                     </div>
                 </div>
             `;
-                    coursesContainer.appendChild(courseCard);
+            }
+
+            function loadCourses(page) {
+                const start = (page - 1) * coursesPerPage;
+                const end = start + coursesPerPage;
+                const pageCourses = allCourses.slice(start, end);
+
+                coursesContainer.innerHTML = '';
+                pageCourses.forEach(course => {
+                    coursesContainer.innerHTML += createCourseCard(course);
                 });
 
-                const tabs = document.querySelectorAll('#page-tabs button');
-                tabs.forEach(tab => {
+                document.querySelectorAll('#page-tabs button').forEach(tab => {
                     tab.className =
                         'w-10 h-10 flex items-center justify-center rounded-md text-sm font-semibold transition-colors duration-200 bg-transparent text-gray-700 border border-[#79131d] hover:bg-[#79131d] hover:text-white';
-
                     if (parseInt(tab.dataset.page) === page) {
-                        tab.classList.remove('bg-transparent', 'text-gray-700');
                         tab.classList.add('bg-[#79131d]', 'text-white');
                     }
                 });
 
-                // Update button states
                 prevBtn.disabled = page === 1;
                 nextBtn.disabled = page === totalPages;
             }
 
-            // Go to specific page
             function goToPage(page) {
                 if (page < 1 || page > totalPages) return;
                 currentPage = page;
                 loadCourses(currentPage);
             }
 
-            // Event listeners
+            function initPagination() {
+                pageTabsContainer.innerHTML = '';
+                for (let i = 1; i <= totalPages; i++) {
+                    const tab = document.createElement('button');
+                    tab.textContent = i;
+                    tab.dataset.page = i;
+                    tab.className = i === 1 ?
+                        'w-10 h-10 flex items-center justify-center rounded-md text-sm font-semibold transition-colors duration-200 bg-[#79131d] text-white' :
+                        'w-10 h-10 flex items-center justify-center rounded-md text-sm font-semibold transition-colors duration-200 bg-transparent text-gray-700 border border-[#79131d] hover:bg-[#79131d] hover:text-white';
+
+                    tab.addEventListener('click', () => goToPage(i));
+                    pageTabsContainer.appendChild(tab);
+                }
+
+                loadCourses(currentPage);
+            }
+
             prevBtn.addEventListener('click', () => goToPage(currentPage - 1));
             nextBtn.addEventListener('click', () => goToPage(currentPage + 1));
 
-            // Initialize
             initPagination();
         });
     </script>
-
-
     <!-- Why Choose Us Section -->
     <section class="bg-gray-100 py-12 px-6 text-center">
         <h2 class="text-2xl font-bold text-teal-700 mb-6">Why Choose Our Platform?</h2>
@@ -415,18 +287,15 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             <div class="text-center">
-                <img src="https://cdn-icons-png.flaticon.com/128/3449/3449519.png" class="mx-auto h-20"
-                    alt="Students">
+                <img src="https://cdn-icons-png.flaticon.com/128/3449/3449519.png" class="mx-auto h-20" alt="Students">
                 <p class="text-xl font-bold mt-2">300,000+ Students</p>
             </div>
             <div class="text-center">
-                <img src="https://cdn-icons-png.flaticon.com/128/3048/3048702.png" class="mx-auto h-20"
-                    alt="Graduates">
+                <img src="https://cdn-icons-png.flaticon.com/128/3048/3048702.png" class="mx-auto h-20" alt="Graduates">
                 <p class="text-xl font-bold mt-2">200,000+ Graduates</p>
             </div>
             <div class="text-center">
-                <img src="https://cdn-icons-png.flaticon.com/128/4211/4211708.png" class="mx-auto h-20"
-                    alt="Teachers">
+                <img src="https://cdn-icons-png.flaticon.com/128/4211/4211708.png" class="mx-auto h-20" alt="Teachers">
                 <p class="text-xl font-bold mt-2">100,000+ Teachers</p>
             </div>
         </div>
@@ -444,7 +313,7 @@
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                 <!-- Category 1 -->
                 @foreach ($categories as $categorey)
-                    <a href=""
+                    <a href="{{ route('categories.show', $categorey->slug) }}"
                         class="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow border border-gray-100 text-center">
 
                         <h3 class="font-bold text-lg mb-2">{{ $categorey->name }}</h3>
@@ -522,63 +391,7 @@
 
 
     <!-- Footer -->
-    <footer class="bg-gray-100 py-10 px-4">
-        <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
-
-            <!-- Quick Links -->
-            <div>
-                <h4 class="text-teal-700 font-bold border-b-2 border-teal-600 inline-block mb-4">Quick
-                    Links</h4>
-                <ul class="space-y-2 text-gray-700">
-                    <li><a href="#" class="hover:text-teal-600">Home</a></li>
-                    <li><a href="#" class="hover:text-teal-600">Courses</a></li>
-                    <li><a href="#" class="hover:text-teal-600">Certificates</a></li>
-                    <li><a href="#" class="hover:text-teal-600">Services</a></li>
-                    <li><a href="#" class="hover:text-teal-600">Specialties</a></li>
-                </ul>
-            </div>
-
-            <!-- Support & Contact -->
-            <div>
-                <h4 class="text-teal-700 font-bold border-b-2 border-teal-600 inline-block mb-4">Support &
-                    Contact</h4>
-                <ul class="space-y-2 text-gray-700">
-                    <li><a href="#" class="hover:text-teal-600">Who are we?</a></li>
-                    <li><a href="#" class="hover:text-teal-600">Contact Us</a></li>
-                    <li><a href="#" class="hover:text-teal-600">Copyright</a></li>
-                    <li><a href="#" class="hover:text-teal-600">Terms of Service</a></li>
-                    <li><a href="#" class="hover:text-teal-600">Privacy Policy</a></li>
-                    <li><a href="#" class="hover:text-teal-600">Help Center</a></li>
-                </ul>
-            </div>
-
-            <!-- Social & App Info -->
-            <div class="text-center md:text-left">
-                <div class="mb-4">
-                    <img src="logo.png" alt="Educational Logo" class="w-24 mx-auto md:mx-0 mb-2">
-                    <p class="text-gray-800 font-semibold">Follow us on social media</p>
-                    <div class="flex justify-center md:justify-start gap-4 mt-2 text-teal-700 text-xl">
-                        <a href="#"><i class="fab fa-facebook-square"></i></a>
-                        <a href="#"><i class="fab fa-instagram"></i></a>
-                        <a href="#"><i class="fab fa-youtube"></i></a>
-                        <a href="#"><i class="fab fa-linkedin"></i></a>
-                    </div>
-                </div>
-
-                <p class="text-sm text-gray-600 mb-2">Learn anytime, anywhere with our app:</p>
-                <div class="flex justify-center md:justify-start gap-4 mb-4">
-                    <a href="#"><img
-                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/512px-Google_Play_Store_badge_EN.svg.png"
-                            alt="Google Play" class="w-32"></a>
-                    <a href="#"><img
-                            src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
-                            alt="App Store" class="w-28"></a>
-                </div>
-
-                <p class="text-sm text-gray-500">© MostafaAita.2025 All rights reserved</p>
-            </div>
-        </div>
-    </footer>
+    <x-footer />
 
 
     <!-- AJAX Script -->

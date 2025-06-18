@@ -12,11 +12,8 @@ Route::group([
 ], function () {
     Route::get('/', [\App\Http\Controllers\home\homeController::class, 'index'])->name('home');
     Route::get('/courses', [\App\Http\Controllers\home\homeController::class, 'courses'])->name('courses');
-    Route::get('/courses/{slug}', [\App\Http\Controllers\home\homeController::class, 'showCourse'])->name('course.show');
-    Route::get('/courses/lessons/{slug}', [\App\Http\Controllers\home\homeController::class, 'showLesson'])->name('lesson.show');
-    Route::get('/courses/quiz/{id}', [\App\Http\Controllers\home\homeController::class, 'showQuiz'])->name('quiz.show');
-    Route::post('/courses/quiz/{id}', [\App\Http\Controllers\home\homeController::class, 'submitQuiz'])->name('quiz.submit');
-    Route::get('/courses/project/{slug}', [\App\Http\Controllers\home\homeController::class, 'showProject'])->name('project.show');
+    Route::get('/course/{slug}', [\App\Http\Controllers\home\homeController::class, 'showCourse'])->name('course.show');
+    Route::get('/categorey/{slug}', [\App\Http\Controllers\home\homeController::class, 'showCategorey'])->name('categories.show');
 });
 Route::group([
     'middleware' => ['auth', CheckAdmin::class],

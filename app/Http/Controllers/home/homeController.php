@@ -5,7 +5,6 @@ namespace App\Http\Controllers\home;
 use App\Http\Controllers\Controller;
 use App\Interfaces\categoreyInterface;
 use App\Interfaces\CoursesInterface;
-use Illuminate\Http\Request;
 
 class homeController extends Controller
 {
@@ -22,5 +21,17 @@ class homeController extends Controller
         $courses = $this->coursesRepository->allCourses();
         $categories = $this->categoreyrepository->getAllCategories();
         return view('welcome', compact('courses', 'categories'));
+    }
+
+    public function showCourse()
+    {
+        $course = $this->coursesRepository->getCourseBySlug(request('slug'));
+        return view('home.courses.show', compact('course'));
+    }
+
+    public function showCategorey()
+    {
+        $category = $this->categoreyrepository->getCategoryBySlug(request('slug'));
+        return view('home.categorey.show', compact('category'));
     }
 }
