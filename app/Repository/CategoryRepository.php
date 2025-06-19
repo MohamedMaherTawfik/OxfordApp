@@ -4,10 +4,10 @@
 namespace App\Repository;
 
 
-use App\Interfaces\categoreyInterface;
+use App\Interfaces\CategoryInterface;
 use App\Models\Categories;
 
-class Categoreyrepository implements categoreyInterface
+class CategoryRepository implements CategoryInterface
 {
     public function getAllCategories()
     {

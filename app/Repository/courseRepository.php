@@ -3,12 +3,12 @@
 namespace App\Repository;
 
 use App\Events\NewDataEvent;
-use App\Interfaces\CoursesInterface;
+use App\Interfaces\CourseInterface;
 use App\Models\Courses;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Event;
 
-class CourseRepository implements CoursesInterface
+class CourseRepository implements CourseInterface
 {
     public function allCourses()
     {

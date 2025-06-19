@@ -21,12 +21,11 @@ class AssignmentRepository implements AssignmentInterface
 
     public function createAssignment($data, $id)
     {
-        $assignment=assignments::create([
+        $assignment = assignments::create([
             'lesson_id' => $id,
             'title' => $data['title'],
             'description' => $data['description']
         ]);
-        Event::dispatch(new NewDataEvent($assignment));
         return $assignment;
     }
 
