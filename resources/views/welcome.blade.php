@@ -41,7 +41,8 @@
         <div class="container mx-auto max-w-6xl">
             <div class="text-center mb-12">
                 <h2 class="text-3xl font-bold text-[#79131d] mb-4">About Oxford Platform</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Empowering learners worldwide with quality education
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Empowering learners worldwide with quality
+                    education
                     and innovative learning solutions</p>
             </div>
 
@@ -84,20 +85,81 @@
         </div>
     </section>
 
-    <!-- Suggested Courses Section -->
-   <section class="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    {{-- course section --}}
+    @php
+        $perPage = 3;
+        $totalCourses = count($courses);
+        $totalPages = ceil($totalCourses / $perPage);
+    @endphp
+
+    <section class="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto">
+
+            <!-- Header -->
             <div class="text-center mb-10">
                 <h2 class="text-3xl font-bold text-gray-900">Suggested Courses</h2>
                 <p class="mt-2 text-lg text-gray-600">Most Subscribed</p>
             </div>
 
-            <!-- Courses Container -->
-            <div id="courses-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- Loaded dynamically by JS -->
+            <!-- Course Pages -->
+            <div id="courses-wrapper">
+                @for ($page = 1; $page <= $totalPages; $page++)
+                    <div class="course-page grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                        data-page="{{ $page }}" style="{{ $page !== 1 ? 'display:none' : '' }}">
+                        @foreach ($courses->forPage($page, $perPage) as $course)
+                            <div
+                                class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
+                                <div class="h-48 overflow-hidden">
+                                    <img src="{{ $course->cover_photo ? asset('storage/' . $course->cover_photo) : 'https://via.placeholder.com/400x225' }}"
+                                        alt="{{ $course->title }}" class="w-full h-full object-cover">
+                                </div>
+                                <div class="p-6">
+                                    <div class="flex items-center">
+                                        <span
+                                            class="inline-block px-3 py-1 text-xs font-semibold text-[#e4ce96] bg-[#79131d] rounded-full">
+                                            {{ $course->category->name ?? 'General' }}
+                                        </span>
+                                    </div>
+                                    <h3 class="mt-2 text-xl font-semibold text-gray-900">{{ $course->title }}</h3>
+                                    <p class="mt-3 text-gray-600 text-sm">
+                                        {{ Str::limit($course->description, 50) }}
+                                    </p>
+                                    <div class="mt-4 flex items-center text-sm text-gray-500">
+                                        <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v3.586a1 1 0 00.293.707l2 2a1 1 0 001.414-1.414L11 9.586V6z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        {{ $course->duration ?? 0 }} hours
+                                    </div>
+                                    <div class="mt-6 flex items-center justify-between">
+                                        <div>
+                                            <span class="font-bold text-xl">Instructor:</span>
+                                            <span class="opacity-60 text-sm">{{ $course->user->name }}</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <span class="text-yellow-400">★</span>
+                                            <span class="ml-1 text-gray-600">{{ $course->rating ?? 0 }}
+                                                ({{ $course->reviews_count ?? 'no Reviews' }})
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
+                                        <span class="text-lg font-bold text-gray-900">{{ $course->price ?? 0 }}
+                                            SAR</span>
+                                        <a href="{{ route('course.show', $course->slug) }}"
+                                            class="px-4 py-2 bg-[#79131DD2] text-[#e4ce96] text-sm font-medium rounded-md hover:bg-[#79131d]">
+                                            Subscribe Now
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                @endfor
             </div>
 
-            <!-- Pagination Tabs -->
+            <!-- Pagination Controls -->
             <div class="mt-12 flex justify-center items-center space-x-2">
                 <button id="prev-btn"
                     class="px-4 py-2 border rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
@@ -105,8 +167,21 @@
                     Previous
                 </button>
 
-                <div id="page-tabs" class="flex space-x-1 rounded-md p-1">
-                    <!-- Page tabs by JS -->
+                <div id="tabs" class="flex space-x-1">
+                    @php
+                        $currentPage = 1;
+                        $visibleTabs = 4;
+                        $start = 1;
+                        $end = min($totalPages, $visibleTabs);
+                    @endphp
+
+                    @for ($i = $start; $i <= $end; $i++)
+                        <button data-page="{{ $i }}"
+                            class="w-10 h-10 flex items-center justify-center rounded-md text-sm font-semibold transition border border-[#79131d]
+                            {{ $i === 1 ? 'bg-[#79131d] text-white' : 'bg-transparent text-gray-700 hover:bg-[#79131d] hover:text-white' }}">
+                            {{ $i }}
+                        </button>
+                    @endfor
                 </div>
 
                 <button id="next-btn"
@@ -114,152 +189,87 @@
                     Next
                 </button>
             </div>
-
-            <div class="mt-12 text-center">
-                <a href="#"
-                    class="inline-flex items-center px-6 py-3 border border-transparent text-[#e4ce96] font-medium rounded-md shadow-sm text-white bg-[#79131DC9] hover:bg-[#79131d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors duration-200">
-                    Browse All Courses
-                    <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd"
-                            d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </a>
-            </div>
         </div>
     </section>
 
-
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const allCourses = @json($courses);
-	    const subscribeRoute = "{{ route('course.show', ':id') }}";
-            const assetBase = "{{ asset('storage') }}";
-
-            const coursesPerPage = 3;
-            let currentPage = 1;
-            const totalPages = Math.ceil(allCourses.length / coursesPerPage);
-
-            const coursesContainer = document.getElementById('courses-container');
-            const pageTabsContainer = document.getElementById('page-tabs');
+        document.addEventListener("DOMContentLoaded", function() {
+            const coursePages = document.querySelectorAll('.course-page');
             const prevBtn = document.getElementById('prev-btn');
             const nextBtn = document.getElementById('next-btn');
+            const totalPages = {{ $totalPages }};
+            const maxTabs = 4;
 
-            function createCourseCard(course) {
-                const imgSrc = course.cover_photo ? `${assetBase}/${course.cover_photo}` :
-                    'https://via.placeholder.com/400x225';
-                const category = course.categorey?.name ?? 'General';
-                const description = course.description ? course.description.substring(0, 50) + (course.description
-                    .length > 50 ? '...' : '') : '';
-                const duration = course.duration ?? 0;
-                const instructor = course.user?.name ?? 'Unknown';
-                const rating = course.rating ?? '0';
-                const reviews = course.reviews_count ?? '0';
-                const price = course.price ?? '0';
-                const subscribeUrl = subscribeRoute.replace(':id', course.slug);
+            let currentPage = 1;
 
-                return `
-                <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
-                    <div class="h-48 overflow-hidden">
-                         <img src="${imgSrc}" alt="${course.title}" class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center">
-                            <span class="inline-block px-3 py-1 text-xs font-semibold text-[#e4ce96] bg-[#79131d] rounded-full">${category}</span>
-                        </div>
-                        <h3 class="mt-2 text-xl font-semibold text-gray-900">${course.title}</h3>
-                        <p class="mt-3 text-gray-600 text-sm">${description}</p>
-
-                        <div class="mt-4 flex items-center text-sm text-gray-500">
-                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
-                                <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd" />
-                            </svg>
-                            ${duration}
-                        </div>
-
-                        <div class="mt-6 flex items-center justify-between">
-                            <div class="flex items-center">
-                                <svg class="h-5 w-5 text-[#79131d]" fill="currentColor" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                               </svg>
-                                <div class="ml-2">
-                                    <p class="text-sm font-medium text-gray-900">Eng. ${instructor}</p>
-                                </div>
-                            </div>
-                            <div class="flex items-center">
-                                <span class="text-yellow-400">★</span>
-                                <span class="ml-1 text-gray-600">${rating} (${reviews})</span>
-                            </div>
-                        </div>
-
-                        <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
-                            <span class="text-lg font-bold text-gray-900">${price} SAR</span>
-                            <a href="${subscribeUrl}" class="px-4 py-2 bg-[#79131DD2] text-[#e4ce96] text-sm font-medium rounded-md hover:bg-[#79131d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                                Subscribe Now
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            `;
-            }
-
-            function loadCourses(page) {
-                const start = (page - 1) * coursesPerPage;
-                const end = start + coursesPerPage;
-                const pageCourses = allCourses.slice(start, end);
-
-                coursesContainer.innerHTML = '';
-                pageCourses.forEach(course => {
-                    coursesContainer.innerHTML += createCourseCard(course);
+            function updateCourseView() {
+                coursePages.forEach(page => {
+                    page.style.display = parseInt(page.dataset.page) === currentPage ? 'grid' : 'none';
                 });
-
-                document.querySelectorAll('#page-tabs button').forEach(tab => {
-                    tab.className =
-                        'w-10 h-10 flex items-center justify-center rounded-md text-sm font-semibold transition-colors duration-200 bg-transparent text-gray-700 border border-[#79131d] hover:bg-[#79131d] hover:text-white';
-                    if (parseInt(tab.dataset.page) === page) {
-                        tab.classList.add('bg-[#79131d]', 'text-white');
-                    }
-                });
-
-                prevBtn.disabled = page === 1;
-                nextBtn.disabled = page === totalPages;
             }
 
-            function goToPage(page) {
-                if (page < 1 || page > totalPages) return;
-                currentPage = page;
-                loadCourses(currentPage);
-            }
+            function renderTabs() {
+                const tabsContainer = document.getElementById('tabs');
+                tabsContainer.innerHTML = ''; // Clear old buttons
 
-            function initPagination() {
-                pageTabsContainer.innerHTML = '';
-                for (let i = 1; i <= totalPages; i++) {
-                    const tab = document.createElement('button');
-                    tab.textContent = i;
-                    tab.dataset.page = i;
-                    tab.className = i === 1 ?
-                        'w-10 h-10 flex items-center justify-center rounded-md text-sm font-semibold transition-colors duration-200 bg-[#79131d] text-white' :
-                        'w-10 h-10 flex items-center justify-center rounded-md text-sm font-semibold transition-colors duration-200 bg-transparent text-gray-700 border border-[#79131d] hover:bg-[#79131d] hover:text-white';
+                let start = Math.max(1, currentPage - Math.floor(maxTabs / 2));
+                let end = start + maxTabs - 1;
 
-                    tab.addEventListener('click', () => goToPage(i));
-                    pageTabsContainer.appendChild(tab);
+                if (end > totalPages) {
+                    end = totalPages;
+                    start = Math.max(1, end - maxTabs + 1);
                 }
 
-                loadCourses(currentPage);
+                for (let i = start; i <= end; i++) {
+                    const btn = document.createElement('button');
+                    btn.dataset.page = i;
+                    btn.textContent = i;
+                    btn.className = `w-10 h-10 flex items-center justify-center rounded-md text-sm font-semibold transition border border-[#79131d] ${
+                    i === currentPage
+                        ? 'bg-[#79131d] text-white'
+                        : 'bg-transparent text-gray-700 hover:bg-[#79131d] hover:text-white'
+                }`;
+                    btn.addEventListener('click', () => {
+                        currentPage = i;
+                        updateView();
+                    });
+                    tabsContainer.appendChild(btn);
+                }
             }
 
-            prevBtn.addEventListener('click', () => goToPage(currentPage - 1));
-            nextBtn.addEventListener('click', () => goToPage(currentPage + 1));
+            function updateView() {
+                updateCourseView();
+                renderTabs();
+                prevBtn.disabled = currentPage === 1;
+                nextBtn.disabled = currentPage === totalPages;
+            }
 
-            initPagination();
+            prevBtn.addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    updateView();
+                }
+            });
+
+            nextBtn.addEventListener('click', () => {
+                if (currentPage < totalPages) {
+                    currentPage++;
+                    updateView();
+                }
+            });
+
+            updateView();
         });
     </script>
+
+    {{-- end courses --}}
+
     <!-- Why Choose Us Section -->
     <section class="bg-gray-100 py-12 px-6 text-center">
         <h2 class="text-2xl font-bold text-teal-700 mb-6">Why Choose Our Platform?</h2>
         <p class="max-w-3xl mx-auto text-gray-700 mb-6">
-            We're not just a place to learn — we are a complete environment helping you grow. Whether you're a student,
+            We're not just a place to learn — we are a complete environment helping you grow. Whether you're a
+            student,
             graduate, teacher, or just curious, this is your place to thrive.
         </p>
         <ul class="text-gray-700 text-left max-w-4xl mx-auto space-y-2 mb-10">
@@ -287,15 +297,18 @@
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
             <div class="text-center">
-                <img src="https://cdn-icons-png.flaticon.com/128/3449/3449519.png" class="mx-auto h-20" alt="Students">
+                <img src="https://cdn-icons-png.flaticon.com/128/3449/3449519.png" class="mx-auto h-20"
+                    alt="Students">
                 <p class="text-xl font-bold mt-2">300,000+ Students</p>
             </div>
             <div class="text-center">
-                <img src="https://cdn-icons-png.flaticon.com/128/3048/3048702.png" class="mx-auto h-20" alt="Graduates">
+                <img src="https://cdn-icons-png.flaticon.com/128/3048/3048702.png" class="mx-auto h-20"
+                    alt="Graduates">
                 <p class="text-xl font-bold mt-2">200,000+ Graduates</p>
             </div>
             <div class="text-center">
-                <img src="https://cdn-icons-png.flaticon.com/128/4211/4211708.png" class="mx-auto h-20" alt="Teachers">
+                <img src="https://cdn-icons-png.flaticon.com/128/4211/4211708.png" class="mx-auto h-20"
+                    alt="Teachers">
                 <p class="text-xl font-bold mt-2">100,000+ Teachers</p>
             </div>
         </div>
@@ -360,8 +373,10 @@
                         </div>
                     </button>
                     <div x-show="open" x-collapse class="px-6 pb-4 pt-0 bg-gray-50 text-gray-600">
-                        <p>To enroll in a course, simply browse our course catalog, select the course you're interested
-                            in, and click the "Enroll Now" button. You'll be guided through the registration and payment
+                        <p>To enroll in a course, simply browse our course catalog, select the course you're
+                            interested
+                            in, and click the "Enroll Now" button. You'll be guided through the registration and
+                            payment
                             process if the course isn't free.</p>
                     </div>
                 </div>

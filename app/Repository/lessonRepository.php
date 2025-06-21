@@ -2,26 +2,27 @@
 
 namespace App\Repository;
 
+use App\Events\NewDataEvent;
 use App\Interfaces\LessonInterface;
 use App\Models\Courses;
-use App\Models\lesson;
+use App\Models\Lesson;
 use Illuminate\Support\Facades\Auth;
 
-class LessonRepository implements LessonInterface
+class lessonRepository implements LessonInterface
 {
     public function allLessons($id)
     {
-        return lesson::where('courses_id', $id)->get();
+        return Lesson::where('courses_id', $id)->get();
     }
 
     public function getLesson($id)
     {
-        return lesson::with('comments', 'assignments')->find($id);
+        return Lesson::with('comments', 'assignments')->find($id);
     }
 
     public function createLesson($data, $id)
     {
-        $lesson = lesson::create([
+        $lesson = Lesson::create([
             'title' => $data['title'],
             'description' => $data['description'],
             'video' => $data['video'],
@@ -35,20 +36,20 @@ class LessonRepository implements LessonInterface
 
     public function updateLesson($data, $id)
     {
-        $lesson = lesson::find($id);
+        $lesson = Lesson::find($id);
         $lesson->update($data);
         return $lesson;
     }
 
     public function deleteLesson($id)
     {
-        $data = lesson::find($id)->delete();
+        $data = Lesson::find($id)->delete();
         return $data;
     }
 
     public function getLessonBySlug($slug)
     {
-        return lesson::where('slug', $slug)->first();
+        return Lesson::where('slug', $slug)->first();
     }
 
 }

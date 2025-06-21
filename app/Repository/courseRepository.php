@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository;
+namespace app\Repository;
 
 use App\Events\NewDataEvent;
 use App\Interfaces\CourseInterface;

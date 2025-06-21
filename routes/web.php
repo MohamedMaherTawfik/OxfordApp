@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\admin\teacherController;
+use App\Http\Controllers\home\homeController;
 use App\Http\Middleware\Teacher;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\SuperAdminController;
@@ -8,10 +9,11 @@ use App\Http\Controllers\auth\AuthController;
 use App\Http\Middleware\CheckAdmin;
 
 Route::group([], function () {
-    Route::get('/', [\App\Http\Controllers\home\homeController::class, 'index'])->name('home');
-    Route::get('/courses', [\App\Http\Controllers\home\homeController::class, 'courses'])->name('courses');
-    Route::get('/course/{slug}', [\App\Http\Controllers\home\homeController::class, 'showCourse'])->name('course.show');
-    Route::get('/categorey/{slug}', [\App\Http\Controllers\home\homeController::class, 'showCategorey'])->name('categories.show');
+    Route::get('/', [homeController::class, 'index'])->name('home');
+    Route::get('/courses', [homeController::class, 'courses'])->name('courses');
+    Route::get('/course/{slug}', [homeController::class, 'showCourse'])->name('course.show');
+    Route::get('/categorey/{slug}', [homeController::class, 'showCategorey'])->name('categories.show');
+    Route::get('/profile', [homeController::class, 'profile'])->name('profile');
 });
 Route::group([
     'middleware' => ['auth', CheckAdmin::class],

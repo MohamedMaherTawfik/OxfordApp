@@ -5,6 +5,7 @@ namespace App\Http\Controllers\home;
 use App\Http\Controllers\Controller;
 use App\Interfaces\CategoryInterface;
 use App\Interfaces\CourseInterface;
+use Illuminate\Support\Facades\Auth;
 
 class homeController extends Controller
 {
@@ -33,5 +34,11 @@ class homeController extends Controller
     {
         $category = $this->categoreyrepository->getCategoryBySlug(request('slug'));
         return view('home.categorey.show', compact('category'));
+    }
+
+    public function profile()
+    {
+        $user = Auth::user()->load('applyTeacher', 'course');
+        return view('home.profile', compact('user'));
     }
 }
