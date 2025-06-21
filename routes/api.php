@@ -12,6 +12,7 @@ Route::group([
     'prefix' => 'auth'
 ], function () {
     Route::post('/register', [AuthController::class, 'register']);
+    Route::post('/verify-register', [AuthController::class, 'verifyOtpAfterRegister']);
     Route::post('/login', [AuthController::class, 'login']);
     Route::post('/logout', [AuthController::class, 'logout'])->middleware('jwt.auth');
     Route::post('/refresh', [AuthController::class, 'refresh'])->middleware('jwt.auth');

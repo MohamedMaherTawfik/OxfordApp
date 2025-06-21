@@ -5,9 +5,14 @@ namespace App\Http\Controllers\api\auth;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\updateUserRequest;
 use App\Http\Requests\userApiRequest;
+use App\Mail\OtpMail;
 use App\Models\applyTeacher;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
 {
@@ -18,16 +23,24 @@ class AuthController extends Controller
         $fields = $request->validated();
         $fields['password'] = bcrypt($fields['password']);
         $fields['photo'] = $request->file('photo')->store('photos', 'public');
+
+        $otp = rand(100000, 999999);
+
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
             'password' => $fields['password'],
             'role' => $fields['role'],
-            'photo' => $fields['photo']
+            'photo' => $fields['photo'],
+            'otp' => $otp,
+            'otp_expires_at' => now()->addMinutes(10),
+            'is_verified' => false
         ]);
+
         if ($user->role === 'teacher') {
             $fields['cv'] = $request->file('cv')->store('CVs', 'public');
             $fields['certificate'] = $request->file('certificate')->store('certificatess', 'public');
+
             applyTeacher::create([
                 'user_id' => $user->id,
                 'cv' => $fields['cv'],
@@ -37,8 +50,45 @@ class AuthController extends Controller
             ]);
         }
 
-        return $this->success($user->load('applyTeacher'), __('messages.register'));
+        Mail::to($user->email)->send(new OtpMail($otp, $user));
+        return response()->json([
+            'message' => 'User registered. Please verify the OTP sent to your email.'
+        ]);
     }
+
+    public function verifyOtpAfterRegister(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email|exists:users,email',
+            'otp' => 'required|digits:6',
+        ]);
+
+        $user = User::where('email', $request->email)
+            ->where('otp', $request->otp)
+            ->where('otp_expires_at', '>=', now())
+            ->first();
+
+        if (!$user) {
+            return response()->json(['message' => 'Invalid or expired OTP'], 422);
+        }
+
+        $user->is_verified = true;
+        $user->otp = null;
+        $user->otp_expires_at = null;
+        $user->save();
+
+        $token = Auth::guard('api')->login($user);
+
+        return response()->json([
+            'message' => 'Account verified successfully.',
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => Auth::guard('api')->factory()->getTTL() * 60,
+            'user' => $user->load('applyTeacher'),
+        ]);
+    }
+
+
 
     public function login()
     {
