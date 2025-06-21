@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class lessonController extends Controller
 {
-    use ApiResponse;
+    use apiResponse;
     private $lessonRepository;
 
     public function __construct(LessonInterface $lessonInterface)

@@ -93,7 +93,7 @@
                     <div class="flex items-center justify-between">
                         <div>
                             <span
-                                class="text-3xl font-bold text-gray-900">${{ number_format($course->price, 2) }}</span>
+                                class="text-3xl font-bold text-gray-900">{{ number_format($course->price, 2) }} SAR</span>
                         </div>
                         <button
                             class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200">
@@ -147,8 +147,8 @@
                             <h3 class="text-lg font-semibold text-gray-900 mb-3">Pricing</h3>
                             <div class="flex items-end mb-4">
                                 <span
-                                    class="text-4xl font-bold text-gray-900">${{ number_format($course->price, 2) }}</span>
-                                <span class="text-gray-500 ml-1">USD</span>
+                                    class="text-4xl font-bold text-gray-900">{{ number_format($course->price, 2) }} SAR</span>
+                                <span class="text-gray-500 ml-1"></span>
                             </div>
                             <button
                                 class="w-full px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200">

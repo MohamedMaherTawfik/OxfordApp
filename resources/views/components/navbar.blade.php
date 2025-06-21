@@ -58,7 +58,7 @@
             </button>
 
             <!-- company profile -->
-            <a href="{{ asset('storage/pdf/oxforden.pdf') }}" target="_blank"
+            <a href="{{ asset('pdf/oxforden.pdf') }}" target="_blank"
                 class="px-4 py-2 bg-[#79131DD0] text-white rounded-md hover:bg-[#79131d] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
                 Company Profile
             </a>
@@ -71,8 +71,14 @@
             @auth
                 <div x-data="{ open: false }" class="relative flex items-center gap-2">
                     <!-- Static Profile Image (no JS interaction) -->
-                    <img src="{{ asset('storage/' . Auth::user()->photo) }}" alt="User"
-                        class="w-8 h-8 rounded-full object-cover">
+                    <img 
+    src="{{ Auth::user()->photo 
+        ? asset('storage/' . Auth::user()->photo) 
+        : asset('images/placeHolder.png') 
+    }}" 
+    alt="{{ Auth::user()->name ?? 'Guest' }}" 
+    class="w-8 h-8 rounded-full object-cover"
+/>
 
                     <!-- Dropdown Toggle Button (text only) -->
                     <button @click="open = !open" class="text-sm text-left focus:outline-none">
@@ -93,7 +99,7 @@
             @else
                 <div x-data="{ open: false }" class="relative">
                     <button @click="open = !open" class="flex items-center gap-2 focus:outline-none">
-                        <img src="user-avatar.jpg" alt="User" class="w-8 h-8 rounded-full">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541" alt="User" class="w-8 h-8 rounded-full">
                         <div class="text-sm leading-tight text-right">
                             <div class="font-bold">Guest</div>
                             <div class="text-gray-500">Login / Register</div>

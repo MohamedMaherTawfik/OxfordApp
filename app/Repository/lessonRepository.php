@@ -4,7 +4,7 @@ namespace App\Repository;
 
 use App\Interfaces\LessonInterface;
 use App\Models\Courses;
-use App\Models\Lesson;
+use App\Models\lesson;
 use Illuminate\Support\Facades\Auth;
 
 class LessonRepository implements LessonInterface
@@ -16,7 +16,7 @@ class LessonRepository implements LessonInterface
 
     public function getLesson($id)
     {
-        return Lesson::with('comments', 'assignments')->find($id);
+        return lesson::with('comments', 'assignments')->find($id);
     }
 
     public function createLesson($data, $id)

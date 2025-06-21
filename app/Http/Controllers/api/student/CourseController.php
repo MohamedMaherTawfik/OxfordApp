@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\api\student;
 
 use App\Http\Controllers\Controller;
-use App\Interfaces\CoursesInterface;
+use App\Interfaces\CourseInterface;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    use ApiResponse;
+    use apiResponse;
     private $courseRepository;
 
-    public function __construct(CoursesInterface $coursesInterface)
+    public function __construct(CourseInterface $coursesInterface)
     {
         $this->courseRepository = $coursesInterface;
     }

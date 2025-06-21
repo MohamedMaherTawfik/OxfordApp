@@ -2,11 +2,11 @@
 
 namespace App\Providers;
 
-use App\interfaces\AnsewerInterface;
+use App\Interfaces\AnsewerInterface;
 use App\Interfaces\AssignmentInterface;
-use App\Interfaces\categoreyInterface;
+use App\Interfaces\CategoryInterface;
 use App\Interfaces\CertificateInterface;
-use App\Interfaces\commentInterface;
+use App\Interfaces\CommentInterface;
 use App\Interfaces\EnrollmentsInterface;
 use App\Interfaces\GraduationProjectInterface;
 use App\Interfaces\LessonInterface;
@@ -14,7 +14,7 @@ use App\Interfaces\PaymentInterface;
 use App\Interfaces\QuizesInterface;
 use App\Repository\AnswerRepository;
 use App\Repository\AssignmentRepository;
-use App\Repository\Categoreyrepository;
+use App\Repository\CategoreyRepository;
 use App\Repository\CertificateRepository;
 use App\Repository\CommentRepository;
 use App\Repository\EnrollmentRepository;
@@ -24,7 +24,7 @@ use App\Repository\PaymentRepository;
 use App\Repository\QuizRepository;
 use Illuminate\Support\ServiceProvider;
 use Tymon\JWTAuth\Http\Middleware\Authenticate as JWTMiddleware;
-use App\Interfaces\CoursesInterface;
+use App\Interfaces\CourseInterface;
 use App\Repository\CourseRepository;
 use App\Interfaces\QuestionInterface;
 use App\Repository\QuestionRepository;
@@ -35,7 +35,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        $this->app->bind(CoursesInterface::class, CourseRepository::class);
+        $this->app->bind(CourseInterface::class, CourseRepository::class);
         $this->app->bind(LessonInterface::class, lessonRepository::class);
         $this->app->bind(QuizesInterface::class, QuizRepository::class);
         $this->app->bind(QuestionInterface::class, QuestionRepository::class);
@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(EnrollmentsInterface::class, EnrollmentRepository::class);
         $this->app->bind(PaymentInterface::class, PaymentRepository::class);
         $this->app->bind(GraduationProjectInterface::class, GraduationProjectRepository::class);
-        $this->app->bind(categoreyInterface::class, Categoreyrepository::class);
+        $this->app->bind(CategoryInterface::class, CategoreyRepository::class);
     }
 
     /**

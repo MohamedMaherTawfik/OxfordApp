@@ -85,7 +85,7 @@
     </section>
 
     <!-- Suggested Courses Section -->
-    <section class="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+   <section class="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-10">
                 <h2 class="text-3xl font-bold text-gray-900">Suggested Courses</h2>
@@ -133,7 +133,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const allCourses = @json($courses);
-            const subscribeRoute = "{{ route('course.show', ':id') }}";
+	    const subscribeRoute = "{{ route('course.show', ':id') }}";
             const assetBase = "{{ asset('storage') }}";
 
             const coursesPerPage = 3;
@@ -148,7 +148,7 @@
             function createCourseCard(course) {
                 const imgSrc = course.cover_photo ? `${assetBase}/${course.cover_photo}` :
                     'https://via.placeholder.com/400x225';
-                const category = course.categorey?.title ?? 'General';
+                const category = course.categorey?.name ?? 'General';
                 const description = course.description ? course.description.substring(0, 50) + (course.description
                     .length > 50 ? '...' : '') : '';
                 const duration = course.duration ?? 0;
@@ -161,7 +161,7 @@
                 return `
                 <div class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-shadow duration-300">
                     <div class="h-48 overflow-hidden">
-                        <img src="${imgSrc}" alt="${course.title}" class="w-full h-full object-cover">
+                         <img src="${imgSrc}" alt="${course.title}" class="w-full h-full object-cover">
                     </div>
                     <div class="p-6">
                         <div class="flex items-center">
@@ -182,7 +182,7 @@
                             <div class="flex items-center">
                                 <svg class="h-5 w-5 text-[#79131d]" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                                </svg>
+                               </svg>
                                 <div class="ml-2">
                                     <p class="text-sm font-medium text-gray-900">Eng. ${instructor}</p>
                                 </div>
@@ -194,7 +194,7 @@
                         </div>
 
                         <div class="mt-6 pt-4 border-t border-gray-100 flex items-center justify-between">
-                            <span class="text-lg font-bold text-gray-900">${price} EGP</span>
+                            <span class="text-lg font-bold text-gray-900">${price} SAR</span>
                             <a href="${subscribeUrl}" class="px-4 py-2 bg-[#79131DD2] text-[#e4ce96] text-sm font-medium rounded-md hover:bg-[#79131d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                                 Subscribe Now
                             </a>

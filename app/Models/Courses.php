@@ -16,7 +16,7 @@ class Courses extends Model
 
     public function lessons()
     {
-        return $this->hasMany(Lesson::class);
+        return $this->hasMany(lesson::class);
     }
 
     public function certificates()
@@ -31,6 +31,6 @@ class Courses extends Model
 
     public function category()
     {
-        return $this->belongsTo(Categories::class, 'categorey_id', 'id');
+        return $this->belongsTo(categories::class, 'categorey_id', 'id');
     }
 }

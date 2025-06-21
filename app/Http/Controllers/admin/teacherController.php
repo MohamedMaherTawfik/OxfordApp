@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\courseRequest;
 use App\Http\Requests\lessonRequest;
 use App\Http\Requests\projectRequest;
-use App\Interfaces\CoursesInterface;
+use App\Interfaces\CourseInterface;
 use App\Interfaces\GraduationProjectInterface;
 use App\Interfaces\LessonInterface;
 use App\Models\Courses;
@@ -24,7 +24,7 @@ class teacherController extends Controller
      * @param CoursesInterface $courseRepository
      * @param LessonInterface $lessonRepository
      */
-    public function __construct(CoursesInterface $courseRepository, LessonInterface $lessonRepository, GraduationProjectInterface $graduationProjectRepository)
+    public function __construct(CourseInterface $courseRepository, LessonInterface $lessonRepository, GraduationProjectInterface $graduationProjectRepository)
     {
         $this->courseRepository = $courseRepository;
         $this->lessonRepository = $lessonRepository;

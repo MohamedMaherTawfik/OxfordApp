@@ -212,8 +212,8 @@
 
         <div class="p-4 border-t border-[#e4ce96]">
             <div class="flex items-center">
-                <img src="{{ asset('storage/' . Auth::user()->photo) }}" style="color: #e4ce96"
-                    class="w-8 h-8 rounded-full mr-2" alt="Profile">
+                <img src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541' }}"
+                        alt="{{ Auth::user()->name ?? 'Guest' }}" class="w-8 h-8 mr-2 rounded-full object-cover">
                 <div>
                     <p class="text-sm font-medium">{{ Auth::user()->name }}</p>
                     <p class="text-xs text-[#e4ce96]">Admin</p>

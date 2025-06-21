@@ -31,8 +31,8 @@
                         <!-- Dropdown Button -->
                         <button @click="open = !open" @click.outside="open = false"
                             class="flex items-center focus:outline-none">
-                            <img src="https://randomuser.me/api/portraits/women/44.jpg"
-                                class="w-8 h-8 rounded-full mr-2" alt="User profile">
+                            <img src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : 'https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png?20150327203541' }}"
+                        alt="{{ Auth::user()->name ?? 'Guest' }}" class="w-8 h-8 mr-2 rounded-full object-cover">
                             <span class="text-sm font-medium">{{ Auth::user()->name }}</span>
                             <i class="fas fa-chevron-down ml-2 text-xs text-gray-500 transition-transform duration-200"
                                 :class="{ 'transform rotate-180': open }"></i>

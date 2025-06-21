@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\home;
 
 use App\Http\Controllers\Controller;
-use App\Interfaces\categoreyInterface;
-use App\Interfaces\CoursesInterface;
+use App\Interfaces\CategoryInterface;
+use App\Interfaces\CourseInterface;
 
 class homeController extends Controller
 {
     private $coursesRepository;
     private $categoreyrepository;
 
-    public function __construct(CoursesInterface $coursesRepository, categoreyInterface $categoreyInterface)
+    public function __construct(CourseInterface $coursesRepository, CategoryInterface $categoreyInterface)
     {
         $this->coursesRepository = $coursesRepository;
         $this->categoreyrepository = $categoreyInterface;
