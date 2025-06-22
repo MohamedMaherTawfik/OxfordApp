@@ -49,7 +49,7 @@ class lessonRepository implements LessonInterface
 
     public function getLessonBySlug($slug)
     {
-        return Lesson::with('comments')->where('slug', $slug)->first();
+        return lesson::with('comments')->where('slug', $slug)->first();
     }
 
 }
