@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\admin\teacherController;
 use App\Http\Controllers\home\homeController;
+use App\Http\Controllers\home\zoomController;
+use App\Http\Controllers\home\zoomontroller;
 use App\Http\Middleware\Teacher;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\SuperAdminController;
@@ -88,5 +90,16 @@ Route::group([
         Route::post('/dashboard/courses/project/edit/{id}', 'updateProject')->name('teacher.project.update');
         Route::get('/dashboard/courses/project/show/{slug}', 'showProject')->name('teacher.project.show');
         Route::delete('/dashboard/courses/project/{id}', 'deleteProject')->name('teacher.project.delete');
+    });
+});
+
+Route::group([
+    'middleware' => ['auth']
+], function () {
+    Route::controller(zoomController::class)->group(function () {
+        Route::get('/dashboard/zoom', 'livePage')->name('liveChat');
+        Route::get('/dashboard/zoom/authorize', 'authorize')->name('zoom.authorize');
+        Route::get('/dashboard/zoom/callback', 'callBack')->name('zoom.callback');
+        Route::get('/dashboard/zoom/start', 'startMeeting')->name('zoom.start');
     });
 });
