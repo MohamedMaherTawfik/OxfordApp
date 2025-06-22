@@ -43,7 +43,7 @@
                 <!-- Course Info -->
                 <div class="md:w-1/2 lg:w-3/5 flex flex-col justify-center">
                     <span
-                        class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm font-medium mb-4">
+                        class="inline-block px-3 py-1 bg-indigo-100 text-indigo-800 rounded-full text-sm font-bold mb-4">
                         {{ $course->category->name }}
                     </span>
 
@@ -92,13 +92,18 @@
 
                     <div class="flex items-center justify-between">
                         <div>
-                            <span
-                                class="text-3xl font-bold text-gray-900">{{ number_format($course->price, 2) }} SAR</span>
+                            <span class="text-3xl font-bold text-gray-900">{{ number_format($course->price, 2) }}
+                                SAR</span>
                         </div>
-                        <button
-                            class="px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200">
-                            Enroll Now
-                        </button>
+                        <form action="{{ route('enrollment', $course->slug) }}" method="POST">
+                            @csrf
+
+                            <button type="submit"
+                                class="px-6 py-3 bg-[#79131DE0] hover:bg-[#79131d] text-white font-medium rounded-lg transition duration-200">
+                                Enroll Now
+                            </button>
+                        </form>
+
                     </div>
                 </div>
             </div>
@@ -146,12 +151,12 @@
                         <div class="bg-gray-50 p-6 rounded-xl">
                             <h3 class="text-lg font-semibold text-gray-900 mb-3">Pricing</h3>
                             <div class="flex items-end mb-4">
-                                <span
-                                    class="text-4xl font-bold text-gray-900">{{ number_format($course->price, 2) }} SAR</span>
+                                <span class="text-4xl font-bold text-gray-900">{{ number_format($course->price, 2) }}
+                                    SAR</span>
                                 <span class="text-gray-500 ml-1"></span>
                             </div>
                             <button
-                                class="w-full px-6 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-lg transition duration-200">
+                                class="w-full px-6 py-3 bg-[#79131DDC] hover:bg-[#79131d] text-white font-medium rounded-lg transition duration-200">
                                 Enroll in Course
                             </button>
                         </div>

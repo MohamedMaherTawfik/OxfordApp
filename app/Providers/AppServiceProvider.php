@@ -7,7 +7,7 @@ use App\Interfaces\AssignmentInterface;
 use App\Interfaces\CategoryInterface;
 use App\Interfaces\CertificateInterface;
 use App\Interfaces\CommentInterface;
-use App\Interfaces\EnrollmentsInterface;
+use App\Interfaces\EnrollmentInterface;
 use App\Interfaces\GraduationProjectInterface;
 use App\Interfaces\LessonInterface;
 use App\Interfaces\PaymentInterface;
@@ -43,7 +43,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(commentInterface::class, CommentRepository::class);
         $this->app->bind(CertificateInterface::class, CertificateRepository::class);
         $this->app->bind(AssignmentInterface::class, AssignmentRepository::class);
-        $this->app->bind(EnrollmentsInterface::class, EnrollmentRepository::class);
+        $this->app->bind(EnrollmentInterface::class, EnrollmentRepository::class);
         $this->app->bind(PaymentInterface::class, PaymentRepository::class);
         $this->app->bind(GraduationProjectInterface::class, GraduationProjectRepository::class);
         $this->app->bind(CategoryInterface::class, CategoreyRepository::class);

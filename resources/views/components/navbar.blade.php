@@ -11,7 +11,7 @@
         <nav class="hidden md:flex items-center gap-6 font-semibold text-gray-800">
             <a href="/" class="hover:text-blue-600">Home</a>
             @auth
-                <a href="#" class="hover:text-blue-600">My Courses</a>
+                <a href="{{ route('myCourses') }}" class="hover:text-blue-600">My Courses</a>
             @endauth
             <a href="" class="hover:text-blue-600">Courses</a>
 

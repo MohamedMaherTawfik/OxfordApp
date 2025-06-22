@@ -10,11 +10,16 @@ use App\Http\Middleware\CheckAdmin;
 
 Route::group([], function () {
     Route::get('/', [homeController::class, 'index'])->name('home');
+    Route::get('/profile', [homeController::class, 'profile'])->name('profile')->middleware('auth');
     Route::get('/courses', [homeController::class, 'courses'])->name('courses');
     Route::get('/course/{slug}', [homeController::class, 'showCourse'])->name('course.show');
+    Route::post('/course/{slug}', [homeController::class, 'enrollment'])->name('enrollment')->middleware('auth');
     Route::get('/categorey/{slug}', [homeController::class, 'showCategorey'])->name('categories.show');
-    Route::get('/profile', [homeController::class, 'profile'])->name('profile');
+    Route::get('/mycourses', [homeController::class, 'enrolledCourses'])->name('myCourses');
+    Route::get('/mycourse/{slug}', [homeController::class, 'enrolledCourse'])->name('myCourse');
+    Route::get('/mycourse/lesson/{slug}', [homeController::class, 'showLesson'])->name('lesson.show');
 });
+
 Route::group([
     'middleware' => ['auth', CheckAdmin::class],
 ], function () {

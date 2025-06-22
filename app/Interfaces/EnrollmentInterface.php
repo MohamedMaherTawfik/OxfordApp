@@ -2,7 +2,7 @@
 
 namespace App\Interfaces;
 
-interface EnrollmentsInterface
+interface EnrollmentInterface
 {
     public function index($id);
     public function store($course_id, $price);
