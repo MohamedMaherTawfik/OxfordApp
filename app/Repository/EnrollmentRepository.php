@@ -21,7 +21,7 @@ class EnrollmentRepository implements EnrollmentInterface
             'courses_id' => $course_id,
             'user_id' => Auth::user()->id,
             'price' => $price,
-            'enrolled' => 'no',
+            'enrolled' => 'yes',
         ]);
     }
 
