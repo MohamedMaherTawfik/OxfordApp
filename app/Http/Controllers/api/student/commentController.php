@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\student;
 use App\Http\Controllers\Controller;
 use App\Interfaces\CommentInterface;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class commentController extends Controller
 {
@@ -60,7 +61,7 @@ class commentController extends Controller
     public function deleteComment()
     {
         try {
-            return $this->success($this->commentRepository->deleteComment(request('id')), __('messages.delete_Message'));
+            return $this->success($this->commentRepository->deleteComment(Auth::guard('api')), __('messages.delete_Message'));
         } catch (\Throwable $th) {
             return $this->serverError($th);
         }
