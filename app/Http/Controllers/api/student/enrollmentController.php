@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\api\student;
 
 use App\Http\Controllers\Controller;
-use App\Interfaces\CoursesInterface;
-use App\Interfaces\EnrollmentsInterface;
+use App\Interfaces\CourseInterface;
+use App\Interfaces\EnrollmentInterface;
 
 class enrollmentController extends Controller
 {
-    use ApiResponse;
+    use apiResponse;
     private $enrollmentRepository;
     private $coursesRepository;
-    public function __construct(EnrollmentsInterface $enrollmentInterface, CoursesInterface $coursesInterface)
+    public function __construct(EnrollmentInterface $enrollmentInterface, CourseInterface $coursesInterface)
     {
         $this->enrollmentRepository = $enrollmentInterface;
         $this->coursesRepository = $coursesInterface;

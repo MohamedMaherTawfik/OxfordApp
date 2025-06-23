@@ -12,7 +12,7 @@ class CourseRepository implements CourseInterface
 {
     public function allCourses()
     {
-        return Courses::all();
+        return Courses::paginate(10);
     }
 
     public function allCoursesPaginated()

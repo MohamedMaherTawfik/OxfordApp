@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class commentController extends Controller
 {
-    use ApiResponse;
+    use apiResponse;
     private $commentRepository;
 
     public function __construct(commentInterface $commentRepository)
