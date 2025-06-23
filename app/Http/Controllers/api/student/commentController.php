@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\api\student;
 
 use App\Http\Controllers\Controller;
-use App\Interfaces\commentInterface;
+use App\Interfaces\CommentInterface;
 use Illuminate\Http\Request;
 
 class commentController extends Controller
@@ -11,7 +11,7 @@ class commentController extends Controller
     use apiResponse;
     private $commentRepository;
 
-    public function __construct(commentInterface $commentRepository)
+    public function __construct(CommentInterface $commentRepository)
     {
         $this->commentRepository = $commentRepository;
     }
