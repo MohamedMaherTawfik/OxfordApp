@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Models\Comments;
+use App\Models\comments;
 use App\Interfaces\CommentInterface;
 use Illuminate\Support\Facades\Auth;
 
