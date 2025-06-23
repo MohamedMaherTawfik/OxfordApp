@@ -3,7 +3,7 @@
     <div class="container mx-auto px-4 py-2 flex items-center justify-between">
         <!-- Logo -->
         <div class="flex items-center gap-2">
-            <img src="{{ asset('images/logo.jpg') }}" alt="Logo" class="h-10 w-10">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-10 w-10">
             <span class="font-bold text-lg">Oxford Platform</span>
         </div>
 

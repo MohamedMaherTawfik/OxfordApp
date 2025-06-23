@@ -29,7 +29,7 @@
         <!-- Social & App Info -->
         <div class="text-center md:text-left">
             <div class="mb-4">
-                <img src="{{ asset('images/logo.jpg') }}" alt="Oxford Logo"
+                <img src="{{ asset('images/logo.png') }}" alt="Oxford Logo"
                     class="w-24 mx-auto md:mx-0 mb-2 rounded-full">
                 <p class="font-semibold text-gray-100">Follow us on social media</p>
                 <div class="flex justify-center md:justify-start gap-4 mt-2 text-[#e4ce96] text-xl">

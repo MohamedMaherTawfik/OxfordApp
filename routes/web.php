@@ -14,7 +14,7 @@ Route::group([], function () {
     Route::get('/', [homeController::class, 'index'])->name('home');
     Route::get('/profile', [homeController::class, 'profile'])->name('profile')->middleware('auth');
     Route::get('/courses', [homeController::class, 'courses'])->name('courses');
-    Route::get('/course/{slug}', [homeController::class, 'showCourse'])->name('course.show');
+    Route::get('/course/{slug}', [homeController::class, 'showCourse'])->name('course.show')->middleware('auth');
     Route::post('/course/{slug}', [homeController::class, 'enrollment'])->name('enrollment')->middleware('auth');
     Route::get('/categorey/{slug}', [homeController::class, 'showCategorey'])->name('categories.show');
     Route::get('/mycourses', [homeController::class, 'enrolledCourses'])->name('myCourses');
