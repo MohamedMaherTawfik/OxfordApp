@@ -11,6 +11,7 @@
         integrity="sha512-1z5Z2b7k8d9e3f5a5c8f8b7e3f8d9e3f5a5c8f8b7e3f8d9e3f5a5c8f8b7e3f8d9e3f5a5c8f8b7e3f8d9e3f5a5c8f8b7e3f8d9e3f5a5c8f8b7e3f8d9e3f5a5c8f8b7e3f"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 </head>
 

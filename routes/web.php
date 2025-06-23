@@ -98,8 +98,7 @@ Route::group([
 ], function () {
     Route::controller(zoomController::class)->group(function () {
         Route::get('/dashboard/zoom', 'livePage')->name('liveChat');
-        Route::get('/dashboard/zoom/authorize', 'authorize')->name('zoom.authorize');
-        Route::get('/dashboard/zoom/callback', 'callBack')->name('zoom.callback');
-        Route::get('/dashboard/zoom/start', 'startMeeting')->name('zoom.start');
+        Route::get('/dashboard/zoom/access-token', 'getAccessToken')->name('acessToken');
+        Route::post('/dashboard/zoom/create', 'createMeeting')->name('startMeeting');
     });
 });
