@@ -10,17 +10,17 @@ class CommentRepository implements CommentInterface
 {
     public function getComments($id)
     {
-        return Comments::where('lesson_id', $id)->get();
+        return comments::where('lesson_id', $id)->get();
     }
 
     public function getComment($id)
     {
-        return Comments::find($id);
+        return comments::find($id);
     }
 
     public function storeComment($data, $id)
     {
-        return Comments::create([
+        return comments::create([
             'lesson_id' => $id,
             'comment' => $data['comment'],
             'user_id' => Auth::user()->id
@@ -29,14 +29,14 @@ class CommentRepository implements CommentInterface
 
     public function updateComment($data, $id)
     {
-        $comment = Comments::find($id);
+        $comment = comments::find($id);
         $comment->update($data);
         return $comment;
     }
 
     public function deleteComment($id)
     {
-        $data = Comments::find($id);
+        $data = comments::find($id);
         $data->delete();
         return $data;
     }
