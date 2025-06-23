@@ -33,4 +33,9 @@ class Courses extends Model
     {
         return $this->belongsTo(categories::class, 'categorey_id', 'id');
     }
+
+    public function review()
+    {
+        return $this->hasMany(Reviews::class);
+    }
 }

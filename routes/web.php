@@ -19,7 +19,9 @@ Route::group([], function () {
     Route::get('/categorey/{slug}', [homeController::class, 'showCategorey'])->name('categories.show');
     Route::get('/mycourses', [homeController::class, 'enrolledCourses'])->name('myCourses');
     Route::get('/mycourse/{slug}', [homeController::class, 'enrolledCourse'])->name('myCourse');
+    Route::post('/mycourse/{slug}', [homeController::class, 'courseReview'])->name('course.review');
     Route::get('/mycourse/lesson/{slug}', [homeController::class, 'showLesson'])->name('lesson.show');
+    Route::get('/allCourses', [homeController::class, 'allCourses'])->name('courses.all');
 });
 
 Route::group([

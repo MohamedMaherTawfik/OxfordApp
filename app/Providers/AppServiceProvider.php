@@ -12,6 +12,7 @@ use App\Interfaces\GraduationProjectInterface;
 use App\Interfaces\LessonInterface;
 use App\Interfaces\PaymentInterface;
 use App\Interfaces\QuizesInterface;
+use App\Interfaces\ReviewsInterface;
 use App\Repository\AnswerRepository;
 use App\Repository\AssignmentRepository;
 use App\Repository\CategoreyRepository;
@@ -22,6 +23,7 @@ use App\Repository\GraduationProjectRepository;
 use App\Repository\lessonRepository;
 use App\Repository\PaymentRepository;
 use App\Repository\QuizRepository;
+use App\Repository\ReviewRepository;
 use Illuminate\Support\ServiceProvider;
 use Tymon\JWTAuth\Http\Middleware\Authenticate as JWTMiddleware;
 use App\Interfaces\CourseInterface;
@@ -47,6 +49,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(PaymentInterface::class, PaymentRepository::class);
         $this->app->bind(GraduationProjectInterface::class, GraduationProjectRepository::class);
         $this->app->bind(CategoryInterface::class, CategoreyRepository::class);
+        $this->app->bind(ReviewsInterface::class, ReviewRepository::class);
     }
 
     /**

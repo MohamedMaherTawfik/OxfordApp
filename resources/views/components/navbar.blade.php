@@ -13,7 +13,7 @@
             @auth
                 <a href="{{ route('myCourses') }}" class="hover:text-blue-600">My Courses</a>
             @endauth
-            <a href="" class="hover:text-blue-600">Courses</a>
+            <a href="{{ route('courses.all') }}" class="hover:text-blue-600">Courses</a>
 
             <!-- Dropdowns -->
             <div class="relative group">

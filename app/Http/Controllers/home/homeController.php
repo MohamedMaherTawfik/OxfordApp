@@ -7,6 +7,7 @@ use App\Interfaces\CategoryInterface;
 use App\Interfaces\CourseInterface;
 use App\Interfaces\EnrollmentInterface;
 use App\Interfaces\LessonInterface;
+use App\Interfaces\ReviewsInterface;
 use App\Models\Courses;
 use App\Models\Enrollments;
 use App\Models\User;
@@ -18,13 +19,15 @@ class homeController extends Controller
     private $categoreyrepository;
     private $enrollmentRepository;
     private $lessonRepository;
+    private $reviewRepository;
 
-    public function __construct(CourseInterface $coursesRepository, CategoryInterface $categoreyInterface, EnrollmentInterface $enrollmentInterface, LessonInterface $lessonInterface)
+    public function __construct(CourseInterface $coursesRepository, CategoryInterface $categoreyInterface, EnrollmentInterface $enrollmentInterface, LessonInterface $lessonInterface, ReviewsInterface $reviewsInterface)
     {
         $this->coursesRepository = $coursesRepository;
         $this->categoreyrepository = $categoreyInterface;
         $this->enrollmentRepository = $enrollmentInterface;
         $this->lessonRepository = $lessonInterface;
+        $this->reviewRepository = $reviewsInterface;
     }
     public function index()
     {
@@ -83,5 +86,18 @@ class homeController extends Controller
     {
         $lesson = $this->lessonRepository->getLessonBySlug(request('slug'));
         return view('home.courses.lessons.show', compact('lesson'));
+    }
+
+    public function courseReview()
+    {
+        $course = $this->coursesRepository->getCourseBySlug(request('slug'));
+        $this->reviewRepository->makeReview(request('rating'), $course->id);
+        return redirect()->route('myCourse', ['slug' => $course->slug]);
+    }
+
+    public function allCourses()
+    {
+        $courses = $this->coursesRepository->allCourses();
+        return view('home.courses.allCourses', compact('courses'));
     }
 }
