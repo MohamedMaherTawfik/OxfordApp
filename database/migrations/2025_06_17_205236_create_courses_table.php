@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->string('cover_photo')->nullable();
             $table->double('price')->nullable();
             $table->string('slug')->unique();
+            $table->enum('level', ['Beginner', 'Mid', 'Advanced'])->default('beginner');
             $table->timestamps();
         });
     }

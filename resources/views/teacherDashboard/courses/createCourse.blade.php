@@ -39,6 +39,25 @@ $categories = categories::all(); ?>
                         @enderror
                     </div>
 
+                    <!-- Level -->
+                    <div>
+                        <label for="level" class="block text-sm font-medium text-gray-700">Level</label>
+                        <select id="level" name="level"
+                            class="mt-1 block w-full px-3 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
+                            <option value="">Select level</option>
+                            <option value="Beginner" {{ old('level') == 'beginner' ? 'selected' : '' }}>Beginner
+                            </option>
+                            <option value="Mid" {{ old('level') == 'Mid' ? 'selected' : '' }}>
+                                Mid</option>
+                            <option value="Advanced" {{ old('level') == 'advanced' ? 'selected' : '' }}>Advanced
+                            </option>
+                        </select>
+                        @error('level')
+                            <span class="text-red-500 text-sm">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+
                     <!-- Category Dropdown -->
                     <div>
                         <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
@@ -57,7 +76,7 @@ $categories = categories::all(); ?>
 
                     <div>
                         <label for="start_date" class="block text-sm font-medium text-gray-700">start_date</label>
-                        <input type="text" id="start_date" name="start_date"
+                        <input type="date" id="start_date" name="start_date"
                             class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500">
                         @error('start_date')
                             <span class="text-red-500 text-sm">{{ $message }}</span>

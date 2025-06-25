@@ -15,7 +15,7 @@
     <!-- Header -->
     <x-navbar />
 
-    <!-- Hero Section -->
+    <!-- Hero Section with Search Dropdown -->
     <div class="relative bg-cover bg-center h-[500px]"
         style="background-image: url('https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');">
         <div
@@ -25,12 +25,63 @@
             <p class="text-lg md:text-xl mb-6">Your journey to learning starts here. Discover skills, interact, and
                 earn
                 certified achievements.</p>
-            <div class="flex items-center w-full max-w-md mx-auto">
-                <input type="text" id="search" placeholder="Search..."
-                    class="flex-grow px-4 py-2 rounded-l-md text-black" />
-                <button onclick="searchCourses()"
-                    class="bg-[#79131d] text-[#e4ce96] px-4 py-2 rounded-r-md">Search</button>
+
+            <!-- Search Container with Dropdown -->
+            <div class="relative w-full max-w-md mx-auto" x-data="searchDropdown()">
+                <div class="flex items-center">
+                    <input type="text" x-model="searchQuery" @input.debounce.300ms="searchCourses()"
+                        @focus="showDropdown = true" @click.away="showDropdown = false" placeholder="Search courses..."
+                        class="flex-grow px-4 py-2 rounded-l-md text-black" />
+                    <button @click="searchCourses()" class="bg-[#79131d] text-[#e4ce96] px-4 py-2 rounded-r-md">
+                        Search
+                    </button>
+                </div>
+
+                <!-- Dropdown Results -->
+                <div x-show="showDropdown && searchResults.length > 0"
+                    class="absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg max-h-96 overflow-y-auto"
+                    style="display: none;">
+                    <ul class="py-1">
+                        <template x-for="course in searchResults" :key="course.id">
+                            <li>
+                                <a :href="'/' + course.slug"
+                                    class="block px-4 py-2 text-gray-800 hover:bg-gray-100 flex items-center">
+                                    <img :src="course.cover_photo ? '/storage/' + course.cover_photo :
+                                        'https://via.placeholder.com/50x30'"
+                                        alt="Course cover" class="w-10 h-8 object-cover mr-3">
+                                    <div>
+                                        <div x-text="course.title" class="font-medium"></div>
+                                        <div x-text="course.instructor" class="text-sm text-gray-600"></div>
+                                    </div>
+                                </a>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+
+                <!-- Loading and Empty States -->
+                <div x-show="isLoading" class="absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg p-4"
+                    style="display: none;">
+                    <div class="flex items-center text-gray-600">
+                        <svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-[#79131d]" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor"
+                                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z">
+                            </path>
+                        </svg>
+                        Searching...
+                    </div>
+                </div>
+
+                <div x-show="showDropdown && searchResults.length === 0 && searchQuery.length > 0 && !isLoading"
+                    class="absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg p-4 text-gray-600"
+                    style="display: none;">
+                    No courses found for "<span x-text="searchQuery"></span>"
+                </div>
             </div>
+
             <button class="mt-4 bg-[#79131DC2] hover:bg-[#79131d] px-5 py-2 rounded-md text-[#e4ce96]">Browse
                 Courses</button>
         </div>
@@ -113,6 +164,18 @@
                                     <img src="{{ $course->cover_photo ? asset('storage/' . $course->cover_photo) : 'https://via.placeholder.com/400x225' }}"
                                         alt="{{ $course->title }}"
                                         class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
+
+                                    <!-- Start Date (Bottom Left) -->
+                                    <div
+                                        class="absolute bottom-2 left-2 bg-white/80 text-gray-800 text-xs font-medium px-2 py-1 rounded">
+                                        {{ \Carbon\Carbon::parse($course->start_Date)->format('d M Y') }}
+                                    </div>
+
+                                    <!-- Level (Bottom Right) -->
+                                    <div
+                                        class="absolute bottom-2 right-2 bg-[#79131d]/90 text-[#e4ce96] text-xs font-semibold px-2 py-1 rounded">
+                                        {{ ucfirst($course->level ?? 'Beginner') }}
+                                    </div>
                                 </div>
                                 <div class="p-6 flex-1 flex flex-col justify-between">
                                     <div>
@@ -355,8 +418,6 @@
 
     <!-- Categories Section -->
 
-    <!-- Alpine.js لازم يكون موجود -->
-
     <section class="py-16 px-4 bg-white" x-data="{ show: false }" x-init="setTimeout(() => show = true, 300)">
         <div class="container mx-auto max-w-6xl">
 
@@ -569,6 +630,59 @@
     </script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
+    <script>
+        function searchDropdown() {
+            return {
+                searchQuery: '',
+                searchResults: [],
+                showDropdown: false,
+                isLoading: false,
+
+                searchCourses() {
+                    if (this.searchQuery.trim() === '') {
+                        this.searchResults = [];
+                        return;
+                    }
+
+                    this.isLoading = true;
+
+                    // Simulate API call with mock data
+                    setTimeout(() => {
+                        this.searchResults = [{
+                                id: 1,
+                                title: 'Introduction to Web Development',
+                                slug: 'intro-web-dev',
+                                cover_photo: 'course_covers/webdev.jpg',
+                                instructor: 'Dr. Ahmed Mohamed',
+                                description: 'Learn the basics of HTML, CSS and JavaScript'
+                            },
+                            {
+                                id: 2,
+                                title: 'Advanced Python Programming',
+                                slug: 'advanced-python',
+                                cover_photo: 'course_covers/python.jpg',
+                                instructor: 'Prof. Sarah Johnson',
+                                description: 'Master Python with advanced concepts and projects'
+                            },
+                            {
+                                id: 3,
+                                title: 'Digital Marketing Fundamentals',
+                                slug: 'digital-marketing',
+                                cover_photo: null,
+                                instructor: 'Mr. David Wilson',
+                                description: 'Learn SEO, social media marketing and analytics'
+                            }
+                        ].filter(course =>
+                            course.title.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+                            course.instructor.toLowerCase().includes(this.searchQuery.toLowerCase())
+                        );
+
+                        this.isLoading = false;
+                    }, 800);
+                }
+            }
+        }
+    </script>
 </body>
 
 </html>

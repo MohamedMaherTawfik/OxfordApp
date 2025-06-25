@@ -1,5 +1,5 @@
 <!-- Header / Navbar -->
-<header class="bg-white shadow-sm">
+<header class="bg-white shadow-sm z-50 relative">
     <div class="container mx-auto px-4 py-2 flex items-center justify-between">
         <!-- Logo -->
         <div class="flex items-center gap-2">
@@ -8,86 +8,72 @@
         </div>
 
         <!-- Navigation Links -->
-        <nav class="hidden md:flex items-center gap-6 font-semibold text-gray-800">
-            <a href="/" class="hover:text-blue-600">Home</a>
+        <nav
+            class="hidden md:flex items-center gap-6 font-semibold text-gray-800 [&_a:hover]:text-[#79131d] [&_a]:transition">
+            <a href="/">Home</a>
             @auth
-                <a href="{{ route('myCourses') }}" class="hover:text-blue-600">My Courses</a>
+                <a href="{{ route('myCourses') }}">My Courses</a>
             @endauth
-            <a href="{{ route('courses.all') }}" class="hover:text-blue-600">Courses</a>
+            <a href="{{ route('courses.all') }}">Courses</a>
 
-            <!-- Dropdowns -->
+            <!-- Dropdown 1 -->
             <div class="relative group">
-                <button class="hover:text-blue-600 flex items-center gap-1">
+                <button class="flex items-center gap-1 hover:text-[#79131d] transition">
                     Learning Fields
                     <svg class="w-4 h-4 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
                 </button>
-                <!-- Dropdown Menu -->
                 <div
-                    class="absolute top-full left-0 mt-2 w-40 bg-white border rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Science</a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Math</a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Technology</a>
+                    class="absolute top-full left-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <a href="#" class="block px-4 py-2 hover:text-[#79131d] transition">Science</a>
+                    <a href="#" class="block px-4 py-2 hover:text-[#79131d] transition">Math</a>
+                    <a href="#" class="block px-4 py-2 hover:text-[#79131d] transition">Technology</a>
                 </div>
             </div>
 
+            <!-- Dropdown 2 -->
             <div class="relative group">
-                <button class="hover:text-blue-600 flex items-center gap-1">
+                <button class="flex items-center gap-1 hover:text-[#79131d] transition">
                     More
                     <svg class="w-4 h-4 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
                 </button>
                 <div
-                    class="absolute top-full left-0 mt-2 w-40 bg-white border rounded-lg shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">About</a>
-                    <a href="#" class="block px-4 py-2 hover:bg-gray-100">Contact</a>
+                    class="absolute top-full left-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50 opacity-0 group-hover:opacity-100 transition-opacity">
+                    <a href="{{ route('about') }}" class="block px-4 py-2 hover:text-[#79131d] transition">About</a>
+                    <a href="{{ route('contact') }}" class="block px-4 py-2 hover:text-[#79131d] transition">Contact</a>
                 </div>
             </div>
         </nav>
 
-        <!-- Right Side: Search, Notification, Profile -->
+        <!-- Right Side: Search & Profile -->
         <div class="flex items-center gap-4">
-            <!-- Search -->
-            <button class="bg-[#79131DD0] text-white p-2 rounded-full hover:bg-[#79131d]">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-            </button>
-
-            <!-- company profile -->
+            <!-- Company Profile -->
             <a href="{{ asset('pdf/oxforden.pdf') }}" target="_blank"
-                class="px-4 py-2 bg-[#79131DD0] text-white rounded-md hover:bg-[#79131d] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
+                class="px-4 py-2 text-[#ffffff] bg-[#79131d] border border-[#ffffff] rounded-md hover:text-[#79131d] transition-colors duration-200">
                 Company Profile
             </a>
 
             <!-- User Profile -->
-            <!-- Add Alpine.js in your <head> or before closing </body> -->
-            <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-
-            <!-- Dropdown component -->
             @auth
                 <div x-data="{ open: false }" class="relative flex items-center gap-2">
-                    <!-- Static Profile Image (no JS interaction) -->
                     <img src="{{ Auth::user()->photo ? asset('storage/' . Auth::user()->photo) : asset('images/placeHolder.png') }}"
                         alt="{{ Auth::user()->name ?? 'Guest' }}" class="w-8 h-8 rounded-full object-cover" />
-
-                    <!-- Dropdown Toggle Button (text only) -->
                     <button @click="open = !open" class="text-sm text-left focus:outline-none">
                         <div class="font-bold">{{ Auth::user()->name }}</div>
                     </button>
-
-                    <!-- Dropdown Menu -->
                     <div x-show="open" @click.away="open = false"
                         class="absolute right-0 mt-12 w-48 bg-white border border-gray-200 rounded-lg shadow-lg z-50">
                         <a href="{{ route('profile') }}"
-                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</a>
+                            class="block px-4 py-2 text-sm text-gray-700 hover:text-[#79131d] transition">Profile</a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
                             <button type="submit"
-                                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
+                                class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:text-[#79131d] transition">
+                                Logout
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -101,16 +87,14 @@
                             <div class="text-gray-500">Login / Register</div>
                         </div>
                     </button>
-
-                    <!-- Dropdown content -->
                     <div x-show="open" @click.away="open = false"
                         class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-50">
-                        <a href="/login" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">login</a>
-                        <a href="/register" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Register</a>
+                        <a href="/login" class="block px-4 py-2 text-gray-700 hover:text-[#79131d] transition">Login</a>
+                        <a href="/register"
+                            class="block px-4 py-2 text-gray-700 hover:text-[#79131d] transition">Register</a>
                     </div>
                 </div>
             @endauth
-
         </div>
     </div>
 </header>

@@ -29,6 +29,7 @@ class courseRequest extends FormRequest
             'cover_photo' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'duration' => 'required',
             'start_date' => 'required',
+            'level' => 'required',
         ];
     }
 }

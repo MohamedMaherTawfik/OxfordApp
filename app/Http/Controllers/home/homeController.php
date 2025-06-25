@@ -100,4 +100,24 @@ class homeController extends Controller
         $courses = $this->coursesRepository->allCourses();
         return view('home.courses.allCourses', compact('courses'));
     }
+
+    public function fromSearch()
+    {
+        $course = $this->coursesRepository->getCourseBySlug(request('slug'));
+        if ($course) {
+
+            return view('home.courses.show', compact('course'));
+        }
+        return view('home.courses.notFound');
+    }
+
+    public function about()
+    {
+        return view('home.inforamtions.aboutUs');
+    }
+
+    public function contact()
+    {
+        return view('home.inforamtions.contactUs');
+    }
 }

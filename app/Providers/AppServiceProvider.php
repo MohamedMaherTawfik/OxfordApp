@@ -20,7 +20,7 @@ use App\Repository\CertificateRepository;
 use App\Repository\CommentRepository;
 use App\Repository\EnrollmentRepository;
 use App\Repository\GraduationProjectRepository;
-use App\Repository\lessonRepository;
+use App\Repository\LessonRepository;
 use App\Repository\PaymentRepository;
 use App\Repository\QuizRepository;
 use App\Repository\ReviewRepository;

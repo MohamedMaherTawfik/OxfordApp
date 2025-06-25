@@ -48,6 +48,7 @@ class CourseRepository implements CourseInterface
             'start_date' => $data['start_date'],
             'slug' => str_replace(' ', '-', strtolower($data['title'])),
             'cover_photo' => $data['cover_photo']->store('courses', 'public'),
+            'level' => $data['level'],
             'user_id' => Auth::user()->id
         ]);
         return $data;

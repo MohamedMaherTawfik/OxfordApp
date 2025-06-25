@@ -21,7 +21,7 @@ class teacherController extends Controller
     /**
      * Create a new interface instance.
      *
-     * @param CoursesInterface $courseRepository
+     * @param CourseInterface $courseRepository
      * @param LessonInterface $lessonRepository
      */
     public function __construct(CourseInterface $courseRepository, LessonInterface $lessonRepository, GraduationProjectInterface $graduationProjectRepository)
