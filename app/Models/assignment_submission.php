@@ -18,4 +18,9 @@ class assignment_submission extends Model
     {
         return $this->belongsTo(assignments::class);
     }
+
+    public function graduationProject()
+    {
+        return $this->belongsTo(graduationProject::class);
+    }
 }

@@ -16,22 +16,6 @@
             @endauth
             <a href="{{ route('courses.all') }}">Courses</a>
 
-            <!-- Dropdown 1 -->
-            <div class="relative group">
-                <button class="flex items-center gap-1 hover:text-[#79131d] transition">
-                    Learning Fields
-                    <svg class="w-4 h-4 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <div
-                    class="absolute top-full left-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <a href="#" class="block px-4 py-2 hover:text-[#79131d] transition">Science</a>
-                    <a href="#" class="block px-4 py-2 hover:text-[#79131d] transition">Math</a>
-                    <a href="#" class="block px-4 py-2 hover:text-[#79131d] transition">Technology</a>
-                </div>
-            </div>
-
             <!-- Dropdown 2 -->
             <div class="relative group">
                 <button class="flex items-center gap-1 hover:text-[#79131d] transition">

@@ -56,7 +56,7 @@
                     <ul class="py-1">
                         <template x-for="course in searchResults" :key="course.id">
                             <li>
-                                <a :href="'/' + course.slug"
+                                <a :href="'/notFound/' + course.slug"
                                     class="block px-4 py-2 text-gray-800 hover:bg-gray-100 flex items-center">
                                     <img :src="course.cover_photo ? '/storage/' + course.cover_photo :
                                         'https://via.placeholder.com/50x30'"

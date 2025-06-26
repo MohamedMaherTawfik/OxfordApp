@@ -21,42 +21,61 @@
 
             <!-- Table Body -->
             <tbody class="divide-y divide-gray-200 mt-2">
-                @foreach ($projects as $project)
-                    @if (count($projects) == 0)
-                        <tr>
-                            <td colspan="3" class="px-6 py-4 text-center text-gray-500">No projects found.</td>
-                        </tr>
-                    @else
-                        <!-- Row 1 -->
-                        <tr class="hover:bg-gray-50 ">
+                @if ($projects->isEmpty())
+                    <tr>
+                        <td colspan="5" class="px-6 py-4 text-center text-gray-500">
+                            No projects found.
+                        </td>
+                    </tr>
+                @else
+                    @foreach ($projects as $project)
+                        <tr class="hover:bg-gray-50 transition">
+                            <!-- اسم المستخدم -->
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                                {{ Auth::user()->name }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $project->title }}</td>
-                            <td>
+                                {{ Auth::user()->name }}
+                            </td>
+
+                            <!-- عنوان المشروع -->
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $project->title }}
+                            </td>
+
+                            <!-- رابط الملف -->
+                            <td class="px-6 py-4 whitespace-nowrap">
                                 <a href="{{ asset('storage/' . $project->file) }}" target="_blank"
-                                    class="inline-flex items-center justify-center w-10 h-10 bg-[#79131DD0] text-white rounded-md hover:bg-[#79131d] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
-                                    <!-- PDF icon from Heroicons (Solid) -->
+                                    class="inline-flex items-center justify-center w-10 h-10 bg-[#79131DD0] text-white rounded-md hover:bg-[#79131d] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200"
+                                    title="View PDF">
                                     <i class="fa-solid fa-file-pdf text-[#e4ce96] text-xl"></i>
                                 </a>
                             </td>
 
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $project->status }}</td>
+                            <!-- الحالة -->
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                {{ $project->status }}
+                            </td>
+
+                            <!-- الإجراءات -->
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500 flex items-center gap-2">
+                                <!-- تعديل -->
                                 <a href="{{ route('teacher.project.edit', $project->slug) }}"
-                                    class="p-2 text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2 inline-block">
+                                    class="p-2 text-gray-600 hover:text-gray-900 bg-gray-100 hover:bg-gray-200 rounded-full transition duration-200 focus:outline-none focus:ring-2 focus:ring-gray-400 focus:ring-offset-2"
+                                    title="Edit">
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                         xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                             d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5M18.5 2.5a2.121 2.121 0 113 3L12 15l-4 1 1-4 9.5-9.5z" />
                                     </svg>
                                 </a>
+
+                                <!-- حذف -->
                                 <form action="{{ route('teacher.project.delete', $project->id) }}" method="POST"
-                                    class="inline-block ml-2">
+                                    onsubmit="return confirm('Are you sure you want to delete this item?')"
+                                    class="inline-block">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit"
-                                        onclick="return confirm('Are you sure you want to delete this item?')"
-                                        class="p-2 text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 rounded-full transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2">
+                                        class="p-2 text-red-600 hover:text-red-900 bg-red-100 hover:bg-red-200 rounded-full transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2"
+                                        title="Delete">
                                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                                             xmlns="http://www.w3.org/2000/svg">
                                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -64,15 +83,12 @@
                                         </svg>
                                     </button>
                                 </form>
-
                             </td>
-
                         </tr>
-                    @endif
-                @endforeach
-
-
+                    @endforeach
+                @endif
             </tbody>
+
         </table>
     </div>
 

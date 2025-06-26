@@ -27,9 +27,7 @@ class GraduationProjectRepository implements GraduationProjectInterface
     public function getGraduationProjects($slug)
     {
         $course = Courses::where('slug', $slug)->firstOrFail();
-        return graduationProject::where('courses_id', $course->id)
-            ->with('teacher')
-            ->get();
+        return graduationProject::where('courses_id', $course->id)->get();
     }
 
     public function getGraduationProjectBySlug($slug)

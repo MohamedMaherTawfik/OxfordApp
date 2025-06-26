@@ -34,8 +34,7 @@ class CourseRepository implements CourseInterface
 
     public function getCourseBySlug($slug)
     {
-        $data = Courses::with('lessons')->where('slug', $slug)->first();
-        return $data;
+        return Courses::with('lessons')->where('slug', $slug)->first();
     }
     public function createCourse($data)
     {

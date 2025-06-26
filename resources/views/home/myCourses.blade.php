@@ -33,8 +33,8 @@
         <!-- Course Card -->
         @foreach ($courses as $course)
             <div class="bg-white rounded-2xl shadow-md p-6 hover:shadow-lg transition mb-5">
-                <img src="{{ asset('storage/' . $course->cover_photo) }}" alt="Course Image"
-                    class="w-full h-48 object-cover rounded-t-2xl">
+                <img src="{{ $course->cover_photo_url }}"
+                    class="w-full h-50 object-cover transition-transform duration-300 hover:scale-105">
                 <h2 class="text-xl font-semibold text-gray-800 mb-2">{{ $course->name }}</h2>
                 <p class="text-gray-600 mb-4">{{ $course->description }}</p>
 

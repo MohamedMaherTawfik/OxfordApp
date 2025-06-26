@@ -33,6 +33,13 @@
                 id="notes-tab">
                 Notes
             </a>
+
+            <a href="#" @click.prevent="activeTab = 'graduation'" class="mr-6 font-medium transition-colors"
+                :class="activeTab === 'graduation' ? 'text-[#79131d] border-b-2 border-[#79131d]' :
+                    'text-gray-600 hover:text-[#79131d]'"
+                id="graduation-tab">
+                Graduation Project
+            </a>
         </div>
 
         <!-- Overview Section -->
@@ -40,8 +47,8 @@
             <h1 class="text-3xl font-bold mb-3">{{ $course->title }}</h1>
 
             <div class="mb-4">
-                <img src="{{ asset('storage/' . $course->cover_photo) }}" alt="Course Cover"
-                    class="w-48 h-20 object-cover rounded-md shadow">
+                <img src="{{ $course->cover_photo_url }}"
+                    class="w-50 h-50 object-cover transition-transform duration-300 hover:scale-105">
             </div>
 
             <!-- Rating and Metadata -->
@@ -109,6 +116,62 @@
 
             <!-- Add your notes input field or loop here -->
         </div>
+
+        <!-- Graduation Project Section -->
+        <div x-show="activeTab === 'graduation'" id="graduation-section" x-transition>
+            <h3 class="text-2xl font-bold text-[#79131d] mb-4">Graduation Project</h3>
+
+            <!-- Teacher's GP Details -->
+            @foreach ($projects as $item)
+                <div class="bg-blue-50 border border-blue-100 p-6 rounded-lg mb-6">
+                    <h4 class="text-xl font-semibold mb-2">{{ $item->title ?? 'Graduation Project Title Here' }}
+                    </h4>
+                    <p class="text-gray-700 mb-3">
+                        {{ $item->description ?? 'The description of the graduation project goes here. It should explain what is expected from students.' }}
+                    </p>
+
+                    @if (!empty($item->file) && Storage::disk('public')->exists($item->file))
+                        <a href="{{ asset('storage/' . $item->file) }}" target="_blank"
+                            class="flex items-center space-x-2 text-[#79131d] hover:text-[#5a0e16] transition">
+                            <!-- File Icon SVG -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="currentColor"
+                                viewBox="0 0 20 20">
+                                <path d="M4 2a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V8l-6-6H4z" />
+                                <path d="M14 2v6h6" />
+                            </svg>
+                            <button type="button"
+                                class="inline-flex items-center px-4 py-2 bg-[#79131d] text-[#e4ce96] rounded hover:bg-[#5a0e16] transition text-sm font-medium">
+                                Show Project
+                            </button>
+
+                        </a>
+                    @else
+                        <p class="text-sm text-red-500">No project file uploaded yet.</p>
+                    @endif
+
+                </div>
+            @endforeach
+
+            <!-- Student Upload Form -->
+            <form action="" method="POST" enctype="multipart/form-data"
+                class="bg-white p-6 rounded-lg shadow border border-gray-200 space-y-4">
+                @csrf
+
+                <div>
+                    <label for="project_file" class="block text-sm font-medium text-gray-700 mb-1">Submit Your
+                        Work</label>
+                    <input type="file" id="project_file" name="project_file" accept=".pdf,.docx,.zip" required
+                        class="w-full border-gray-300 rounded-md shadow-sm focus:ring-[#79131d] focus:border-[#79131d]">
+                </div>
+
+                <button type="submit"
+                    class="bg-[#79131d] text-[#e4ce96] hover:bg-[#5a0e16] px-4 py-2 rounded font-semibold text-sm transition-colors duration-300">
+                    Submit Project
+                </button>
+            </form>
+        </div>
+
+
     </div>
 
 
@@ -140,7 +203,7 @@
                             @click="expandedCard = expandedCard === {{ $lesson->id }} ? null : {{ $lesson->id }}">
                             <!-- Card Image with Overlay on Hover -->
                             <div class="relative">
-                                <img src="{{ asset('storage/' . $lesson->image) }}" alt="{{ $lesson->title }}"
+                                <img src="{{ $lesson->cover_photo_url }}" alt="{{ $lesson->title }}"
                                     class="h-40 w-full object-cover transition-all duration-300"
                                     :class="{ 'brightness-75': isHovered }">
 
@@ -189,8 +252,8 @@
                                     <a href="{{ route('lesson.show', $lesson->slug) }}"
                                         class="inline-block bg-[#79131DDA] text-[#e4ce96] px-4 py-2 rounded hover:bg-[#5a0e16] font-medium text-sm transition-colors duration-300 flex items-center">
                                         Go to Lesson
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" viewBox="0 0 20 20"
-                                            fill="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1"
+                                            viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd"
                                                 d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
                                                 clip-rule="evenodd" />
@@ -359,7 +422,7 @@
 
                         <!-- Image with overlay effect -->
                         <div class="relative">
-                            <img src="{{ asset('storage/' . $related->cover_photo) }}" alt="{{ $related->title }}"
+                            <img src="{{ $related->cover_photo_url }}" alt="{{ $related->title }}"
                                 class="h-40 w-full object-cover transition-all duration-300"
                                 :class="{ 'brightness-75': isHovered }">
 

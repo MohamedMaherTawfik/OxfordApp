@@ -34,8 +34,8 @@
                 <!-- Course Cover -->
                 <div class="md:w-1/2 lg:w-2/5">
                     <div class="rounded-xl overflow-hidden shadow-xl">
-                        <img src="{{ asset('storage/' . $course->cover_photo) }}" alt="{{ $course->title }}"
-                            class="w-[700px] h-[350px] object-cover">
+                        <img src="{{ $course->cover_photo_url }}"
+                            class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
 
                     </div>
                 </div>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Interfaces\CategoryInterface;
 use App\Interfaces\CourseInterface;
 use App\Interfaces\EnrollmentInterface;
+use App\Interfaces\GraduationProjectInterface;
 use App\Interfaces\LessonInterface;
 use App\Interfaces\ReviewsInterface;
 use App\Models\Courses;
@@ -21,14 +22,16 @@ class homeController extends Controller
     private $enrollmentRepository;
     private $lessonRepository;
     private $reviewRepository;
-
-    public function __construct(CourseInterface $coursesRepository, CategoryInterface $categoreyInterface, EnrollmentInterface $enrollmentInterface, LessonInterface $lessonInterface, ReviewsInterface $reviewsInterface)
+    private $projectRepository;
+    public function __construct(CourseInterface $coursesRepository, CategoryInterface $categoreyInterface, EnrollmentInterface $enrollmentInterface, LessonInterface $lessonInterface, ReviewsInterface $reviewsInterface, GraduationProjectInterface $graduationProject)
     {
+
         $this->coursesRepository = $coursesRepository;
         $this->categoreyrepository = $categoreyInterface;
         $this->enrollmentRepository = $enrollmentInterface;
         $this->lessonRepository = $lessonInterface;
         $this->reviewRepository = $reviewsInterface;
+        $this->projectRepository = $graduationProject;
     }
     public function index()
     {
@@ -49,6 +52,9 @@ class homeController extends Controller
         if ($enrollmentUserIds->contains(Auth::user()->id)) {
             return redirect()->route('myCourses');
         }
+        $course->cover_photo_url = $course->cover_photo && Storage::disk('public')->exists($course->cover_photo)
+            ? asset('storage/' . $course->cover_photo)
+            : asset('images/coursePlace.png');
         return view('home.courses.show', compact('course'));
     }
 
@@ -82,6 +88,11 @@ class homeController extends Controller
         $courseIds = Enrollments::where('user_id', Auth::user()->id)->where('enrolled', 'yes')
             ->pluck('courses_id');
         $courses = Courses::whereIn('id', $courseIds)->get();
+        foreach ($courses as $course) {
+            $course->cover_photo_url = $course->cover_photo && Storage::disk('public')->exists($course->cover_photo)
+                ? asset('storage/' . $course->cover_photo)
+                : asset('images/coursePlace.png');
+        }
         return view('home.myCourses', compact('courses'));
     }
 
@@ -89,8 +100,23 @@ class homeController extends Controller
     {
         $course = $this->coursesRepository->getCourseBySlug(request('slug'));
         $relatedCourses = Courses::where('categorey_id', $course->categorey_id)->take(3)->get();
+        $projects = $this->projectRepository->getGraduationProjects($course->slug);
+        $course->cover_photo_url = $course->cover_photo && Storage::disk('public')->exists($course->cover_photo)
+            ? asset('storage/' . $course->cover_photo)
+            : asset('images/coursePlace.png');
 
-        return view('home.courses.enrolledCourse', compact('course', 'relatedCourses'));
+        foreach ($relatedCourses as $item) {
+            $item->cover_photo_url = $item->cover_photo && Storage::disk('public')->exists($item->cover_photo)
+                ? asset('storage/' . $item->cover_photo)
+                : asset('images/coursePlace.png');
+        }
+
+        foreach ($course->lessons as $lesson) {
+            $lesson->cover_photo_url = $lesson->cover_photo && Storage::disk('public')->exists($lesson->cover_photo)
+                ? asset('storage/' . $lesson->image)
+                : asset('images/lessonHolder.jpg');
+        }
+        return view('home.courses.enrolledCourse', compact('course', 'relatedCourses', 'projects'));
     }
 
     public function showLesson()
