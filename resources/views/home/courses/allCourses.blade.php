@@ -27,13 +27,23 @@
                     <input type="text" x-model="search" placeholder="Search courses..."
                         class="block w-full sm:w-64 px-4 py-2 border border-gray-300 rounded-md text-sm focus:ring-[#79131d] focus:border-[#79131d]">
 
-                    <!-- Filter -->
+                    <!-- Filter by Level -->
                     <select x-model="filter"
-                        class="block bg-[#79131d] w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md text-sm text-[#e4ce96] focus:ring-[#79131d] focus:border-[#79131d]">
+                        class="block w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md text-sm text-black focus:ring-[#79131d] focus:border-[#79131d]">
                         <option value="">All Levels</option>
                         <option value="Beginner">Beginner</option>
                         <option value="Mid">Mid</option>
                         <option value="Advanced">Advanced</option>
+                    </select>
+
+                    <!-- Sort by Price -->
+                    <select x-model="sort"
+                        class="block w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md text-sm text-black focus:ring-[#79131d] focus:border-[#79131d]">
+                        <option value="">All Prices</option>
+                        <option value="0-100">0 - 100</option>
+                        <option value="100-200">100 - 200</option>
+                        <option value="200-300">200 - 300</option>
+                        <option value="300+">More than 300</option>
                     </select>
                 </div>
             </div>
@@ -42,11 +52,16 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach ($courses as $course)
                     <template
-                        x-if="(!filter || '{{ $course->level }}' === filter) && (!search || '{{ strtolower($course->title) }}'.includes(search.toLowerCase()))"
-                        x-bind="{ key: '{{ $course->id }}' }">
+                        x-if="(!filter || '{{ $course->level }}' === filter)
+                            && (!search || '{{ strtolower($course->title) }}'.includes(search.toLowerCase()))
+                            && (!sort
+                                || (sort === '0-100' && {{ $course->price ?? 0 }} <= 100)
+                                || (sort === '100-200' && {{ $course->price ?? 0 }} > 100 && {{ $course->price ?? 0 }} <= 200)
+                                || (sort === '200-300' && {{ $course->price ?? 0 }} > 200 && {{ $course->price ?? 0 }} <= 300)
+                                || (sort === '300+' && {{ $course->price ?? 0 }} > 300))"
+                        x-bind:key="{{ $course->id }}">
                         <div
                             class="bg-white rounded-lg shadow-md transition hover:shadow-xl overflow-hidden flex flex-col">
-
                             <div class="relative h-48 overflow-hidden">
                                 <img src="{{ $course->cover_photo ? asset('storage/' . $course->cover_photo) : 'https://via.placeholder.com/400x225' }}"
                                     class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
@@ -55,7 +70,7 @@
                                     {{ \Carbon\Carbon::parse($course->start_Date)->format('d M Y') }}
                                 </div>
                                 <div
-                                    class="absolute bottom-2 right-2  bg-[#000000B9] text-white text-xs px-2 py-1 rounded">
+                                    class="absolute bottom-2 right-2 bg-[#000000B9] text-white text-xs px-2 py-1 rounded">
                                     {{ ucfirst($course->level ?? 'Beginner') }}
                                 </div>
                             </div>

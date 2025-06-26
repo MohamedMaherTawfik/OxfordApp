@@ -10,6 +10,12 @@
     {{-- font awseome --}}
 </head>
 
+<style>
+    html {
+        scroll-behavior: smooth;
+    }
+</style>
+
 <body class="bg-white font-sans">
 
     <!-- Header -->
@@ -82,8 +88,11 @@
                 </div>
             </div>
 
-            <button class="mt-4 bg-[#79131DC2] hover:bg-[#79131d] px-5 py-2 rounded-md text-[#e4ce96]">Browse
-                Courses</button>
+            <a href="#courses"
+                @click.prevent="document.querySelector('#courses').scrollIntoView({ behavior: 'smooth' })"
+                class="mt-4 bg-[#79131DC2] hover:bg-[#79131d] px-5 py-2 rounded-md text-[#e4ce96]">
+                Browse Courses
+            </a>
         </div>
     </div>
 
@@ -127,7 +136,7 @@
                         </div>
                     </div>
 
-                    <a href="{{ asset('storage/pdf/oxforden.pdf') }}" target="_blank"
+                    <a href="{{ asset('pdf/oxforden.pdf') }}" target="_blank"
                         class="px-5 py-3 bg-[#79131DE0] text-white rounded-md hover:bg-[#79131d] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
                         Learn More About us
                     </a>
@@ -143,7 +152,7 @@
         $totalPages = ceil($totalCourses / $perPage);
     @endphp
 
-    <section class="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+    <section class="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8" id="courses">
         <div class="max-w-7xl mx-auto">
 
             <!-- Header -->
@@ -452,20 +461,6 @@
                         <p class="text-gray-600 text-sm">{{ count($categorey->courses) }} Courses</p>
                     </a>
                 @endforeach
-            </div>
-
-            <!-- الزر -->
-            <div class="flex justify-center mt-10 transition-all duration-700 delay-700 transform"
-                :class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'">
-                <a href="#"
-                    class="inline-flex items-center px-6 py-3 border border-transparent text-[#e4ce96] font-medium rounded-md shadow-sm text-white bg-[#79131DC9] hover:bg-[#79131d] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 transition-colors duration-200">
-                    View All Categories
-                    <svg class="ml-2 -mr-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                        <path fill-rule="evenodd"
-                            d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                            clip-rule="evenodd" />
-                    </svg>
-                </a>
             </div>
 
         </div>

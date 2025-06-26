@@ -10,6 +10,18 @@ use App\Http\Controllers\admin\SuperAdminController;
 use App\Http\Controllers\auth\AuthController;
 use App\Http\Middleware\CheckAdmin;
 
+
+Route::controller(AuthController::class)->group(function () {
+    Route::get('/register', 'signUp')->name('register');
+    Route::post('/register', 'register')->name('signup');
+    Route::get('/teacher', 'teacherRegister')->name('teacher');
+    Route::post('/teacher', 'teacher')->name('teacher');
+    Route::get('/login', 'login')->name('login');
+    Route::post('/login', 'signin')->name('signin');
+    Route::post('/logout', 'logout')->name('logout');
+});
+
+
 Route::group([], function () {
     Route::get('/', [homeController::class, 'index'])->name('home');
     Route::get('/profile', [homeController::class, 'profile'])->name('profile')->middleware('auth');
@@ -55,16 +67,6 @@ Route::group([
         Route::delete('/admin/categories/delete/{id}', 'deleteCategory')->name('admin.categories.delete');
         Route::get('/admin/chat', 'speakWithAi')->name('admin.chat');
     });
-});
-
-Route::controller(AuthController::class)->group(function () {
-    Route::get('/register', 'signUp')->name('register');
-    Route::post('/register', 'register')->name('signup');
-    Route::get('/teacher', 'teacherRegister')->name('teacher');
-    Route::post('/teacher', 'teacher')->name('teacher');
-    Route::get('/login', 'login')->name('login');
-    Route::post('/login', 'signin')->name('signin');
-    Route::post('/logout', 'logout')->name('logout');
 });
 
 
