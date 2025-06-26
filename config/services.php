@@ -35,4 +35,7 @@ return [
         ],
     ],
 
+    'openai' => [
+        'key' => env('CHAT_KEY'),
+    ],
 ];

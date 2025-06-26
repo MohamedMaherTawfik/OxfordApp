@@ -36,7 +36,6 @@ Route::group([], function () {
     Route::post('/mycourse/{slug}', [homeController::class, 'courseReview'])->name('course.review');
     Route::get('/mycourse/lesson/{slug}', [homeController::class, 'showLesson'])->name('lesson.show');
     Route::get('/allCourses', [homeController::class, 'allCourses'])->name('courses.all');
-    Route::get('/{slug}', [homeController::class, 'fromSearch'])->name('course.search')->middleware('auth');
 });
 
 Route::group([
@@ -66,6 +65,7 @@ Route::group([
         Route::post('/admin/categories/edit/{id}', 'updateCategory')->name('admin.categories.update');
         Route::delete('/admin/categories/delete/{id}', 'deleteCategory')->name('admin.categories.delete');
         Route::get('/admin/chat', 'speakWithAi')->name('admin.chat');
+        Route::post('/chat/send', 'send')->name('admin.ai')->middleware('auth');
     });
 });
 
@@ -108,4 +108,8 @@ Route::group([
         Route::get('/dashboard/zoom/access-token', 'getAccessToken')->name('acessToken');
         Route::post('/dashboard/zoom/create', 'createMeeting')->name('startMeeting');
     });
+});
+
+Route::group([], function () {
+    Route::get('/notFound/{slug}', [homeController::class, 'fromSearch'])->name('course.search')->middleware('auth');
 });

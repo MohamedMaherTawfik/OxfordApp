@@ -8,15 +8,21 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     {{-- font awseome --}}
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 </head>
 
 <style>
     html {
         scroll-behavior: smooth;
     }
+
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
 </style>
 
-<body class="bg-white font-sans">
+<body class="bg-white">
 
     <!-- Header -->
     <x-navbar />

@@ -11,6 +11,7 @@ use App\Http\Requests\adminRequest;
 use App\Models\User;
 use App\Http\Requests\updateRequest;
 use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Str;
 
 class SuperAdminController extends Controller
@@ -253,5 +254,32 @@ class SuperAdminController extends Controller
     public function speakWithAi()
     {
         return view('admin.chat.sepakAi');
+    }
+
+    public function send(Request $request)
+    {
+        $apiKey = env('CHAT_KEY');
+
+        $response = Http::post("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key={$apiKey}", [
+            'contents' => [
+                [
+                    'parts' => [
+                        ['text' => $request->message]
+                    ]
+                ]
+            ]
+        ]);
+
+        $data = $response->json();
+
+        if (isset($data['candidates'][0]['content']['parts'][0]['text'])) {
+            return response()->json([
+                'reply' => $data['candidates'][0]['content']['parts'][0]['text']
+            ]);
+        }
+
+        return response()->json([
+            'error' => $data['error']['message'] ?? 'Unexpected error from Gemini'
+        ], 500);
     }
 }
