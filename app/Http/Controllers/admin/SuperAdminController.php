@@ -12,6 +12,7 @@ use App\Models\User;
 use App\Http\Requests\updateRequest;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class SuperAdminController extends Controller
@@ -170,6 +171,11 @@ class SuperAdminController extends Controller
     public function allCourses()
     {
         $courses = Courses::get();
+        foreach ($courses as $course) {
+            $course->cover_photo_url = $course->cover_photo && Storage::disk('public')->exists($course->cover_photo)
+                ? asset('storage/' . $course->cover_photo)
+                : asset('images/coursePlace.png');
+        }
         return view('admin.courses.allCourses', compact('courses'));
     }
 

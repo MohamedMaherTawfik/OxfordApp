@@ -80,8 +80,8 @@
                         <div
                             class="course-card bg-white rounded-xl overflow-hidden shadow-md transition-all duration-300">
                             <div class="h-48 overflow-hidden">
-                                <img src="{{ asset('storage/' . $course->cover_photo) }}" alt="{{ $course->title }}"
-                                    class="w-full h-full object-cover">
+                                <img src="{{ $course->cover_photo_url }}"
+                                    class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
                             </div>
                             <div class="p-6">
                                 <div class="flex justify-between items-start mb-2">

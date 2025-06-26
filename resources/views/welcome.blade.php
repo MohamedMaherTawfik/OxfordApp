@@ -176,9 +176,9 @@
                             <div class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden flex flex-col transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1"
                                 style="animation: fadeIn 0.5s ease-in-out;">
                                 <div class="h-48 overflow-hidden relative">
-                                    <img src="{{ $course->cover_photo ? asset('storage/' . $course->cover_photo) : 'https://via.placeholder.com/400x225' }}"
-                                        alt="{{ $course->title }}"
+                                    <img src="{{ $course->cover_photo_url }}"
                                         class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
+
 
                                     <!-- Start Date (Bottom Left) -->
                                     <div

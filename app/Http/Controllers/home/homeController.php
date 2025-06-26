@@ -12,6 +12,7 @@ use App\Models\Courses;
 use App\Models\Enrollments;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class homeController extends Controller
 {
@@ -33,6 +34,11 @@ class homeController extends Controller
     {
         $courses = $this->coursesRepository->allCourses();
         $categories = $this->categoreyrepository->getAllCategories();
+        foreach ($courses as $course) {
+            $course->cover_photo_url = $course->cover_photo && Storage::disk('public')->exists($course->cover_photo)
+                ? asset('storage/' . $course->cover_photo)
+                : asset('images/coursePlace.png');
+        }
         return view('welcome', compact('courses', 'categories'));
     }
 
@@ -49,6 +55,11 @@ class homeController extends Controller
     public function showCategorey()
     {
         $category = $this->categoreyrepository->getCategoryBySlug(request('slug'));
+        foreach ($category->courses as $course) {
+            $course->cover_photo_url = $course->cover_photo && Storage::disk('public')->exists($course->cover_photo)
+                ? asset('storage/' . $course->cover_photo)
+                : asset('images/coursePlace.png');
+        }
         return view('home.categorey.show', compact('category'));
     }
 
@@ -98,6 +109,11 @@ class homeController extends Controller
     public function allCourses()
     {
         $courses = $this->coursesRepository->allCourses();
+        foreach ($courses as $course) {
+            $course->cover_photo_url = $course->cover_photo && Storage::disk('public')->exists($course->cover_photo)
+                ? asset('storage/' . $course->cover_photo)
+                : asset('images/coursePlace.png');
+        }
         return view('home.courses.allCourses', compact('courses'));
     }
 

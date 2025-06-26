@@ -63,8 +63,8 @@
                         <div
                             class="bg-white rounded-lg shadow-md transition hover:shadow-xl overflow-hidden flex flex-col">
                             <div class="relative h-48 overflow-hidden">
-                                <img src="{{ $course->cover_photo ? asset('storage/' . $course->cover_photo) : 'https://via.placeholder.com/400x225' }}"
-                                    class="w-full h-full object-cover hover:scale-105 transition-transform duration-300">
+                                <img src="{{ $course->cover_photo_url }}"
+                                    class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
                                 <div
                                     class="absolute bottom-2 left-2 bg-[#000000C5] text-white text-xs px-2 py-1 rounded">
                                     {{ \Carbon\Carbon::parse($course->start_Date)->format('d M Y') }}
