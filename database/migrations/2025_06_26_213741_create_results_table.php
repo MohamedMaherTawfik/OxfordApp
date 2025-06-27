@@ -12,11 +12,11 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('questions', function (Blueprint $table) {
+        Schema::create('results', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(quizes::class)->constrained()->cascadeOnDelete();
-            $table->string('question');
-            $table->string('slug');
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->integer('score');
             $table->timestamps();
         });
     }
@@ -26,6 +26,6 @@ return new class extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('questions');
+        Schema::dropIfExists('results');
     }
 };

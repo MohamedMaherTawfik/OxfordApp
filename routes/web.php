@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\admin\OptionController;
+use App\Http\Controllers\admin\QuestionController;
 use App\Http\Controllers\admin\teacherController;
 use App\Http\Controllers\home\homeController;
 use App\Http\Controllers\home\zoomController;
-use App\Http\Controllers\home\zoomontroller;
+use App\Http\Controllers\admin\QuizController;
 use App\Http\Middleware\Teacher;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\SuperAdminController;
@@ -69,6 +71,24 @@ Route::group([
     });
 });
 
+Route::prefix('dashboard')->middleware(['auth', Teacher::class])->group(function () {
+    Route::prefix('quizzes')->group(function () {
+        Route::get('/{course}/all', [QuizController::class, 'index'])->name('teacherDashboard.quizzes.index');
+        Route::get('/{course}/create', [QuizController::class, 'create'])->name('teacherDashboard.quizzes.create');
+        Route::post('/{course}/', [QuizController::class, 'store'])->name('teacherDashboard.quizzes.store');
+        Route::get('/{course}/{quiz}', [QuizController::class, 'show'])->name('teacherDashboard.quizzes.show');
+        Route::get('/{course}/{quiz}/edit', [QuizController::class, 'edit'])->name('teacherDashboard.quizzes.edit');
+        Route::put('/{course}/{quiz}', [QuizController::class, 'update'])->name('teacherDashboard.quizzes.update');
+        Route::delete('/{course}/{quiz}', [QuizController::class, 'destroy'])->name('teacherDashboard.quizzes.destroy');
+    });
+
+    Route::prefix('')->group(function () {
+        Route::get('/{course}/quizzes/{quiz}/questions/create', [QuestionController::class, 'create'])->name('questions.create');
+        Route::post('/{course}/quizzes/{quiz}/questions/create', [QuestionController::class, 'store'])->name('questions.store');
+        Route::delete('/{course}/quizzes/{quiz}/questions/{question}', [QuestionController::class, 'destroy'])->name('questions.destroy');
+    });
+
+});
 
 Route::group([
     'middleware' => ['auth', Teacher::class],

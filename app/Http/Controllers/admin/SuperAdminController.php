@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\admin;
 
-use App\Events\notifyTeacher;
 use App\Http\Controllers\Controller;
 use App\Models\applyTeacher;
 use App\Models\Courses;
@@ -10,7 +9,6 @@ use Illuminate\Http\Request;
 use App\Http\Requests\adminRequest;
 use App\Models\User;
 use App\Http\Requests\updateRequest;
-use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;

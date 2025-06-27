@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Courses;
 use App\Models\lesson;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
@@ -14,10 +15,14 @@ return new class extends Migration {
     {
         Schema::create('quizes', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(lesson::class)->constrained()->cascadeOnDelete();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Courses::class)->constrained()->cascadeOnDelete();
             $table->string('title');
-            $table->time('duration');
+            $table->text('description')->nullable();
+            $table->integer('duration')->nullable();
+            $table->timestamp('start_at')->nullable();
+            $table->timestamp('end_at')->nullable();
+            $table->string('slug');
             $table->timestamps();
         });
     }
