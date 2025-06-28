@@ -11,6 +11,7 @@ use App\Interfaces\LessonInterface;
 use App\Interfaces\ReviewsInterface;
 use App\Models\Courses;
 use App\Models\Enrollments;
+use App\Models\quizes;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -101,6 +102,7 @@ class homeController extends Controller
         $course = $this->coursesRepository->getCourseBySlug(request('slug'));
         $relatedCourses = Courses::where('categorey_id', $course->categorey_id)->take(3)->get();
         $projects = $this->projectRepository->getGraduationProjects($course->slug);
+        $quizzes = quizes::where('courses_id', $course->id)->get();
         $course->cover_photo_url = $course->cover_photo && Storage::disk('public')->exists($course->cover_photo)
             ? asset('storage/' . $course->cover_photo)
             : asset('images/coursePlace.png');
@@ -116,7 +118,7 @@ class homeController extends Controller
                 ? asset('storage/' . $lesson->image)
                 : asset('images/lessonHolder.jpg');
         }
-        return view('home.courses.enrolledCourse', compact('course', 'relatedCourses', 'projects'));
+        return view('home.courses.enrolledCourse', compact('course', 'relatedCourses', 'projects', 'quizzes'));
     }
 
     public function showLesson()
@@ -161,5 +163,13 @@ class homeController extends Controller
     public function contact()
     {
         return view('home.inforamtions.contactUs');
+    }
+
+    public function start()
+    {
+        $quiz = quizes::where('slug', request('quiz'))->first();
+        $quiz->load('questions.options');
+
+        return view('home.quiz.start', compact('quiz'));
     }
 }

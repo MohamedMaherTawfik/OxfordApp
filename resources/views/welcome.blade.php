@@ -429,6 +429,7 @@
             </div>
         </div>
     </section>
+
     {{-- End why choose us --}}
 
     <!-- Categories Section -->

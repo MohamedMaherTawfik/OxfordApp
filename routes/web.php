@@ -21,6 +21,8 @@ Route::controller(AuthController::class)->group(function () {
     Route::get('/login', 'login')->name('login');
     Route::post('/login', 'signin')->name('signin');
     Route::post('/logout', 'logout')->name('logout');
+    Route::get('/reset-password', 'resetPage')->name('reset.password')->middleware('auth');
+    Route::post('/reset-password', 'updatePassword')->name('password.reset')->middleware('auth');
 });
 
 
@@ -38,6 +40,8 @@ Route::group([], function () {
     Route::post('/mycourse/{slug}', [homeController::class, 'courseReview'])->name('course.review');
     Route::get('/mycourse/lesson/{slug}', [homeController::class, 'showLesson'])->name('lesson.show');
     Route::get('/allCourses', [homeController::class, 'allCourses'])->name('courses.all');
+    Route::get('/student/quizzes/{quiz}/start', [homeController::class, 'start'])
+        ->name('student.quiz.show');
 });
 
 Route::group([
