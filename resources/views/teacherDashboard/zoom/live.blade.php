@@ -1,33 +1,98 @@
 <x-teacher-panel>
 
-    <div class="text-center">
-        <h1 class="mb-4">Oxford Live Support</h1>
-        <button onclick="startZoomMeeting()" class="btn btn-primary btn-lg">
-            🚀 Start Zoom Meeting
-        </button>
-    </div>
+    {{-- ✅ Messages --}}
+    @if (session('success'))
+        <div class="bg-green-100 text-green-800 p-4 rounded mb-4 text-center mx-auto w-fit text-sm">
+            ✅ {{ session('success') }}
+        </div>
+    @endif
 
-    <script>
-        axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute(
-            'content');
+    @if (session('error'))
+        <div class="bg-red-100 text-red-800 p-4 rounded mb-4 text-center mx-auto w-fit text-sm">
+            ❌ {{ session('error') }}
+        </div>
+    @endif
 
-        function startZoomMeeting() {
-            axios.post('/dashboard/zoom/create', {
-                    topic: 'Oxford Live Chat'
-                })
-                .then(response => {
-                    if (response.data.success) {
-                        const joinUrl = response.data.data.join_url;
-                        window.open(joinUrl, '_blank');
-                    } else {
-                        alert('Zoom Error: ' + response.data.error.message);
-                    }
-                })
-                .catch(error => {
-                    console.error(error);
-                    alert('حدث خطأ أثناء بدء الاجتماع');
-                });
-        }
-    </script>
+    {{-- ✅ Connect if not connected --}}
+    @unless (session('zoom_token'))
+        <div class="flex justify-center mt-6">
+            <a href="{{ route('zoom.redirect', request('slug')) }}"
+                class="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-md shadow hover:bg-blue-700 transition">
+                Connect with Zoom
+            </a>
+        </div>
+    @endunless
+
+    {{-- ✅ Meeting actions if connected --}}
+    @if (session('zoom_token'))
+        <div class="text-center mt-6">
+            <p class="text-green-700 font-semibold mb-2">
+                Zoom connected ✅
+            </p>
+            <p class="text-sm text-gray-600">
+                {{ session('zoom_name') }} ({{ session('zoom_email') }})<br>
+                <span class="text-xs text-gray-400">ID: {{ session('zoom_user_id') }}</span>
+            </p>
+        </div>
+
+        {{-- start meeting --}}
+        <div class="flex justify-center mt-6">
+            <a href="{{ route('zoom.create', $slug) }}"
+                class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-600 text-white text-sm font-semibold rounded-full shadow hover:bg-emerald-700 transition-all duration-200">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14m-6 0a4 4 0 01-4-4V8a4 4 0 014-4h6a4 4 0 014 4v2a4 4 0 01-4 4H9z">
+                    </path>
+                </svg>
+                Start Zoom Meeting
+            </a>
+        </div>
+
+
+        {{-- meeting link --}}
+        @if (session('zoom_meeting_url_' . $slug))
+            <div class="text-center mt-6">
+                <div class="inline-block px-5 py-3 bg-blue-50 border border-blue-200 rounded-xl shadow-sm">
+                    <p class="text-blue-700 font-semibold mb-1 flex items-center justify-center gap-2">
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2"
+                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                        </svg>
+                        Meeting is live!
+                    </p>
+                    <a href="{{ session('zoom_meeting_url_' . $slug) }}" target="_blank"
+                        class="text-blue-600 underline hover:text-blue-800 text-sm font-medium">
+                        Join Now
+                    </a>
+                </div>
+            </div>
+        @endif
+
+        @auth
+            @if (auth()->user()->role == 'teacher' && session('zoom_start_url_' . $slug))
+                <div class="flex justify-center mt-4">
+                    <a href="{{ session('zoom_start_url_' . $slug) }}" target="_blank"
+                        class="px-4 py-2 bg-orange-600 text-white text-sm rounded hover:bg-orange-700 transition">
+                        Start Meeting (Admin)
+                    </a>
+                </div>
+            @endif
+        @endauth
+
+
+        {{-- Disconnect --}}
+        <div class="flex justify-center mt-4">
+            <a href="{{ route('zoom.disconnect', request('slug')) }}"
+                class="inline-flex items-center gap-2 px-4 py-1.5 bg-red-600 text-white text-xs font-semibold rounded-full shadow hover:bg-red-700 transition-all duration-200">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+                Disconnect Zoom
+            </a>
+        </div>
+
+    @endif
 
 </x-teacher-panel>

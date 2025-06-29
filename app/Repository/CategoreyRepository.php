@@ -16,7 +16,7 @@ class CategoreyRepository implements CategoryInterface
 
     public function getCategoryById($id)
     {
-        return categories::findOrFail($id);
+        return categories::with('courses')->findOrFail($id);
     }
 
     public function createCategory($data)

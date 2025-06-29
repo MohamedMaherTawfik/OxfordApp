@@ -9,6 +9,13 @@ class Courses extends Model
     protected $guarded = [];
     protected $table = 'courses';
 
+    public function enrolledUser()
+    {
+        return $this->belongsToMany(User::class, 'enrollments', 'courses_id', 'user_id')
+            ->withPivot(['price', 'transaction_type'])
+            ->withTimestamps();
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -38,9 +45,13 @@ class Courses extends Model
     {
         return $this->hasMany(Reviews::class);
     }
-
     public function quiz()
     {
         return $this->hasMany(quizes::class);
+    }
+
+    public function courseMeetings()
+    {
+        return $this->hasMany(CourseMeeting::class);
     }
 }

@@ -1,10 +1,12 @@
 <?php
 use App\Http\Controllers\api\auth\AuthController;
+use App\Http\Controllers\api\student\categoreyController;
 use App\Http\Controllers\api\student\commentController;
 use App\Http\Controllers\api\student\CourseController;
 use App\Http\Controllers\api\student\enrollmentController;
 use App\Http\Controllers\api\student\lessonController;
 use App\Http\Middleware\api\ownComment;
+use App\Http\Middleware\courseMiddleware;
 use Illuminate\Support\Facades\Route;
 
 Route::group([
@@ -22,12 +24,30 @@ Route::group([
 
 Route::group([
     'middleware' => 'api',
+    'prefix' => 'categorey'
+], function () {
+    Route::controller(categoreyController::class)->group(
+        function () {
+            Route::get('/all', 'allCategories');
+            Route::get('/detail/{id}', 'singleCategorey');
+            Route::post('/create', 'createCategory');
+            Route::post('/update/{id}', 'updateCategory');
+            Route::delete('/delete/{id}', 'deleteCategory');
+        }
+    );
+});
+
+Route::group([
+    'middleware' => 'api',
     'prefix' => 'course',
 ], function () {
     Route::controller(CourseController::class)->group(
         function () {
             Route::get('/all', 'allCourses');
             Route::get('/detail/{id}', 'courseDetail');
+            Route::post('/create', 'createCourse');
+            Route::post('/update/{id}', 'updateCourse')->middleware(courseMiddleware::class);
+            Route::delete('/delete/{id}', 'deleteCourse')->middleware(courseMiddleware::class);
         }
     );
 });

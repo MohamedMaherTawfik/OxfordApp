@@ -48,11 +48,6 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasOne(applyTeacher::class);
     }
 
-    public function course()
-    {
-        return $this->hasMany(Courses::class);
-    }
-
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *
@@ -94,5 +89,16 @@ class User extends Authenticatable implements JWTSubject
     public function result()
     {
         return $this->hasMany(Result::class);
+    }
+
+    public function course()
+    {
+        return $this->hasMany(Courses::class);
+    }
+    public function Enrolledcourse()
+    {
+        return $this->belongsToMany(Courses::class, 'enrollments', 'user_id', 'courses_id')
+            ->withPivot(['price', 'transaction_type'])
+            ->withTimestamps();
     }
 }

@@ -53,29 +53,6 @@
                             </ul>
                         </li>
 
-                        <li class="mb-1 group">
-                            <a href="#" class="flex items-center justify-between px-3 py-2 rounded-lg"
-                                style="color: #e4ce96">
-                                <div class="flex items-center">
-                                    <i class="fas fa-users mr-3"></i>
-                                    live Chat
-                                </div>
-                                <i
-                                    class="fas fa-chevron-down text-xs transform group-hover:rotate-180 transition-transform"></i>
-                            </a>
-                            <ul class="ml-6 mt-1 hidden group-hover:block">
-
-                                <li class="mb-1">
-                                    <a href="{{ route('liveChat') }}"
-                                        class="flex items-center px-3 py-2 rounded-lg text-sm hover:bg-[#E4CE9648]"
-                                        style="color: #e4ce96;">
-                                        <i class="fa-solid fa-user mr-2"></i>
-                                        Start Live Meeting
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
                     </ul>
                 </div>
             </nav>

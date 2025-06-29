@@ -42,6 +42,8 @@
                                 class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Make Quiz</a>
                             <a href="{{ route('teacher.project.all', $course->slug) }}"
                                 class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Graduation Projects </a>
+                            <a href="{{ route('liveChat', $course->slug) }}"
+                                class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Start Live </a>
 
                         </div>
                     </div>

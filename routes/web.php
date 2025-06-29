@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\admin\OptionController;
 use App\Http\Controllers\admin\QuestionController;
 use App\Http\Controllers\admin\teacherController;
 use App\Http\Controllers\home\homeController;
@@ -124,15 +123,13 @@ Route::group([
     });
 });
 
-Route::group([
-    'middleware' => ['auth']
-], function () {
-    Route::controller(zoomController::class)->group(function () {
-        Route::get('/dashboard/zoom', 'livePage')->name('liveChat');
-        Route::get('/dashboard/zoom/access-token', 'getAccessToken')->name('acessToken');
-        Route::post('/dashboard/zoom/create', 'createMeeting')->name('startMeeting');
-    });
-});
+Route::get('/dashboard/courses/{slug}/zoom', [ZoomController::class, 'livePage'])->name('liveChat');
+Route::get('/dashboard/courses/{slug}/zoom/connect', [ZoomController::class, 'redirectToZoom'])->name('zoom.redirect');
+Route::get('/dashboard/courses/{slug}/zoom/callback', [ZoomController::class, 'handleCallback'])->name('zoom.callback');
+Route::get('/dashboard/courses/{slug}/zoom/disconnect', [ZoomController::class, 'disconnectZoom'])->name('zoom.disconnect');
+Route::get('/dashboard/courses/{slug}/zoom/create-meeting', [ZoomController::class, 'createMeeting'])->name('zoom.create');
+Route::get('/dashboard/courses/{slug}/zoom/attend', [ZoomController::class, 'attendMeeting'])->name('zoom.attend');
+
 
 Route::group([], function () {
     Route::get('/notFound/{slug}', [homeController::class, 'fromSearch'])->name('course.search')->middleware('auth');
