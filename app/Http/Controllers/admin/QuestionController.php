@@ -9,6 +9,7 @@ use App\Models\questions;
 use App\Models\quizes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Validation\Rule;
 
 class QuestionController extends Controller
 {
@@ -25,14 +26,24 @@ class QuestionController extends Controller
         return view('teacherDashboard.questions.create', compact('quiz'));
     }
 
+
     public function store(Request $request)
     {
         $validated = $request->validate([
             'questions' => 'required|array',
-            'questions.*.text' => 'required|string',
+            'questions.*.text' => [
+                'required',
+                'string',
+                Rule::unique('questions', 'question')->where(fn($q) => $q->where('quizes_id', $request->quiz)),
+            ],
             'questions.*.options' => 'required|array|size:4',
             'questions.*.options.*.text' => 'required|string',
             'questions.*.options.*.is_correct' => 'required|in:true,false',
+        ], [
+            'questions.*.text.unique' => 'هذا السؤال موجود بالفعل، من فضلك اكتب سؤالًا مختلفًا.',
+            'questions.*.text.required' => 'السؤال مطلوب.',
+            'questions.*.options.*.text.required' => 'الخيار مطلوب.',
+            'questions.*.options.*.is_correct.required' => 'حدد إذا كانت الإجابة صحيحة أم لا.',
         ]);
 
         $quiz = quizes::findOrFail($request->quiz);
@@ -41,14 +52,14 @@ class QuestionController extends Controller
             $question = $quiz->questions()->create([
                 'question' => $questionData['text'],
                 'quizes_id' => $quiz->id,
-                'slug' => Str::slug($questionData['text'])
+                'slug' => Str::slug($questionData['text']),
             ]);
 
             foreach ($questionData['options'] as $option) {
                 $question->options()->create([
                     'option_text' => $option['text'],
                     'is_correct' => filter_var($option['is_correct'], FILTER_VALIDATE_BOOLEAN),
-                    'slug' => Str::slug($option['text'])
+                    'slug' => Str::slug($option['text']),
                 ]);
             }
         }
@@ -57,6 +68,7 @@ class QuestionController extends Controller
             ->route('questions.create', [request('course'), $quiz->slug])
             ->with('success', 'Questions created successfully!');
     }
+
 
     public function destroy()
     {

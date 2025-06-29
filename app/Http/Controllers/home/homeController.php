@@ -12,7 +12,9 @@ use App\Interfaces\ReviewsInterface;
 use App\Models\Courses;
 use App\Models\Enrollments;
 use App\Models\quizes;
+use App\Models\Result;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -118,7 +120,6 @@ class homeController extends Controller
                 ? asset('storage/' . $lesson->image)
                 : asset('images/lessonHolder.jpg');
         }
-        $meeting = $course->courseMeetings()->latest('start_time')->first();
         return view('home.courses.enrolledCourse', compact('course', 'relatedCourses', 'projects', 'quizzes', ));
     }
 
@@ -168,9 +169,94 @@ class homeController extends Controller
 
     public function start()
     {
-        $quiz = quizes::where('slug', request('quiz'))->first();
+        $quiz = quizes::where('slug', request('quiz'))->firstOrFail();
+
+        $existing = Result::where('user_id', auth()->id())
+            ->where('quizes_id', $quiz->id)
+            ->first();
+
+        if ($existing) {
+            return redirect()->route('student.quiz.result', $quiz->slug)
+                ->with('error', 'You already attempted this quiz.');
+        }
+
         $quiz->load('questions.options');
 
         return view('home.quiz.start', compact('quiz'));
     }
+
+
+    public function submitQuiz(Request $request, $slug)
+    {
+        $quiz = quizes::where('slug', $slug)->firstOrFail();
+
+        $existing = Result::where('user_id', auth()->id())
+            ->where('quizes_id', $quiz->id)
+            ->first();
+
+        if ($existing) {
+            return redirect()->route('student.quiz.result', $quiz->slug)
+                ->with('error', 'You already submitted this quiz.');
+        }
+
+        $answers = $request->input('answers', []);
+        $score = 0;
+
+        foreach ($quiz->questions as $question) {
+            $correctOption = $question->options()->where('is_correct', true)->first();
+            if (isset($answers[$question->id]) && $answers[$question->id] == $correctOption->id) {
+                $score++;
+            }
+        }
+
+        Result::create([
+            'user_id' => auth()->id(),
+            'quizes_id' => $quiz->id,
+            'score' => $score,
+        ]);
+
+        return redirect()->route('student.quiz.result', $quiz->slug)->with('success', 'Quiz submitted successfully!');
+    }
+
+
+    public function exitQuiz($slug)
+    {
+        $quiz = quizes::where('slug', $slug)->firstOrFail();
+
+        $existing = Result::where('user_id', auth()->id())
+            ->where('quizes_id', $quiz->id)
+            ->first();
+
+        if ($existing) {
+            return redirect()->route('student.quiz.result', $quiz->slug);
+        }
+
+        Result::create([
+            'user_id' => auth()->id(),
+            'quizes_id' => $quiz->id,
+            'score' => 0,
+        ]);
+
+        return redirect()->route('student.quiz.result', $quiz->slug)
+            ->with('error', 'You exited the quiz. Your score is 0.');
+    }
+
+
+    public function quizResult($slug)
+    {
+        $quiz = quizes::where('slug', $slug)->firstOrFail();
+        $result = Result::where('user_id', auth()->id())
+            ->where('quizes_id', $quiz->id)
+            ->latest()
+            ->first();
+
+        if (!$result) {
+            return redirect()->route('student.quiz.show', $quiz->slug)
+                ->with('error', 'No result found for this quiz.');
+        }
+
+        return view('home.quiz.result', compact('quiz', 'result'));
+    }
+
+
 }

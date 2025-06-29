@@ -41,6 +41,12 @@ Route::group([], function () {
     Route::get('/allCourses', [homeController::class, 'allCourses'])->name('courses.all');
     Route::get('/student/quizzes/{quiz}/start', [homeController::class, 'start'])
         ->name('student.quiz.show');
+    Route::post('/student/quizzes/{quiz}/submit', [homeController::class, 'submitQuiz'])
+        ->name('student.quiz.submit')
+        ->middleware('auth');
+    Route::post('/student/quizzes/{quiz}/exit', [homeController::class, 'exitQuiz'])->name('student.quiz.exit')->middleware('auth');
+    Route::get('/student/quizzes/{quiz}/result', [homeController::class, 'quizResult'])->name('student.quiz.result')->middleware('auth');
+
 });
 
 Route::group([

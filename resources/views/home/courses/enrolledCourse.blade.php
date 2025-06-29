@@ -197,32 +197,33 @@
          <div x-show="activeTab === 'quizzes'" id="quizzes-section" x-transition>
              <h3 class="text-2xl font-bold text-[#79131d] mb-4">Available Quizzes</h3>
 
-             @forelse ($quizzes as $quiz)
-                 <div class="bg-white border border-gray-200 p-6 rounded-lg mb-4 shadow-sm">
-                     <h4 class="text-xl font-semibold mb-2 text-[#79131d]">{{ $quiz->title }}</h4>
-
-                     <div class="text-gray-700 text-sm space-y-1 mb-3">
-                         <p><strong>Duration:</strong> {{ $quiz->duration }} minutes</p>
-                         <p><strong>Starts At:</strong>
-                             {{ \Carbon\Carbon::parse($quiz->start_at)->format('F j, Y g:i A') }}</p>
-                         <p><strong>Ends At:</strong>
-                             {{ \Carbon\Carbon::parse($quiz->end_at)->format('F j, Y g:i A') }}</p>
-
-                         <p>
-                             {{-- Score : {{ $result->score ? $result->score : 'N\A' }} --}}
-                         </p>
-                     </div>
-
-                     <!-- زرار Start Quiz -->
-                     <a href="{{ route('student.quiz.show', $quiz->slug) }}"
-                         onclick="window.open(this.href, 'quizWindow', 'width=1000,height=800'); return false;"
-                         class="inline-block bg-[#79131d] text-[#e4ce96] px-6 py-2 rounded hover:bg-[#5a0e16] transition">
-                         Start Quiz
-                     </a>
+             @foreach ($quizzes as $quiz)
+                 <div class="p-4 bg-white shadow rounded mb-4">
+                     <h3 class="text-lg font-semibold mb-2">{{ $quiz->title }}</h3>
+                     @php
+                         $result = Result::where('quizes_id', $quiz->id)->first();
+                     @endphp
+                     @if ($result)
+                         <span class="inline-block bg-[#79131d] text-[#e4ce96] px-4 py-2 rounded">
+                             Attempted Quiz
+                         </span>
+                         <a href="{{ route('student.quiz.result', $quiz->slug) }}"
+                             class="ml-4 inline-flex items-center gap-1 text-[#79131d] hover:text-[#5a0e16] font-medium transition">
+                             View Result
+                             <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
+                                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"></path>
+                             </svg>
+                         </a>
+                     @else
+                         <a href="{{ route('student.quiz.show', $quiz->slug) }}"
+                             class="bg-[#79131d] text-[#e4ce96] px-4 py-2 rounded hover:bg-[#5a0e16] transition">
+                             Start Quiz
+                         </a>
+                     @endif
                  </div>
-             @empty
-                 <p class="text-sm text-gray-600">No quizzes available at the moment.</p>
-             @endforelse
+             @endforeach
+
          </div>
 
          <!-- Join Meeting Section -->
