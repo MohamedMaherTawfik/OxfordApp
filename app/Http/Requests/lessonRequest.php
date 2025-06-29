@@ -22,7 +22,7 @@ class lessonRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:255|unique:lessons',
             'description' => 'required|string|max:1000',
             'video' => 'required|file|mimes:mp4,mov,avi,flv|max:1000000',
             'image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',

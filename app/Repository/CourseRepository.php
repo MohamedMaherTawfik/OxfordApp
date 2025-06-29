@@ -17,12 +17,11 @@ class CourseRepository implements CourseInterface
 
     public function allCoursesPaginated()
     {
-        return Courses::paginate(3);
+        return Courses::paginate(10);
     }
 
     public function newCourses()
     {
-        // Get the newest 3 courses
         return Courses::all()->reverse()->take(3);
     }
 

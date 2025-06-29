@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Mail\TeacherAcceptedMail;
 use App\Models\applyTeacher;
 use App\Models\Courses;
 use Illuminate\Http\Request;
@@ -10,6 +11,7 @@ use App\Http\Requests\adminRequest;
 use App\Models\User;
 use App\Http\Requests\updateRequest;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -125,8 +127,14 @@ class SuperAdminController extends Controller
         $apply = applyTeacher::findOrFail(request('id'));
         $apply->status = 'accepted';
         $apply->save();
-        User::find($apply->user_id)->update(['role' => 'teacher']);
-        return redirect()->back()->with('success', 'Apply accepted successfully.');
+
+        $user = User::find($apply->user_id);
+        $user->update(['role' => 'teacher']);
+
+        // Send mail
+        Mail::to($user->email)->send(new TeacherAcceptedMail($user));
+
+        return redirect()->back()->with('success', 'Apply accepted and email sent successfully.');
     }
 
     /**

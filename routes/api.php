@@ -58,7 +58,11 @@ Route::group([
 ], function () {
     Route::controller(lessonController::class)->group(
         function () {
+            Route::get('/all/{id}', 'allLessons');
             Route::get('/detail/{id}', 'lessonDetails');
+            Route::post('/{id}/create', 'createLesson');
+            Route::post('/update/{id}', 'updateLesson');
+            Route::delete('/delete/{id}', 'deleteLesson');
         }
     );
 });

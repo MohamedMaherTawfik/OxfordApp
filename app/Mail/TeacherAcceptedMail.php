@@ -9,9 +9,10 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class notifyTeacher extends Mailable
+class TeacherAcceptedMail extends Mailable
 {
     use Queueable, SerializesModels;
+
     public $user;
     /**
      * Create a new message instance.
@@ -27,7 +28,7 @@ class notifyTeacher extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Application Accepted',
+            subject: 'your Application has been accepted',
         );
     }
 
@@ -37,7 +38,7 @@ class notifyTeacher extends Mailable
     public function content(): Content
     {
         return new Content(
-            'mail.application_accepted',
+            view: 'mail.Accept_Teacher',
         );
     }
 

@@ -20,7 +20,7 @@ class CourseController extends Controller
 
     public function allCourses()
     {
-        $courses = $this->courseRepository->allCourses();
+        $courses = $this->courseRepository->allCoursesPaginated();
         try {
             if (count($courses) == 0) {
                 return $this->noContent();

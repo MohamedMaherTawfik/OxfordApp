@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api\student;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\lessonRequest;
 use App\Interfaces\LessonInterface;
 use Illuminate\Http\Request;
 
@@ -14,6 +15,19 @@ class lessonController extends Controller
     public function __construct(LessonInterface $lessonInterface)
     {
         $this->lessonRepository = $lessonInterface;
+    }
+
+    public function allLessons()
+    {
+        $lessons = $this->lessonRepository->allLessons(request('id'));
+        try {
+            if (count($lessons) == 0) {
+                return $this->noContent();
+            }
+            return $this->success($lessons, 'All lessons fetched Successflly');
+        } catch (\Throwable $th) {
+            return $this->serverError($th);
+        }
     }
 
     /**
@@ -34,4 +48,25 @@ class lessonController extends Controller
         }
     }
 
+    public function createLesson(lessonRequest $request)
+    {
+        $fields = $request->validated();
+        $fields['image'] = request()->file('image')->store('lessonsImage', 'public');
+        $fields['video'] = request()->file('video')->store('lessonsVideo', 'public');
+        $lesson = $this->lessonRepository->createLessonApi($fields, request('id'));
+        return $this->success($lesson);
+    }
+
+    public function updateLesson()
+    {
+        $fields = request()->all();
+        $lesson = $this->lessonRepository->updateLesson($fields, request('id'));
+        return $this->success($lesson, 'lesson Updated Successfully');
+    }
+
+    public function deleteLesson()
+    {
+        $this->lessonRepository->deleteLesson(request('id'));
+        return $this->noContent();
+    }
 }
