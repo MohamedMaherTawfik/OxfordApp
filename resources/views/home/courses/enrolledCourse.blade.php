@@ -52,6 +52,12 @@
                  Quizzes
              </a>
 
+             <a href="#" @click.prevent="activeTab = 'Join Meeting'" class="mr-6 font-medium transition-colors"
+                 :class="activeTab === 'Join Meeting' ? 'text-[#79131d] border-b-2 border-[#79131d]' :
+                     'text-gray-600 hover:text-[#79131d]'">
+                 Join Meeting
+             </a>
+
          </div>
 
          <!-- Overview Section -->
@@ -218,6 +224,28 @@
                  <p class="text-sm text-gray-600">No quizzes available at the moment.</p>
              @endforelse
          </div>
+
+         <!-- Join Meeting Section -->
+         <div x-show="activeTab === 'Join Meeting'" id="join-meeting-section" x-transition>
+             <h3 class="text-2xl font-bold text-[#79131d] mb-4">Join Live Meeting</h3>
+
+             @php
+                 $meeting = $course->courseMeetings()->latest('start_time')->first();
+             @endphp
+
+             @if ($meeting && $meeting->join_url)
+                 <div class="bg-blue-50 border border-blue-100 p-6 rounded-lg text-center">
+                     <p class="text-blue-700 font-medium mb-2">There's a live session available for this course.</p>
+                     <a href="{{ $meeting->join_url }}" target="_blank"
+                         class="inline-flex items-center px-5 py-2 bg-[#79131d] text-[#e4ce96] rounded-lg shadow hover:bg-[#5a0e16] transition text-sm font-semibold">
+                         Join Meeting Now
+                     </a>
+                 </div>
+             @else
+                 <p class="text-gray-600 text-sm">There is no active meeting currently scheduled.</p>
+             @endif
+         </div>
+
 
      </div>
 

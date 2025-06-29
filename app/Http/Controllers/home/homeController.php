@@ -118,7 +118,8 @@ class homeController extends Controller
                 ? asset('storage/' . $lesson->image)
                 : asset('images/lessonHolder.jpg');
         }
-        return view('home.courses.enrolledCourse', compact('course', 'relatedCourses', 'projects', 'quizzes'));
+        $meeting = $course->courseMeetings()->latest('start_time')->first();
+        return view('home.courses.enrolledCourse', compact('course', 'relatedCourses', 'projects', 'quizzes', ));
     }
 
     public function showLesson()

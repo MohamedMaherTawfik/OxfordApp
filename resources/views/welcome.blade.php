@@ -221,8 +221,14 @@
                                             </div>
                                             <div class="flex items-center">
                                                 <span class="text-yellow-400">★</span>
-                                                <span class="ml-1 text-gray-600">{{ $course->rating ?? 0 }}
-                                                    ({{ $course->reviews_count ?? 'no Reviews' }})
+                                                <span
+                                                    class="ml-1 text-gray-600">{{ round($course->review()->avg('rating'), 1) }}
+                                                    {{-- ({{ count($course->review) ?? 'no Reviews' }}) --}}
+                                                    @if (count($course->review) == 0)
+                                                        (No Reviews)
+                                                    @else
+                                                        ({{ count($course->review) }} Reviews)
+                                                    @endif
                                                 </span>
                                             </div>
                                         </div>

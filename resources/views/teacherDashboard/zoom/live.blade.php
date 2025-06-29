@@ -49,36 +49,18 @@
             </a>
         </div>
 
-
-        {{-- meeting link --}}
-        @if (session('zoom_meeting_url_' . $slug))
-            <div class="text-center mt-6">
-                <div class="inline-block px-5 py-3 bg-blue-50 border border-blue-200 rounded-xl shadow-sm">
-                    <p class="text-blue-700 font-semibold mb-1 flex items-center justify-center gap-2">
-                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" stroke-width="2"
-                            viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3" />
-                        </svg>
-                        Meeting is live!
-                    </p>
-                    <a href="{{ session('zoom_meeting_url_' . $slug) }}" target="_blank"
-                        class="text-blue-600 underline hover:text-blue-800 text-sm font-medium">
-                        Join Now
-                    </a>
-                </div>
-            </div>
+        @if ($meeting)
+            @auth
+                @if (auth()->user()->role == 'teacher' && $meeting->start_url)
+                    <div class="flex justify-center mt-4">
+                        <a href="{{ $meeting->start_url }}" target="_blank"
+                            class="px-4 py-2 bg-orange-600 text-white text-sm rounded hover:bg-orange-700 transition">
+                            Start Meeting
+                        </a>
+                    </div>
+                @endif
+            @endauth
         @endif
-
-        @auth
-            @if (auth()->user()->role == 'teacher' && session('zoom_start_url_' . $slug))
-                <div class="flex justify-center mt-4">
-                    <a href="{{ session('zoom_start_url_' . $slug) }}" target="_blank"
-                        class="px-4 py-2 bg-orange-600 text-white text-sm rounded hover:bg-orange-700 transition">
-                        Start Meeting (Admin)
-                    </a>
-                </div>
-            @endif
-        @endauth
 
 
         {{-- Disconnect --}}

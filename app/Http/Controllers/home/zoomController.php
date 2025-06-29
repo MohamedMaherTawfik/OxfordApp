@@ -16,7 +16,9 @@ class zoomController extends Controller
 
     public function livePage(Request $request, $slug)
     {
-        return view('teacherDashboard.zoom.live', compact('slug'));
+        $course = Courses::where('slug', $slug)->firstOrFail();
+        $meeting = $course->courseMeetings()->latest('start_time')->first();
+        return view('teacherDashboard.zoom.live', compact('slug', 'meeting'));
     }
 
     public function redirectToZoom(Request $request, $slug)
@@ -141,7 +143,10 @@ class zoomController extends Controller
 
             Mail::to($enrollment->user->email)->send(new ZoomMeetingReminderMail($enrollment->user, $course, $meeting));
         }
-
+        session([
+            'zoom_meeting_url_' . $slug => $data['join_url'],
+            'zoom_start_url_' . $slug => $data['start_url'],
+        ]);
         return redirect()->route('liveChat', $slug)->with('success', 'Meeting created and students notified by email.');
     }
 
