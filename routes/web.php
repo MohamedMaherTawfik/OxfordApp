@@ -24,6 +24,12 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/reset-password', 'updatePassword')->name('password.reset')->middleware('auth');
 });
 
+Route::get('lang/{locale}', function ($locale) {
+    if (in_array($locale, ['en', 'ar'])) {
+        session(['locale' => $locale]);
+    }
+    return redirect()->back();
+})->name('lang.switch');
 
 Route::group([], function () {
     Route::get('/', [homeController::class, 'index'])->name('home');

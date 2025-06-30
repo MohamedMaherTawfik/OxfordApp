@@ -32,20 +32,20 @@
         style="background-image: url('https://images.unsplash.com/photo-1577896851231-70ef18881754?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80');">
         <div
             class="absolute inset-0 bg-black bg-opacity-50 flex flex-col justify-center items-center text-white text-center px-6">
-            <h1 class="text-3xl md:text-4xl font-bold mb-4">Welcome to the <span class="text-[#79131d]">Oxford
-                    Platform</span></h1>
-            <p class="text-lg md:text-xl mb-6">Your journey to learning starts here. Discover skills, interact, and
-                earn
-                certified achievements.</p>
+            <h1 class="text-3xl md:text-4xl font-bold mb-4"> {{ __('messages.WelcomeMessage') }} <span
+                    class="text-[#79131d]">{{ __('messages.title') }}
+                </span></h1>
+            <p class="text-lg md:text-xl mb-6">{{ __('messages.welcomeDescription') }}</p>
 
             <!-- Search Container with Dropdown -->
             <div class="relative w-full max-w-md mx-auto" x-data="searchDropdown()">
                 <div class="flex items-center">
                     <input type="text" x-model="searchQuery" @input.debounce.300ms="searchCourses()"
-                        @focus="showDropdown = true" @click.away="showDropdown = false" placeholder="Search courses..."
+                        @focus="showDropdown = true" @click.away="showDropdown = false"
+                        placeholder="{{ __('messages.searchInside') }}"
                         class="flex-grow px-4 py-2 rounded-l-md text-black" />
                     <button @click="searchCourses()" class="bg-[#79131d] text-[#e4ce96] px-4 py-2 rounded-r-md">
-                        Search
+                        {{ __('messages.search') }}
                     </button>
                 </div>
 
@@ -97,7 +97,7 @@
             <a href="#courses"
                 @click.prevent="document.querySelector('#courses').scrollIntoView({ behavior: 'smooth' })"
                 class="mt-4 bg-[#79131DC2] hover:bg-[#79131d] px-5 py-2 rounded-md text-[#e4ce96]">
-                Browse Courses
+                {{ __('messages.Browse') }}
             </a>
         </div>
     </div>
@@ -106,10 +106,8 @@
     <section class="py-16 px-4 bg-gray-50">
         <div class="container mx-auto max-w-6xl">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-[#79131d] mb-4">About Oxford Platform</h2>
-                <p class="text-lg text-gray-600 max-w-3xl mx-auto">Empowering learners worldwide with quality
-                    education
-                    and innovative learning solutions</p>
+                <h2 class="text-3xl font-bold text-[#79131d] mb-4">{{ __('messages.about title') }}</h2>
+                <p class="text-lg text-gray-600 max-w-3xl mx-auto">{{ __('messages.empowering') }}</p>
             </div>
 
             <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -118,11 +116,9 @@
                         alt="Students learning" class="rounded-lg shadow-xl w-full h-auto">
                 </div>
                 <div>
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">Our Story</h3>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-4">{{ __('messages.story title') }}</h3>
                     <p class="text-gray-600 mb-6">
-                        Founded in 2010, Oxford Platform has grown from a small local education provider to a leading
-                        international online learning platform. We've helped over 500,000 students achieve their
-                        educational goals through our innovative courses and dedicated instructors.
+                        {{ __('messages.story description') }}
                     </p>
 
                     <div class="grid grid-cols-2 gap-4 mb-8">
@@ -131,20 +127,20 @@
                                 <i class="fas fa-graduation-cap"></i>
                             </div>
                             <h4 class="font-bold text-gray-800">500K+ Students</h4>
-                            <p class="text-sm text-gray-600">Worldwide learners</p>
+                            <p class="text-sm text-gray-600">{{ __('messages.first Square') }}</p>
                         </div>
                         <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-100">
                             <div class="text-[#79131d] text-2xl mb-2">
                                 <i class="fas fa-chalkboard-teacher"></i>
                             </div>
                             <h4 class="font-bold text-gray-800">100K+ Teachers</h4>
-                            <p class="text-sm text-gray-600">Professional educators</p>
+                            <p class="text-sm text-gray-600">{{ __('messages.second square') }}</p>
                         </div>
                     </div>
 
                     <a href="{{ asset('pdf/oxforden.pdf') }}" target="_blank"
                         class="px-5 py-3 bg-[#79131DE0] text-white rounded-md hover:bg-[#79131d] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors duration-200">
-                        Learn More About us
+                        {{ __('messages.learn more') }}
                     </a>
                 </div>
             </div>
@@ -163,8 +159,8 @@
 
             <!-- Header -->
             <div class="text-center mb-10">
-                <h2 class="text-3xl font-bold text-gray-900">Suggested Courses</h2>
-                <p class="mt-2 text-lg text-gray-600">Most Subscribed</p>
+                <h2 class="text-3xl font-bold text-gray-900">{{ __('messages.suggested') }}</h2>
+                <p class="mt-2 text-lg text-gray-600">{{ __('messages.most') }}</p>
             </div>
 
             <!-- Course Pages -->
@@ -386,25 +382,24 @@
             <!-- Title -->
             <h2 class="text-2xl font-bold text-teal-700 mb-6 transition-opacity duration-700 delay-200"
                 :class="show ? 'opacity-100' : 'opacity-0'">
-                Why Choose Our Platform?
+                {{ __('messages.why us') }}
             </h2>
 
             <!-- Paragraph -->
             <p class="max-w-3xl mx-auto text-gray-700 mb-6 transition-all duration-700 delay-300 transform"
                 :class="show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'">
-                We're not just a place to learn — we are a complete environment helping you grow.
-                Whether you're a student, graduate, teacher, or just curious, this is your place to thrive.
+                {{ __('messages.why Descrption') }}
             </p>
 
             <!-- List -->
             <ul class="text-gray-700 text-left max-w-4xl mx-auto space-y-2 mb-10">
                 <template
                     x-for="(item, index) in [
-            'Over 500,000 students and graduates started their journey with us.',
-            'A team of more than 100,000 professional teachers and trainers.',
-            'Comprehensive courses in academics, tech, personal development, and languages.',
-            'Interactive, easy content suitable for all ages and levels.',
-            'Certified achievements and career-building opportunities.'
+            '{{ __('messages.line 1') }}',
+            '{{ __('messages.line 2') }}',
+            '{{ __('messages.line 3') }}',
+            '{{ __('messages.line 4') }}',
+            '{{ __('messages.line 5') }}'
         ]"
                     :key="index">
                     <li class="transition-all duration-500 ease-out transform"
@@ -420,9 +415,9 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-5xl mx-auto">
                 <template
                     x-for="(card, idx) in [
-            { img: 'https://cdn-icons-png.flaticon.com/128/3449/3449519.png', title: '300,000+ Students' },
-            { img: 'https://cdn-icons-png.flaticon.com/128/3048/3048702.png', title: '200,000+ Graduates' },
-            { img: 'https://cdn-icons-png.flaticon.com/128/4211/4211708.png', title: '100,000+ Teachers' }
+            { img: 'https://cdn-icons-png.flaticon.com/128/3449/3449519.png', title: '300,000+ {{ __('messages.student') }}' },
+            { img: 'https://cdn-icons-png.flaticon.com/128/3048/3048702.png', title: '200,000+ {{ __('messages.grauates') }}' },
+            { img: 'https://cdn-icons-png.flaticon.com/128/4211/4211708.png', title: '100,000+ {{ __('messages.teacher') }}' }
         ]"
                     :key="idx">
                     <div class="text-center transition-all duration-700 ease-out transform"
@@ -446,9 +441,9 @@
             <!-- العنوان -->
             <div class="text-center mb-12 transition-all duration-700 transform"
                 :class="show ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-6'">
-                <h2 class="text-3xl font-bold text-[#79131d] mb-4">Explore Our Categories</h2>
+                <h2 class="text-3xl font-bold text-[#79131d] mb-4">{{ __('messages.Explore') }}</h2>
                 <p class="text-lg text-gray-600 max-w-3xl mx-auto">
-                    Browse through our diverse range of learning categories to find what interests you
+                    {{ __('messages.explore description') }}
                 </p>
             </div>
 
@@ -471,7 +466,8 @@
                         @endif
 
                         <h3 class="font-bold text-lg mb-2">{{ $categorey->name }}</h3>
-                        <p class="text-gray-600 text-sm">{{ count($categorey->courses) }} Courses</p>
+                        <p class="text-gray-600 text-sm">{{ count($categorey->courses) }}
+                            {{ __('messages.Courses') }}</p>
                     </a>
                 @endforeach
             </div>
@@ -490,8 +486,8 @@
                 x-transition:enter="transition ease-out duration-700"
                 x-transition:enter-start="opacity-0 translate-y-10"
                 x-transition:enter-end="opacity-100 translate-y-0">
-                <h2 class="text-3xl font-bold text-[#79131d] mb-4">Frequently Asked Questions</h2>
-                <p class="text-lg text-gray-600">Find answers to common questions about our platform</p>
+                <h2 class="text-3xl font-bold text-[#79131d] mb-4">{{ __('messages.FAQ') }}</h2>
+                <p class="text-lg text-gray-600">{{ __('messages.find answer') }}</p>
             </div>
 
             <!-- FAQ Items -->
@@ -508,7 +504,7 @@
                         <div class="flex items-center justify-between">
                             <h3 class="font-semibold text-lg transition-colors duration-300"
                                 :class="open ? 'text-[#e4ce96]' : 'text-gray-800 group-hover:text-[#79131d]'">
-                                How do I enroll in a course?
+                                {{ __('messages.how i enroll') }}
                             </h3>
                             <svg class="w-5 h-5 transition-all duration-300"
                                 :class="open ? 'text-[#e4ce96] rotate-180' : 'text-[#79131d]'" fill="none"
@@ -520,9 +516,7 @@
                     </button>
                     <div x-show="open" x-collapse.duration.300ms class="px-6 pb-4 pt-0 bg-[#79131d] text-[#e4ce96]"
                         style="display: none;">
-                        <p class="animate-fadeIn">To enroll in a course, simply browse our course catalog, select the
-                            course you're interested in, and click the "Enroll Now" button. You'll be guided through the
-                            registration and payment process if the course isn't free.</p>
+                        <p class="animate-fadeIn">{{ __('messages.how desrciption') }}</p>
                     </div>
                 </div>
 
@@ -538,7 +532,7 @@
                         <div class="flex items-center justify-between">
                             <h3 class="font-semibold text-lg transition-colors duration-300"
                                 :class="open ? 'text-[#e4ce96]' : 'text-gray-800 group-hover:text-[#79131d]'">
-                                Are the certificates recognized?
+                                {{ __('messages.Are Certificates') }}
                             </h3>
                             <svg class="w-5 h-5 transition-all duration-300"
                                 :class="open ? 'text-[#e4ce96] rotate-180' : 'text-[#79131d]'" fill="none"
@@ -550,9 +544,7 @@
                     </button>
                     <div x-show="open" x-collapse.duration.300ms class="px-6 pb-4 pt-0 bg-[#79131d] text-[#e4ce96]"
                         style="display: none;">
-                        <p class="animate-fadeIn">Yes, our certificates are recognized by many educational institutions
-                            and employers. Each certificate includes a unique verification code that can be used to
-                            validate its authenticity on our website.</p>
+                        <p class="animate-fadeIn">{{ __('messages.Are description') }}</p>
                     </div>
                 </div>
             </div>

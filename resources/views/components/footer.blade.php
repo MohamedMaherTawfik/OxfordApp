@@ -3,26 +3,26 @@
 
         <!-- Quick Links -->
         <div>
-            <h4 class="font-bold border-b-2 border-[#e4ce96] inline-block mb-4">Quick Links</h4>
+            <h4 class="font-bold border-b-2 border-[#e4ce96] inline-block mb-4">{{ __('messages.quick links') }}</h4>
             <ul class="space-y-2 text-gray-100">
-                <li><a href="#" class="hover:text-[#e4ce96]">Home</a></li>
-                <li><a href="#" class="hover:text-[#e4ce96]">Courses</a></li>
-                <li><a href="#" class="hover:text-[#e4ce96]">Certificates</a></li>
-                <li><a href="#" class="hover:text-[#e4ce96]">Services</a></li>
-                <li><a href="#" class="hover:text-[#e4ce96]">Specialties</a></li>
+                <li><a href="#" class="hover:text-[#e4ce96]">{{ __('messages.home') }}</a></li>
+                <li><a href="#" class="hover:text-[#e4ce96]">{{ __('messages.Courses') }}</a></li>
+                <li><a href="#" class="hover:text-[#e4ce96]">{{ __('messages.certificates') }}</a></li>
+                <li><a href="#" class="hover:text-[#e4ce96]">{{ __('messages.services') }}</a></li>
+                <li><a href="#" class="hover:text-[#e4ce96]">{{ __('messages.specialists') }}</a></li>
             </ul>
         </div>
 
         <!-- Support & Contact -->
         <div>
-            <h4 class="font-bold border-b-2 border-[#e4ce96] inline-block mb-4">Support & Contact</h4>
+            <h4 class="font-bold border-b-2 border-[#e4ce96] inline-block mb-4">{{ __('messages.SupportContact') }}</h4>
             <ul class="space-y-2 text-gray-100">
-                <li><a href="#" class="hover:text-[#e4ce96]">Who are we?</a></li>
-                <li><a href="#" class="hover:text-[#e4ce96]">Contact Us</a></li>
-                <li><a href="#" class="hover:text-[#e4ce96]">Copyright</a></li>
-                <li><a href="#" class="hover:text-[#e4ce96]">Terms of Service</a></li>
-                <li><a href="#" class="hover:text-[#e4ce96]">Privacy Policy</a></li>
-                <li><a href="#" class="hover:text-[#e4ce96]">Help Center</a></li>
+                <li><a href="#" class="hover:text-[#e4ce96]">{{ __('messages.who are we') }}</a></li>
+                <li><a href="#" class="hover:text-[#e4ce96]">{{ __('messages.contact') }}</a></li>
+                <li><a href="#" class="hover:text-[#e4ce96]">{{ __('messages.Copyrigth') }}</a></li>
+                <li><a href="#" class="hover:text-[#e4ce96]">{{ __('messages.Terms') }}</a></li>
+                <li><a href="#" class="hover:text-[#e4ce96]">{{ __('messages.privacy') }}</a></li>
+                <li><a href="#" class="hover:text-[#e4ce96]">{{ __('messages.help') }}</a></li>
             </ul>
         </div>
 
@@ -31,7 +31,7 @@
             <div class="mb-4">
                 <img src="{{ asset('images/logo.png') }}" alt="Oxford Logo"
                     class="w-24 mx-auto md:mx-0 mb-2 rounded-full">
-                <p class="font-semibold text-gray-100">Follow us on social media</p>
+                <p class="font-semibold text-gray-100">{{ __('messages.Follow us') }}</p>
                 <div class="flex justify-center md:justify-start gap-4 mt-2 text-[#e4ce96] text-xl">
                     <a href="#"><i class="fab fa-facebook-square"></i></a>
                     <a href="#"><i class="fab fa-instagram"></i></a>
@@ -40,7 +40,7 @@
                 </div>
             </div>
 
-            <p class="text-sm text-gray-100 mb-2">Learn anytime, anywhere with our app:</p>
+            <p class="text-sm text-gray-100 mb-2">{{ __('messages.learn anythime') }}</p>
             <div class="flex justify-center md:justify-start gap-4 mb-4">
                 <a href="#"><img
                         src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/512px-Google_Play_Store_badge_EN.svg.png"
@@ -50,7 +50,7 @@
                         alt="App Store" class="w-28"></a>
             </div>
 
-            <p class="text-sm text-gray-100">All rights reserved</p>
+            <p class="text-sm text-gray-100">{{ __('messages.All rigths') }}</p>
         </div>
     </div>
 </footer>

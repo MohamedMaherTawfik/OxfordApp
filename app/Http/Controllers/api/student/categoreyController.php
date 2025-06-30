@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\api\student;
 
-use App\Http\Controllers\api\student\ApiResponse;
+use App\Http\Controllers\api\student\apiResponse;
 use App\Http\Controllers\Controller;
 use App\Interfaces\CategoryInterface;
 use GrahamCampbell\ResultType\Success;

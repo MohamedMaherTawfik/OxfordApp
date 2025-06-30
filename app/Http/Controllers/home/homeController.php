@@ -75,6 +75,7 @@ class homeController extends Controller
     public function profile()
     {
         $user = Auth::user()->load('applyTeacher', 'course');
+
         return view('home.profile', compact('user'));
     }
 
