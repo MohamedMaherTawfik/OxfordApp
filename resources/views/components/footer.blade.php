@@ -50,7 +50,7 @@
                         alt="App Store" class="w-28"></a>
             </div>
 
-            <p class="text-sm text-gray-100">© MostafaAita.2025 All rights reserved</p>
+            <p class="text-sm text-gray-100">All rights reserved</p>
         </div>
     </div>
 </footer>
