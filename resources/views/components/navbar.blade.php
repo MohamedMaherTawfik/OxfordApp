@@ -1,29 +1,32 @@
 <header class="bg-white shadow-sm z-50 relative">
-    <div class="container mx-auto px-4 py-2 flex items-center justify-between">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
         <!-- Logo -->
         <div class="flex items-center gap-2">
             <img src="{{ asset('images/logo.png') }}" alt="Logo" class="h-10 w-10">
-            <span class="font-bold text-lg">{{ __('messages.title') }}</span>
+            <span class="font-bold text-lg text-[#79131d]">{{ __('messages.title') }}</span>
         </div>
 
-        <!-- Navigation -->
+        <!-- Navigation Menu (Desktop) -->
         <nav class="hidden md:flex items-center gap-6 font-semibold text-gray-800">
             <a href="/">{{ __('messages.home') }}</a>
+
             @auth
                 <a href="{{ route('myCourses') }}">{{ __('messages.MyCourses') }}</a>
             @endauth
+
             <a href="{{ route('courses.all') }}">{{ __('messages.Courses') }}</a>
 
-            <!-- More dropdown -->
-            <div class="relative group">
-                <button class="flex items-center gap-1">
+            <!-- More Dropdown -->
+            <div x-data="{ openMore: false }" class="relative">
+                <button @click="openMore = !openMore" class="flex items-center gap-1">
                     {{ __('messages.More') }}
                     <svg class="w-4 h-4 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
                     </svg>
                 </button>
-                <div
-                    class="absolute top-full left-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none group-hover:pointer-events-auto">
+
+                <div x-show="openMore" x-transition x-cloak
+                    class="absolute top-full left-0 mt-2 w-40 bg-white border rounded-lg shadow-lg z-50">
                     <a href="{{ route('about') }}"
                         class="block px-4 py-2 hover:text-[#79131d]">{{ __('messages.about') }}</a>
                     <a href="{{ route('contact') }}"
@@ -32,13 +35,12 @@
             </div>
         </nav>
 
-        <!-- Profile -->
+        <!-- Right Section -->
         <div class="flex items-center gap-4">
-
-            {{-- زرار اللغة --}}
+            {{-- Language Switch --}}
             <div x-data="{ openLang: false }" class="relative">
                 <button @click="openLang = !openLang" @click.away="openLang = false"
-                    class="text-sm font-medium px-2 py-1 focus:outline-none">
+                    class="text-sm font-medium px-2 py-1">
                     {{ app()->getLocale() === 'ar' ? 'AR' : 'EN' }}
                 </button>
 
@@ -51,11 +53,13 @@
                 </div>
             </div>
 
-            {{-- زرار ملف الشركة --}}
-            <a href="{{ asset('pdf/oxforden.pdf') }}" target="_blank"
-                class="px-4 py-2 text-white bg-[#79131d] rounded-md">{{ __('messages.profile') }}</a>
+            {{-- Company Profile Link --}}
+            <a href="{{ app()->getLocale() === 'ar' ? asset('pdf/oxfordar.pdf') : asset('pdf/oxforden.pdf') }}"
+                target="_blank" class="px-4 py-2 text-white bg-[#79131d] rounded-md hover:bg-[#5a0e16] transition">
+                {{ __('messages.profile') }}
+            </a>
 
-            {{-- المستخدم --}}
+            {{-- User Auth Menu --}}
             @auth
                 <div x-data="{ open: false }" class="relative">
                     <button @click="open = !open" @click.away="open = false" class="flex items-center gap-2">
@@ -70,8 +74,9 @@
                             class="block px-4 py-2 text-sm hover:text-[#79131d]">{{ __('messages.Myprofile') }}</a>
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
-                            <button type="submit"
-                                class="block w-full text-left px-4 py-2 text-sm hover:text-[#79131d]">{{ __('messages.logout') }}</button>
+                            <button type="submit" class="block w-full text-left px-4 py-2 text-sm hover:text-[#79131d]">
+                                {{ __('messages.logout') }}
+                            </button>
                         </form>
                     </div>
                 </div>
@@ -80,7 +85,7 @@
                     <button @click="open = !open" @click.away="open = false" class="flex items-center gap-2">
                         <img src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Profile_avatar_placeholder_large.png"
                             class="w-8 h-8 rounded-full">
-                        <div class="text-sm leading-tight">
+                        <div class="text-sm leading-tight text-left">
                             <div class="font-bold">{{ __('messages.Guest') }}</div>
                             <div class="text-gray-500">{{ __('messages.login') }} / {{ __('messages.register') }}</div>
                         </div>
@@ -96,6 +101,5 @@
                 </div>
             @endauth
         </div>
-
     </div>
 </header>

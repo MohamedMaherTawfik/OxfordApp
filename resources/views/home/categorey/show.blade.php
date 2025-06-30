@@ -37,7 +37,7 @@
             <div class="max-w-4xl mx-auto text-center">
                 <h1 class="text-4xl md:text-5xl font-bold text-[#79131d] mb-4">{{ $category->name }} Category</h1>
                 <p class="text-xl text-gray-600 max-w-2xl mx-auto">
-                    {{ $category->description ?? 'Browse our top courses in this category' }}</p>
+                    {{ $category->description ?? __('messages.categoreydescription') }}</p>
             </div>
         </div>
     </section>
@@ -49,20 +49,20 @@
                 <!-- Level Filter -->
                 <select x-model="level"
                     class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-[#79131d] focus:border-[#79131d]">
-                    <option value="">All Levels</option>
-                    <option value="Beginner">Beginner</option>
-                    <option value="Mid">Mid</option>
-                    <option value="Advanced">Advanced</option>
+                    <option value="">{{ __('messages.allLevels') }}</option>
+                    <option value="Beginner">{{ __('messages.Beginner') }}</option>
+                    <option value="Mid">{{ __('messages.mid') }}</option>
+                    <option value="Advanced">{{ __('messages.advanced') }}</option>
                 </select>
 
                 <!-- Price Sort -->
                 <select x-model="price"
                     class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-sm focus:ring-[#79131d] focus:border-[#79131d]">
-                    <option value="">All Prices</option>
+                    <option value="">{{ __('messages.allPrices') }}</option>
                     <option value="0-50">0 - 50</option>
                     <option value="50-100">50 - 100</option>
                     <option value="100-200">100 - 200</option>
-                    <option value="200+">More than 200</option>
+                    <option value="200+">{{ __('messages.Morethan') }} 200</option>
                 </select>
             </div>
 
@@ -120,7 +120,7 @@
                                             SAR</span></span>
                                     <a href="{{ route('course.show', $course->slug) }}"
                                         class="px-4 py-2 bg-[#79131d] hover:bg-[#5e0f17] text-white text-sm font-medium rounded-lg transition duration-200">
-                                        Subscribe
+                                        {{ __('messages.subscribe') }}
                                     </a>
                                 </div>
                             </div>

@@ -18,32 +18,32 @@
             <!-- Header + Controls -->
             <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8 gap-4">
                 <div class="text-center lg:text-left">
-                    <h2 class="text-3xl font-bold text-gray-900">Featured Courses</h2>
-                    <p class="text-gray-600">Boost your skills with our top-rated courses</p>
+                    <h2 class="text-3xl font-bold text-gray-900">{{ __('messages.featured') }}</h2>
+                    <p class="text-gray-600">{{ __('messages.boost') }}</p>
                 </div>
 
                 <div class="flex flex-col sm:flex-row gap-4">
                     <!-- Search -->
-                    <input type="text" x-model="search" placeholder="Search courses..."
+                    <input type="text" x-model="search" placeholder="{{ __('messages.searchCourse') }}"
                         class="block w-full sm:w-64 px-4 py-2 border border-gray-300 rounded-md text-sm focus:ring-[#79131d] focus:border-[#79131d]">
 
                     <!-- Filter by Level -->
                     <select x-model="filter"
                         class="block w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md text-sm text-black focus:ring-[#79131d] focus:border-[#79131d]">
-                        <option value="">All Levels</option>
-                        <option value="Beginner">Beginner</option>
-                        <option value="Mid">Mid</option>
-                        <option value="Advanced">Advanced</option>
+                        <option value="">{{ __('messages.allLevels') }}</option>
+                        <option value="Beginner">{{ __('messages.Beginner') }}</option>
+                        <option value="Mid">{{ __('messages.mid') }}</option>
+                        <option value="Advanced">{{ __('messages.advanced') }}</option>
                     </select>
 
                     <!-- Sort by Price -->
                     <select x-model="sort"
                         class="block w-full sm:w-auto px-4 py-2 border border-gray-300 rounded-md text-sm text-black focus:ring-[#79131d] focus:border-[#79131d]">
-                        <option value="">All Prices</option>
+                        <option value="">{{ __('messages.allPrices') }}</option>
                         <option value="0-100">0 - 100</option>
                         <option value="100-200">100 - 200</option>
                         <option value="200-300">200 - 300</option>
-                        <option value="300+">More than 300</option>
+                        <option value="300+">{{ __('messages.Morethan') }} 300</option>
                     </select>
                 </div>
             </div>
