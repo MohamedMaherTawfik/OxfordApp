@@ -1,6 +1,7 @@
 <?php
 
 
+use App\Http\Middleware\api_key;
 use App\Http\Middleware\LanguageMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
@@ -15,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(LanguageMiddleware::class);
+        $middleware->api(api_key::class);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

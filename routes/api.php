@@ -46,6 +46,7 @@ Route::group([
             Route::get('/all', 'allCourses');
             Route::get('/detail/{id}', 'courseDetail');
             Route::post('/create', 'createCourse');
+            Route::get('/search', 'searchCourses');
             Route::post('/update/{id}', 'updateCourse')->middleware(courseMiddleware::class);
             Route::delete('/delete/{id}', 'deleteCourse')->middleware(courseMiddleware::class);
         }

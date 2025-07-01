@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api\student;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\courseRequest;
 use App\Interfaces\CourseInterface;
+use App\Models\Courses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -72,4 +73,29 @@ class CourseController extends Controller
         return $this->noContent();
     }
 
+    public function searchCourses()
+    {
+        $data = request()->all();
+
+        $courses = Courses::query();
+
+        if ($data['name']) {
+            $courses->where('title', 'like', '%' . $data['name'] . '%');
+        }
+
+        if ($data['min'] !== null) {
+            $courses->where('price', '>=', $data['min']);
+        }
+
+        if ($data['max'] !== null) {
+            $courses->where('price', '<=', $data['max']);
+        }
+
+        $results = $courses->get();
+
+        return response()->json([
+            'status' => true,
+            'data' => $results
+        ]);
+    }
 }
