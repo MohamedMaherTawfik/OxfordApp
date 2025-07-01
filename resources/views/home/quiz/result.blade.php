@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <title>{{ $quiz->title }} - {{ __('messages.result') }}</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    @vite(['resources/css/app.css', 'resources/js/app.js']) {{-- Tailwind --}}
+    <!-- ✅ Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
 <body class="bg-gray-100 min-h-screen flex items-center justify-center px-4 py-10">
@@ -23,11 +24,10 @@
                 <span class="font-semibold">{{ __('messages.your_score') }}:</span>
                 <span
                     class="@if ($result->score === 0) text-red-600
-                    @elseif($result->score < $quiz->questions->count())
-                        text-yellow-600
-                    @else
-                        text-green-600 @endif
-                    font-bold text-xl">
+                            @elseif($result->score < $quiz->questions->count())
+                                text-yellow-600
+                            @else
+                                text-green-600 @endif font-bold text-xl">
                     {{ $result->score }} / {{ $quiz->questions->count() }}
                 </span>
             </p>
@@ -52,7 +52,7 @@
 
         <!-- Back Button -->
         <div class="text-center">
-            <a href="{{ url()->previous() }}"
+            <a href="{{ route('home') }}"
                 class="inline-flex items-center gap-1 text-[#79131d] hover:text-[#5a0e16] font-medium transition">
                 <svg class="w-4 h-4 rotate-180" fill="none" stroke="currentColor" stroke-width="2"
                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
