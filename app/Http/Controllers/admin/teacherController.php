@@ -12,6 +12,12 @@ use App\Interfaces\LessonInterface;
 use App\Models\Courses;
 use App\Models\Enrollments;
 use App\Models\graduationProject;
+use Google_Client;
+use Google_Service_YouTube;
+use Google_Service_YouTube_Video;
+use Google_Service_YouTube_VideoSnippet;
+use Google_Service_YouTube_VideoStatus;
+use Illuminate\Support\Facades\Session;
 
 class teacherController extends Controller
 {
@@ -90,11 +96,76 @@ class teacherController extends Controller
     public function storeLesson(lessonRequest $request)
     {
         $fields = $request->validated();
-        $fields['image'] = request()->file('image')->store('lessonsImage', 'public');
         $course = $this->courseRepository->getCourseBySlug(request('slug'));
-        $fields['video'] = request()->file('video')->store('lessonsVideo', 'public');
+
+        // 1. حفظ الصورة
+        if ($request->hasFile('image')) {
+            $fields['image'] = $request->file('image')->store('lessonsImage', 'public');
+        }
+
+        // 2. تجهيز التوكن
+        $token = Session::get('youtube_token');
+        if (!$token) {
+            return redirect()->route('google.auth')->with('error', 'يجب تسجيل الدخول بحساب Google');
+        }
+
+        $client = new Google_Client();
+        $client->setAccessToken($token);
+
+        // 3. رفع الفيديو لـ YouTube
+        $youtube = new Google_Service_YouTube($client);
+
+        $video = new Google_Service_YouTube_Video();
+
+        // عنوان ووصف الفيديو
+        $snippet = new Google_Service_YouTube_VideoSnippet();
+        $snippet->setTitle($fields['title']);
+        $snippet->setDescription($fields['description'] ?? 'Lesson uploaded via OxfordPlatform');
+        $snippet->setCategoryId("27"); // Education
+
+        // الحالة (عام، خاص، غير مدرج)
+        $status = new Google_Service_YouTube_VideoStatus();
+        $status->privacyStatus = "unlisted";
+
+        $video->setSnippet($snippet);
+        $video->setStatus($status);
+
+        // حمل الفيديو من الفورم
+        $videoFilePath = $request->file('video')->getPathname();
+        $chunkSizeBytes = 1 * 1024 * 1024; // 1MB
+
+        $client->setDefer(true);
+        $insertRequest = $youtube->videos->insert("status,snippet", $video);
+
+        $media = new \Google_Http_MediaFileUpload(
+            $client,
+            $insertRequest,
+            'video/*',
+            null,
+            true,
+            $chunkSizeBytes
+        );
+        $media->setFileSize(filesize($videoFilePath));
+
+        $status = false;
+        $handle = fopen($videoFilePath, "rb");
+        while (!$status && !feof($handle)) {
+            $chunk = fread($handle, $chunkSizeBytes);
+            $status = $media->nextChunk($chunk);
+        }
+        fclose($handle);
+
+        $client->setDefer(false);
+
+        // 4. استخراج رابط الفيديو
+        $youtubeVideoId = $status['id'];
+        $fields['video_url'] = "https://www.youtube.com/watch?v={$youtubeVideoId}";
+
+        // 5. إنشاء الدرس
         $this->lessonRepository->createLesson($fields, $course->id);
-        return redirect()->route('teacher.courses.show', ['slug' => $course->slug])->with('success', 'Lesson created successfully!');
+
+        return redirect()->route('teacher.courses.show', ['slug' => $course->slug])
+            ->with('success', 'تم رفع الدرس بنجاح ونشر الفيديو على YouTube ✅');
     }
 
     public function showLesson()

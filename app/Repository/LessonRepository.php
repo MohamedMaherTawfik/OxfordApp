@@ -25,7 +25,7 @@ class lessonRepository implements LessonInterface
         $lesson = Lesson::create([
             'title' => $data['title'],
             'description' => $data['description'],
-            'video' => $data['video'],
+            'video_url' => $data['video_url'],
             'courses_id' => $id,
             'image' => $data['image'],
             'user_id' => Auth::user()->id,
@@ -38,7 +38,7 @@ class lessonRepository implements LessonInterface
         $lesson = Lesson::create([
             'title' => $data['title'],
             'description' => $data['description'],
-            'video' => $data['video'],
+            'video_url' => $data['video'],
             'courses_id' => $id,
             'image' => $data['image'],
             'user_id' => Auth::guard('api')->user()->id,

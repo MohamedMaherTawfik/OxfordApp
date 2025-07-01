@@ -1,6 +1,15 @@
 <x-teacher-panel>
     <div class="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
         <div class="max-w-2xl w-full bg-white p-8 rounded-lg shadow-md">
+            @if (!session()->has('youtube_token'))
+                <div class="mb-4">
+                    <p class="mb-2 text-sm text-red-700">يجب تسجيل الدخول بحساب Google قبل رفع الفيديوهات</p>
+                    <a href="{{ route('google.auth') }}"
+                        class="inline-block bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition">
+                        🎥 تسجيل الدخول بحساب Google
+                    </a>
+                </div>
+            @endif
             <form method="POST" action="{{ route('teacher.lessons.store', request('slug')) }}"
                 enctype="multipart/form-data">
                 @csrf

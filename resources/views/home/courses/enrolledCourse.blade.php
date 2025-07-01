@@ -281,8 +281,9 @@
                              }"
                              @click="expandedCard = expandedCard === {{ $lesson->id }} ? null : {{ $lesson->id }}">
                              <!-- Card Image with Overlay on Hover -->
+
                              <div class="relative">
-                                 <img src="{{ $lesson->cover_photo_url }}" alt="{{ $lesson->title }}"
+                                 <img src="{{ asset('storage/' . $lesson->image) }}" alt="{{ $lesson->title }}"
                                      class="h-40 w-full object-cover transition-all duration-300"
                                      :class="{ 'brightness-75': isHovered }">
 

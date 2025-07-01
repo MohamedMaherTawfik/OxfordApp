@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\admin\QuestionController;
 use App\Http\Controllers\admin\teacherController;
+use App\Http\Controllers\home\GoogleAuthController;
 use App\Http\Controllers\home\homeController;
 use App\Http\Controllers\home\zoomController;
 use App\Http\Controllers\admin\QuizController;
@@ -141,6 +142,10 @@ Route::get('/dashboard/courses/{slug}/zoom/callback', [ZoomController::class, 'h
 Route::get('/dashboard/courses/{slug}/zoom/disconnect', [ZoomController::class, 'disconnectZoom'])->name('zoom.disconnect');
 Route::get('/dashboard/courses/{slug}/zoom/create-meeting', [ZoomController::class, 'createMeeting'])->name('zoom.create');
 Route::get('/dashboard/courses/{slug}/zoom/attend', [ZoomController::class, 'attendMeeting'])->name('zoom.attend');
+
+
+Route::get('/google/auth', [GoogleAuthController::class, 'redirectToGoogle'])->name('google.auth');
+Route::get('/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('google.callback');
 
 
 Route::group([], function () {

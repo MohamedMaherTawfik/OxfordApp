@@ -10,9 +10,11 @@
 </head>
 
 <body class="bg-gray-50 text-gray-800">
+    @php use Illuminate\Support\Str; @endphp
 
     {{-- navbar --}}
     <x-navbar />
+
     <!-- Main Container -->
     <div class="max-w-5xl mx-auto px-4 py-10">
 
@@ -23,12 +25,22 @@
         <p class="text-lg text-gray-600 mb-6">{{ $lesson->description }}</p>
 
         <!-- Video Section -->
-        <div class="aspect-w-16 aspect-h-9 mb-10">
-            <video controls class="w-full rounded-lg shadow-md">
-                <source src="{{ asset('storage/' . $lesson->video) }}" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
+        @if (Str::contains($lesson->video_url, 'youtube.com'))
+            <div class="aspect-w-16 aspect-h-9 mb-10">
+                <iframe class="w-full rounded-lg shadow-md"
+                    src="https://www.youtube.com/embed/{{ Str::after($lesson->video_url, 'v=') }}" frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen>
+                </iframe>
+            </div>
+        @else
+            <div class="aspect-w-16 aspect-h-9 mb-10">
+                <video controls class="w-full rounded-lg shadow-md">
+                    <source src="{{ asset('storage/' . $lesson->video_url) }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+        @endif
 
         <!-- Comments Section -->
         <div class="bg-white rounded-xl shadow-md p-6">
@@ -64,7 +76,8 @@
 
     {{-- footer --}}
     <x-footer />
-    <!-- Aspect Ratio Fix for Tailwind v2 (Optional) -->
+
+    <!-- Aspect Ratio Fix for Tailwind v2 -->
     <style>
         .aspect-w-16 {
             position: relative;
@@ -78,7 +91,6 @@
             height: 100%;
         }
     </style>
-
 
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </body>
