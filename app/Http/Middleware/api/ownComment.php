@@ -22,7 +22,7 @@ class ownComment
         $commentId = comments::find($request->route('id'));
         if (Auth::check()) {
 
-            if (Auth::user()->id == $commentId->user_id) {
+            if (Auth::guard('api')->user()->id == $commentId->user_id) {
                 return $next($request);
             } else {
                 return $this->unauthorized("You don't have permission to access this comment");
