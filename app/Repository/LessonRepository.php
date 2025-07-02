@@ -12,17 +12,17 @@ class lessonRepository implements LessonInterface
 {
     public function allLessons($id)
     {
-        return Lesson::where('courses_id', $id)->paginate(10);
+        return lesson::where('courses_id', $id)->paginate(10);
     }
 
     public function getLesson($id)
     {
-        return Lesson::with('comments')->find($id);
+        return lesson::with('comments')->find($id);
     }
 
     public function createLesson($data, $id)
     {
-        $lesson = Lesson::create([
+        $lesson = lesson::create([
             'title' => $data['title'],
             'description' => $data['description'],
             'video_url' => $data['video_url'],
@@ -35,7 +35,7 @@ class lessonRepository implements LessonInterface
     }
     public function createLessonApi($data, $id)
     {
-        $lesson = Lesson::create([
+        $lesson = lesson::create([
             'title' => $data['title'],
             'description' => $data['description'],
             'video_url' => $data['video'],
@@ -49,7 +49,7 @@ class lessonRepository implements LessonInterface
 
     public function updateLesson($data, $id)
     {
-        $lesson = Lesson::find($id);
+        $lesson = lesson::find($id);
         $lesson->update($data);
         return $lesson;
     }
