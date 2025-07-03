@@ -41,7 +41,7 @@ class CourseController extends Controller
             if (!$course) {
                 return $this->notFound(__('messages.Error_show_Message'));
             }
-            if ($enrollments) {
+            if (count($enrollments) == 1) {
                 return response()->json([
                     'status' => true,
                     'message' => 'single Course Fetched Successfully',
@@ -50,8 +50,17 @@ class CourseController extends Controller
                         'enrolled' => true,
                     ]
                 ], 200);
+            } else {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'single Course Fetched Successfully',
+                    'data' => [
+                            'course' => $course,
+                            'enrolled' => False,
+                        ]
+                ], 200);
             }
-            return $this->success($course, 'Course Fetched Successfully');
+
 
         } catch (\Throwable $th) {
             return $this->serverError($th);

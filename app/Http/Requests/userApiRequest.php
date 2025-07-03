@@ -29,6 +29,7 @@ class userApiRequest extends FormRequest
             'password' => ['required', 'confirmed', Password::min(8)->letters()->numbers()],
             'role' => ['required', Rule::in(['teacher', 'user'])],
             'photo' => 'required|image|max:2048',
+            'fcm' => 'nullable',
         ];
 
         if ($this->input('role') === 'teacher') {

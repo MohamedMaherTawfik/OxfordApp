@@ -32,6 +32,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
+            'fcm' => $fields['fcm'],
             'password' => $fields['password'],
             'role' => $fields['role'],
             'photo' => $fields['photo'],
@@ -74,7 +75,6 @@ class AuthController extends Controller
         if (!$user) {
             return response()->json(['message' => 'Invalid or expired OTP'], 422);
         }
-
         $user->is_verified = true;
         $user->otp = null;
         $user->otp_expires_at = null;
@@ -86,7 +86,7 @@ class AuthController extends Controller
             'message' => 'Account verified successfully.',
             'access_token' => $token,
             'token_type' => 'bearer',
-            'expires_in' => Auth::guard('api')->factory()->getTTL() * 60,
+            'expires_in' => Auth::guard('api')->factory()->getTTL() * 60 * 24 * 14,
             'user' => $user->load('applyTeacher'),
         ]);
     }
@@ -96,13 +96,16 @@ class AuthController extends Controller
     public function login()
     {
         $credentials = request(['email', 'password']);
+        $fcm = request(['fcm']);
         $token = Auth::guard('api')->attempt($credentials);
 
         if (!$token) {
             return $this->unauthorized(__('messages.Error_login'));
         }
-
         $success = $this->respondWithToken($token);
+
+        $user = $success->original['user'];
+        $user->fcm = $fcm['fcm'];
 
         return $this->success($success->original, __('messages.login'));
     }
