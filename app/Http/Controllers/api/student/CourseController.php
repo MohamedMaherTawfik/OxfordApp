@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\courseRequest;
 use App\Interfaces\CourseInterface;
 use App\Models\Courses;
+use App\Models\Enrollments;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -35,11 +36,23 @@ class CourseController extends Controller
     public function courseDetail()
     {
         $course = $this->courseRepository->getCourse(request('id'));
+        $enrollments = Enrollments::where('user_id', Auth::guard('api')->user()->id)->where('courses_id', $course->id)->get();
         try {
             if (!$course) {
                 return $this->notFound(__('messages.Error_show_Message'));
             }
-            return $this->success($course, __('messages.show_Message'));
+            if ($enrollments) {
+                return response()->json([
+                    'status' => true,
+                    'message' => 'single Course Fetched Successfully',
+                    'data' => [
+                        'course' => $course,
+                        'enrolled' => true,
+                    ]
+                ], 200);
+            }
+            return $this->success($course, 'Course Fetched Successfully');
+
         } catch (\Throwable $th) {
             return $this->serverError($th);
         }

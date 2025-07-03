@@ -101,4 +101,9 @@ class User extends Authenticatable implements JWTSubject
             ->withPivot(['price', 'transaction_type'])
             ->withTimestamps();
     }
+    function currentUser()
+    {
+        return auth('api')->check() ? auth('api')->user() : auth('web')->user();
+    }
+
 }

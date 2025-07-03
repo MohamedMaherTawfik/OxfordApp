@@ -10,6 +10,7 @@ use App\Models\applyTeacher;
 use App\Models\Courses;
 use App\Models\Enrollments;
 use App\Models\User;
+use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -109,17 +110,9 @@ class AuthController extends Controller
 
     public function profile()
     {
-        $user = Auth::user()->load('course');
-        $enrollment = Enrollments::with('course')->where('user_id', $user->id)->where('enrolled', 'yes')->pluck('courses_id');
-        $courses = Courses::whereIn('id', $enrollment)->get();
-        return response()->json(
-            [
-                'status' => 'success',
-                'message' => 'Profile',
-                'data' => $user,
-                'courses' => $courses,
-            ]
-        );
+        $user = currentUser();
+        $user->load('Enrolledcourse');
+        return $this->success($user, 'User With Coursea fetched');
 
     }
 
