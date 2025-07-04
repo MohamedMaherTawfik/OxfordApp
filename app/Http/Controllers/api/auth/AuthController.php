@@ -107,20 +107,11 @@ class AuthController extends Controller
 
         return $this->success($success->original, __('messages.login'));
     }
-    public function currentUser()
-    {
-        if (!function_exists('currentUser')) {
-            function currentUser()
-            {
-                return Auth::guard('api')->check() ? Auth::guard('api')->user() : Auth::guard('web')->user();
-            }
-            return null;
-        }
-    }
+
 
     public function profile()
     {
-        $user = $this->currentUser();
+        $user = currentUser();
         $user->load('Enrolledcourse');
         return $this->success($user, 'User With Coursea fetched');
 
@@ -162,7 +153,5 @@ class AuthController extends Controller
         }
         return $this->success($user, __('messages.update_profile'));
     }
-
-
 
 }
