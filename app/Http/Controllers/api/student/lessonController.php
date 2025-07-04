@@ -5,7 +5,6 @@ namespace App\Http\Controllers\api\student;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\lessonRequest;
 use App\Interfaces\LessonInterface;
-use Illuminate\Http\Request;
 
 class lessonController extends Controller
 {
