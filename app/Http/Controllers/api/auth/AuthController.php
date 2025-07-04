@@ -32,7 +32,7 @@ class AuthController extends Controller
         $user = User::create([
             'name' => $fields['name'],
             'email' => $fields['email'],
-            'fcm' => $fields['fcm'],
+            'fcm' => $fields['fcm'] ?? '',
             'password' => $fields['password'],
             'role' => $fields['role'],
             'photo' => $fields['photo'],
@@ -105,7 +105,10 @@ class AuthController extends Controller
         $success = $this->respondWithToken($token);
 
         $user = $success->original['user'];
-        $user->fcm = $fcm['fcm'];
+
+        if (isset($fcm['fcm'])) {
+            $user->fcm = $fcm['fcm'];
+        }
 
         return $this->success($success->original, __('messages.login'));
     }

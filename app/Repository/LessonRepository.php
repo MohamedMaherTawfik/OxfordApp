@@ -2,9 +2,7 @@
 
 namespace App\Repository;
 
-use App\Events\NewDataEvent;
 use App\Interfaces\LessonInterface;
-use App\Models\Courses;
 use App\Models\lesson;
 use Illuminate\Support\Facades\Auth;
 
