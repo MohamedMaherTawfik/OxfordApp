@@ -7,14 +7,9 @@ use App\Http\Requests\updateUserRequest;
 use App\Http\Requests\userApiRequest;
 use App\Mail\OtpMail;
 use App\Models\applyTeacher;
-use App\Models\Courses;
-use App\Models\Enrollments;
 use App\Models\User;
-use Illuminate\Container\Attributes\CurrentUser;
 use Illuminate\Http\Request;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class AuthController extends Controller
@@ -100,7 +95,7 @@ class AuthController extends Controller
         $token = Auth::guard('api')->attempt($credentials);
 
         if (!$token) {
-            return $this->unauthorized(__('messages.Error_login'));
+            return $this->unauthorized('these credintals does not match our record');
         }
         $success = $this->respondWithToken($token);
 
