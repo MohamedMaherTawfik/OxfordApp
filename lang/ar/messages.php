@@ -377,6 +377,7 @@ return [
     'select_training_days' => 'اختر ايام التدريب',
     'no_image' => 'لا توجد صورة',
     'most_enrolled_programs' => 'أكثر البرامج تسجيلاً لعام 2023',
+    'pay_later' => 'دفع لاحقاً',
     'saturday' => 'السبت',
     'sunday' => 'الأحد',
     'monday' => 'الاثنين',

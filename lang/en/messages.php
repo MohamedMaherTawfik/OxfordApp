@@ -394,6 +394,7 @@ return [
     'schedule_times' => 'Schedule Times',
     'schedule_days' => 'Schedule Days',
     'selected_days' => 'Selected Days',
+    'pay_later' => 'Pay Later',
     'schedule_cities' => 'Schedule Cities',
     'schedule_campuses' => 'Schedule Campuses',
 ];

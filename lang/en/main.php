@@ -120,5 +120,5 @@ return [
     'create_footer' => 'Create Footer',
     'homepage' => 'Homepage',
     'sign_photos' => 'Sign Photos',
-
+    'payment' => 'Payment',
 ];

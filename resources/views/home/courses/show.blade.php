@@ -216,49 +216,83 @@
                     <!-- Payment Button -->
                     <div x-show="selectedDays.length > 0 && selectedDays.every(day => scheduleTimes[day])" x-transition
                         class="text-center">
+                        <div class="flex flex-wrap justify-center gap-4 mt-6">
 
-                        @guest
-                            <form action="{{ route('pay.form.login', $course) }}" method="GET" id="paymentForm">
-                                <template x-for="day in selectedDays" :key="day">
-                                    <div>
-                                        <input type="hidden" :name="'days[' + day + '][id]'"
-                                            :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[2] : ''">
-                                        <input type="hidden" :name="'days[' + day + '][start_time]'"
-                                            :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[0] : ''">
-                                        <input type="hidden" :name="'days[' + day + '][end_time]'"
-                                            :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[1] : ''">
-                                    </div>
-                                </template>
+                            {{-- زر الدفع الأصلي --}}
+                            @if ($visaenables->visa_enable == 1)
+                                @guest
+                                    <form action="{{ route('pay.form.login', [$course, 'visa']) }}" method="GET"
+                                        id="paymentForm">
+                                        <template x-for="day in selectedDays" :key="day">
+                                            <div>
+                                                <input type="hidden" :name="'days[' + day + '][id]'"
+                                                    :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[2] : ''">
+                                                <input type="hidden" :name="'days[' + day + '][start_time]'"
+                                                    :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[0] : ''">
+                                                <input type="hidden" :name="'days[' + day + '][end_time]'"
+                                                    :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[1] : ''">
+                                            </div>
+                                        </template>
 
-                                <button type="submit"
-                                    class="px-8 py-4 bg-gradient-to-r from-[#79131d] to-[#5a0f16] hover:from-[#5a0f16] hover:to-[#79131d] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg">
-                                    {{ __('messages.proceed_to_payment') }}
-                                    <i
-                                        class="fas fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} {{ app()->getLocale() === 'ar' ? 'mr-2' : 'ml-2' }}"></i>
-                                </button>
-                            </form>
-                        @endguest
-                        @auth
-                            <form action="{{ route('pay.form', $course) }}" method="GET" id="paymentForm">
-                                <template x-for="day in selectedDays" :key="day">
-                                    <div>
-                                        <input type="hidden" :name="'days[' + day + '][id]'"
-                                            :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[2] : ''">
-                                        <input type="hidden" :name="'days[' + day + '][start_time]'"
-                                            :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[0] : ''">
-                                        <input type="hidden" :name="'days[' + day + '][end_time]'"
-                                            :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[1] : ''">
-                                    </div>
-                                </template>
+                                        <button type="submit"
+                                            class="px-8 py-4 bg-gradient-to-r from-[#79131d] to-[#5a0f16] hover:from-[#5a0f16] hover:to-[#79131d] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg">
+                                            {{ __('messages.proceed_to_payment') }}
+                                            <i
+                                                class="fas fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} {{ app()->getLocale() === 'ar' ? 'mr-2' : 'ml-2' }}"></i>
+                                        </button>
+                                    </form>
+                                @endguest
 
-                                <button type="submit"
-                                    class="px-8 py-4 bg-gradient-to-r from-[#79131d] to-[#5a0f16] hover:from-[#5a0f16] hover:to-[#79131d] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg">
-                                    {{ __('messages.proceed_to_payment') }}
-                                    <i
-                                        class="fas fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} {{ app()->getLocale() === 'ar' ? 'mr-2' : 'ml-2' }}"></i>
-                                </button>
-                            </form>
-                        @endauth
+                                @auth
+                                    <form action="{{ route('pay.form', $course) }}" method="GET" id="paymentForm">
+                                        <template x-for="day in selectedDays" :key="day">
+                                            <div>
+                                                <input type="hidden" :name="'days[' + day + '][id]'"
+                                                    :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[2] : ''">
+                                                <input type="hidden" :name="'days[' + day + '][start_time]'"
+                                                    :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[0] : ''">
+                                                <input type="hidden" :name="'days[' + day + '][end_time]'"
+                                                    :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[1] : ''">
+                                            </div>
+                                        </template>
+
+                                        <button type="submit"
+                                            class="px-8 py-4 bg-gradient-to-r from-[#79131d] to-[#5a0f16] hover:from-[#5a0f16] hover:to-[#79131d] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg">
+                                            {{ __('messages.proceed_to_payment') }}
+                                            <i
+                                                class="fas fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} {{ app()->getLocale() === 'ar' ? 'mr-2' : 'ml-2' }}"></i>
+                                        </button>
+                                    </form>
+                                @endauth
+                            @endif
+
+
+                            {{-- زر الدفع لاحقاً (نفس شكل الزر الأصلي) --}}
+                            @auth
+                                <form action="{{ route('pay.later', $course) }}" method="POST">
+                                    @csrf
+                                    <button type="submit"
+                                        class="px-8 py-4 bg-gradient-to-r from-[#444444] to-[#2f2f2f] hover:from-[#2f2f2f] hover:to-[#444444] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg">
+                                        {{ __('messages.pay_later') ?? 'الدفع لاحقاً' }}
+                                        <i class="fas fa-clock {{ app()->getLocale() === 'ar' ? 'mr-2' : 'ml-2' }}"></i>
+                                    </button>
+                                </form>
+                            @endauth
+                            @guest
+                                <form action="{{ route('pay.form.login', [$course, 'cash']) }}" method="get">
+                                    @csrf
+                                    <button type="submit"
+                                        class="px-8 py-4 bg-gradient-to-r from-[#444444] to-[#2f2f2f] hover:from-[#2f2f2f] hover:to-[#444444] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg">
+                                        {{ __('messages.pay_later') ?? 'الدفع لاحقاً' }}
+                                        <i class="fas fa-clock {{ app()->getLocale() === 'ar' ? 'mr-2' : 'ml-2' }}"></i>
+                                    </button>
+                                </form>
+                            @endguest
+
+
+                        </div>
+
+
                     </div>
 
                     <!-- Warning if no days selected -->

@@ -83,6 +83,7 @@
                         <input type="hidden" name="days[{{ $dayName }}][end_time]"
                             value="{{ $dayData['end_time'] }}">
                     @endforeach
+                    <input type="hidden" name="type" value="{{ $type }}">
 
                     <input type="hidden" name="courses_id" value="{{ $course->id }}">
 

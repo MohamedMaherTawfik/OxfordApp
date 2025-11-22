@@ -110,6 +110,7 @@ return [
     'all_diplomas_categories' => 'جميع فئات الدبلومات',
     'footer_settings' => 'إعدادات الفوتر',
     'edit_footer' => 'تعديل الفوتر',
+    'payment' => 'الدفع',
     'create_footer' => 'إنشاء فوتر',
     'homepage' => 'الصفحة الرئيسية',
     'sign_photos' => 'صور التوقيع',

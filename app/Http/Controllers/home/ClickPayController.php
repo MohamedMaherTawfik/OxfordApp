@@ -29,8 +29,9 @@ class ClickPayController
 
     public function login(Courses $course)
     {
+        $type = request('type');
         $data = request()->except('_token');
-        return view('auth.pay.login', compact('course', 'data'));
+        return view('auth.pay.login', compact('course', 'data', 'type'));
     }
 
     public function redirect(Courses $course)
@@ -38,7 +39,11 @@ class ClickPayController
         $data = request()->except('_token');
 
         if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
-            return redirect()->route('pay.form', $course->id)->with('days', $data['days']);
+            if ($data['type'] == 'visa') {
+                return redirect()->route('pay.form', $course->id)->with('days', $data['days']);
+            } else {
+                return redirect()->route('pay.later', $course->id)->with('days', $data['days']);
+            }
         }
 
         return redirect()->back()->withErrors(['email' => 'Invalid credentials']);
@@ -167,6 +172,34 @@ class ClickPayController
             'courses_id' => $course->id,
             'price' => $course->admin_price ?? $course->price,
             'enrolled' => 'yes',
+        ]);
+        return view('payment.success', compact('course'));
+    }
+
+    public function payLater(Courses $course)
+    {
+        $scheduleTimes = session('days', []); // array زي اللي وريته
+
+        $selectedDays = array_keys($scheduleTimes);
+
+        foreach ($selectedDays as $day) {
+            if (isset($scheduleTimes[$day])) {
+                $item = $scheduleTimes[$day]; // يحتوي على id و start_time و end_time
+
+                times::create([
+                    'course_schedule_id' => $item['id'],
+                    'user_id' => Auth::user()->id,
+                    'time' => $item['start_time'] . ' - ' . $item['end_time'],
+                    'day' => $day,
+                ]);
+            }
+        }
+        Enrollments::create([
+            'user_id' => Auth::id(),
+            'courses_id' => $course->id,
+            'price' => $course->admin_price ?? $course->price,
+            'enrolled' => 'yes',
+            'transaction_type' => 'cash',
         ]);
         return view('payment.success', compact('course'));
     }

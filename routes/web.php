@@ -4,6 +4,7 @@ use App\Http\Controllers\admin\AdminCreateController;
 use App\Http\Controllers\admin\diplomaCategoreyController;
 use App\Http\Controllers\admin\diplomaController;
 use App\Http\Controllers\admin\FooterController;
+use App\Http\Controllers\admin\payment\adminpaymentController;
 use App\Http\Controllers\admin\QuestionController;
 use App\Http\Controllers\admin\teacherController;
 use App\Http\Controllers\diploma\diplomaLessonController;
@@ -76,7 +77,11 @@ Route::group([], function () {
     Route::get('/admin/chat', [homeController::class, 'speakWithAi'])->name('chat');
     // Chat API route - moved from api.php to avoid api_key middleware
     Route::post('/api/chat', [\App\Http\Controllers\ChatController::class, 'sendMessage'])->name('chat.send');
+
+    Route::post('/pay/later/{course}', [ClickPayController::class, 'payLater'])->name('pay.later')->middleware('auth');
 });
+
+
 
 Route::group([
     'middleware' => ['auth', CheckAdmin::class],
@@ -238,7 +243,8 @@ Route::group([
         Route::get('/admin/zoom/join/{id}/teacher/diploma', [diplomaMeetingController::class, 'joinPage'])->name('admin.zoom.diploma.join')->middleware(CheckAdmin::class);
         Route::get('/admin/zoom/{meeting}/delete/diploma', [diplomaMeetingController::class, 'deleteZoom'])->name('admin.zoom.diploma.delete')->middleware(CheckAdmin::class);
 
-
+        Route::get('admin/payments', [adminpaymentController::class, 'index'])->name('admin.payments.index')->middleware(CheckAdmin::class);
+        Route::post('admin/payments', [adminpaymentController::class, 'edit'])->name('admin.payments.edit')->middleware(CheckAdmin::class);
     });
 });
 
@@ -300,7 +306,7 @@ Route::group([], function () {
 });
 
 
-Route::get('/pay/{course}/form/login', [ClickPayController::class, 'login'])->name('pay.form.login');
+Route::get('/pay/{course}/form/login/{type}', [ClickPayController::class, 'login'])->name('pay.form.login');
 Route::post('/pay/{course}/form/redirect', [ClickPayController::class, 'redirect'])->name('pay.form.redirect');
 
 Route::get('/pay/{course}/form', [ClickPayController::class, 'showPaymentForm'])->name('pay.form')->middleware('auth');

@@ -23,6 +23,7 @@ use App\Models\lesson;
 use App\Models\quizes;
 use App\Models\Result;
 use App\Models\studentReviews;
+use App\Models\visaenable;
 use App\Models\whyChooseUs;
 use App\Models\ZoomMeeting;
 use Illuminate\Http\Request;
@@ -95,6 +96,7 @@ class homeController extends Controller
     }
     public function showCourse()
     {
+        $visaenables = visaenable::first();
         $course = $this->coursesRepository->getCourseBySlug(request('slug'));
         $enrollmentUserIds = Enrollments::where('enrolled', 'yes')->where('courses_id', $course->id)->pluck('user_id');
         if (Auth::check()) {
@@ -107,7 +109,7 @@ class homeController extends Controller
         $course->cover_photo_url = $course->cover_photo && Storage::disk('public')->exists($course->cover_photo)
             ? asset('storage/' . $course->cover_photo)
             : asset('images/coursePlace.png');
-        return view('home.courses.show', compact('course', 'schedule'));
+        return view('home.courses.show', compact('course', 'schedule', 'visaenables'));
     }
 
     public function submitproject(Request $request, graduationProject $project)
