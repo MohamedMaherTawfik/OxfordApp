@@ -275,7 +275,7 @@
         <div class="w-16 h-16 border-[6px] border-[#79131d] border-t-transparent rounded-full animate-spin"></div>
     </div>
 
-    <div class="max-w-5xl mx-auto px-4 mb-16" x-data="{ expandedCard: null }"
+    {{-- <div class="max-w-5xl mx-auto px-4 mb-16" x-data="{ expandedCard: null }"
         dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
         <h2 class="text-2xl font-semibold mb-6">{{ __('messages.lessons_title') }}</h2>
 
@@ -394,7 +394,7 @@
                 </button>
             </div>
         @endif
-    </div>
+    </div> --}}
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
