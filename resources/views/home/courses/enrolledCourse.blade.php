@@ -105,10 +105,14 @@
                     @foreach ($times as $time)
                         @php
                             // قسم الوقت لبداية ونهاية
-                            [$start, $end] = explode(' - ', $time->time);
-                            $startFormatted = \Carbon\Carbon::createFromFormat('H:i', trim($start))->format('h:i A');
-                            $endFormatted = \Carbon\Carbon::createFromFormat('H:i', trim($end))->format('h:i A');
+                            $timeValue = explode('|', $time->time)[0]; // في حالة وجود ID بعد |
+
+                            [$start, $end] = explode(' - ', $timeValue);
+
+                            $startFormatted = date('h:i A', strtotime(trim($start)));
+                            $endFormatted = date('h:i A', strtotime(trim($end)));
                         @endphp
+
                         <tr>
                             <td class="border px-4 py-2">{{ ucfirst($time->day) }}</td>
                             <td class="border px-4 py-2">{{ $startFormatted }} - {{ $endFormatted }}</td>
