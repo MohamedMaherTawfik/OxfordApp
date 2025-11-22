@@ -23,7 +23,7 @@
                     <button id="createBtn" type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
                         {{ __('teacher.create_and_join') }}
                     </button>
-                    <a href="{{ route('teacher.index', $course) }}"
+                    <a href="{{ route('zoom.index', $course) }}"
                         class="bg-gray-600 text-white px-4 py-2 rounded">{{ __('teacher.back') }}</a>
                 </div>
             </form>
@@ -134,7 +134,7 @@
                 console.log('createResp', createResp);
                 if (!createResp.ok) {
                     logToUI('{{ __('teacher.failed_create') }}: ' + (createResp.json?.error || createResp
-                        .text),
+                            .text),
                         true);
                     return;
                 }
@@ -194,7 +194,7 @@
                                         console.log('Join success', res);
                                         logToUI(
                                             '{{ __('teacher.joined_meeting') }}'
-                                            );
+                                        );
                                     },
                                     error: function(err) {
                                         console.error('join error', err);
