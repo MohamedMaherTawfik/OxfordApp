@@ -133,8 +133,6 @@ Route::group([
     );
 });
 
-
-
 Route::group([
     'middleware' => 'api',
     'prefix' => 'diplomacategorey'
