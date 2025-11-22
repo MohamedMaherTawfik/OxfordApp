@@ -51,14 +51,12 @@ class ClickPayController
 
     public function showPaymentForm(Courses $course)
     {
-        // استرجاع البيانات من session
-        $scheduleTimes = session('days', []); // array زي اللي وريته
-
+        $scheduleTimes = session('days', []);
         $selectedDays = array_keys($scheduleTimes);
 
         foreach ($selectedDays as $day) {
             if (isset($scheduleTimes[$day])) {
-                $item = $scheduleTimes[$day]; // يحتوي على id و start_time و end_time
+                $item = $scheduleTimes[$day];
 
                 times::create([
                     'course_schedule_id' => $item['id'],
@@ -71,6 +69,28 @@ class ClickPayController
 
         return view('payment.form', compact('course'));
     }
+    public function showPaymentFormauth(Courses $course)
+    {
+        $scheduleTimes = request()->except('_token')['days'];
+        $selectedDays = array_keys($scheduleTimes);
+
+        foreach ($selectedDays as $day) {
+            if (isset($scheduleTimes[$day])) {
+                $item = $scheduleTimes[$day];
+
+                times::create([
+                    'course_schedule_id' => $item['id'],
+                    'user_id' => Auth::user()->id,
+                    'time' => $item['start_time'] . ' - ' . $item['end_time'],
+                    'day' => $day,
+                ]);
+            }
+        }
+
+        return view('payment.form', compact('course'));
+    }
+
+
 
 
 
@@ -178,13 +198,39 @@ class ClickPayController
 
     public function payLater(Courses $course)
     {
-        $scheduleTimes = session('days', []); // array زي اللي وريته
+        $scheduleTimes = session('days', []);
+        $selectedDays = array_keys($scheduleTimes);
+
+        foreach ($selectedDays as $day) {
+            if (isset($scheduleTimes[$day])) {
+                $item = $scheduleTimes[$day];
+
+                times::create([
+                    'course_schedule_id' => $item['id'],
+                    'user_id' => Auth::user()->id,
+                    'time' => $item['start_time'] . ' - ' . $item['end_time'],
+                    'day' => $day,
+                ]);
+            }
+        }
+        Enrollments::create([
+            'user_id' => Auth::id(),
+            'courses_id' => $course->id,
+            'price' => $course->admin_price ?? $course->price,
+            'enrolled' => 'yes',
+            'transaction_type' => 'cash',
+        ]);
+        return view('payment.success', compact('course'));
+    }
+    public function payLaterauth(Courses $course)
+    {
+        $scheduleTimes = request()->except('_token')['days'];
 
         $selectedDays = array_keys($scheduleTimes);
 
         foreach ($selectedDays as $day) {
             if (isset($scheduleTimes[$day])) {
-                $item = $scheduleTimes[$day]; // يحتوي على id و start_time و end_time
+                $item = $scheduleTimes[$day];
 
                 times::create([
                     'course_schedule_id' => $item['id'],
