@@ -279,10 +279,15 @@ Route::group([
         Route::get('/dashboard/courses/{slug}/certificates/assign/{user_id}', 'assignCertificate')->name('teacherDashboard.certificates.assign');
         Route::post('/dashboard/courses/{slug}/certificates/assign/{user_id}', 'storeCertificateUser')->name('teacherDashboard.certificatesUser.store');
         Route::get('/dashboard/courses/{slug}/certificates/download/{user_id}', 'downloadCertificate')->name('teacherDashboard.certificates.download');
-        Route::get('/dashboard/course-schedules/{course}', [CourseScheduleController::class, 'index'])->name('course-schedules.index');
-        Route::get('/dashboard/course-schedules/create/{course}', [CourseScheduleController::class, 'create'])->name('course-schedules.create');
-        Route::post('/dashboard/course-schedules/create/{course}', [CourseScheduleController::class, 'store'])->name('course-schedules.store');
-        Route::delete('/dashboard/course-schedules/{courseSchedule}/delete', [CourseScheduleController::class, 'destroy'])->name('course-schedules.destroy');
+        Route::get('/course-schedules/{course}/teacher', [CourseScheduleController::class, 'index'])->name('course-schedules.index');
+        Route::get('/course-schedules/{course}/{day}/{time}/students/acess/go/teacher', [CourseScheduleController::class, 'students'])->name('course-schedules.students');
+        Route::get('/course-schedules/create/{course}/{day}/teacher', [CourseScheduleController::class, 'create'])->name('course-schedules.create');
+        Route::post('/course-schedules/create/{course}/teacher', [CourseScheduleController::class, 'store'])->name('course-schedules.store');
+        Route::delete('/course-schedules/{courseSchedule}/delete/teacher', [CourseScheduleController::class, 'destroy'])->name('course-schedules.destroy');
+        Route::delete(
+            '/course-schedules/access/{access}',
+            [CourseScheduleController::class, 'revoke']
+        )->name('admin.course-schedules.students.revoke');
     });
 });
 

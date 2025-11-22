@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\teacher;
 
 use App\Http\Controllers\Controller;
+use App\Models\accessMeeting;
 use App\Models\Courses;
 use App\Models\CourseSchedule;
+use App\Models\times;
 use Illuminate\Http\Request;
 
 class CourseScheduleController extends Controller
@@ -23,7 +25,9 @@ class CourseScheduleController extends Controller
      */
     public function create(Courses $course)
     {
-        return view('teacherDashboard.schedules.create', compact('course'));
+
+        $day = request('day');
+        return view('teacherDashboard.schedules.create', compact('course', 'day'));
     }
 
     /**
@@ -46,4 +50,22 @@ class CourseScheduleController extends Controller
         $courseSchedule->delete();
         return redirect()->back()->with('success', 'Schedule deleted successfully!');
     }
+
+    public function students(Courses $course)
+    {
+        $schedules = CourseSchedule::where('courses_id', $course->id)->pluck('id');
+        $times = times::whereIn('course_schedule_id', $schedules)
+            ->where('day', request('day'))->where('time', 'like', request('time') . '%')
+            ->get();
+
+        return view('teacherDashboard.schedules.assigns', compact('course', 'times'));
+    }
+
+
+    public function revoke(accessMeeting $access)
+    {
+        $access->delete();
+        return redirect()->back()->with('success', 'Access removed successfully');
+    }
+
 }
