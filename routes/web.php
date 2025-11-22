@@ -78,7 +78,10 @@ Route::group([], function () {
     // Chat API route - moved from api.php to avoid api_key middleware
     Route::post('/api/chat', [\App\Http\Controllers\ChatController::class, 'sendMessage'])->name('chat.send');
 
-    Route::post('/pay/later/{course}', [ClickPayController::class, 'payLater'])->name('pay.later')->middleware('auth');
+    Route::get('/pay/later/{course}', [ClickPayController::class, 'payLater'])->name('pay.later')->middleware('auth');
+    Route::get('/pay-later-redirect/{course}', function ($course) {
+        return view('payments.auto-submit', compact('course'));
+    })->name('pay.later.redirect');
 });
 
 

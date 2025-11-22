@@ -13,13 +13,13 @@
         body {
             font-family: 'Cairo', sans-serif;
         }
-        
+
         /* RTL Support */
         [dir="rtl"] {
             direction: rtl;
             text-align: right;
         }
-        
+
         #meetingSDKElement {
             width: 100%;
             height: 100vh;
@@ -94,36 +94,29 @@
                 <p class="text-gray-700 mb-3">{{ $course->description }}</p>
             </div>
 
-            <!-- Course Schedule Table -->
-            @if ($course->courseSchedules && count($course->courseSchedules) > 0)
-                <div class="bg-white shadow-md rounded-lg overflow-hidden mb-6">
-                    <table class="min-w-full border border-gray-200">
-                        <thead class="bg-gray-100">
-                            <tr>
-                                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 border-b">
-                                    {{ __('messages.day') }}</th>
-                                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 border-b">
-                                    {{ __('messages.start_time') }}</th>
-                                <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700 border-b">
-                                    {{ __('messages.end_time') }}</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($course->courseSchedules->sortByDesc('created_at')->take(3) as $schedule)
-                                <tr class="hover:bg-gray-50 transition">
-                                    <td class="px-4 py-2 text-sm text-gray-700 border-b">{{ $schedule->day }}</td>
-                                    <td class="px-4 py-2 text-sm text-gray-700 border-b">{{ $schedule->start_time }}
-                                    </td>
-                                    <td class="px-4 py-2 text-sm text-gray-700 border-b">{{ $schedule->end_time }}
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            @else
-                <p class="text-gray-500 mb-6">{{ __('messages.no_schedule') }}</p>
-            @endif
+            <table class="min-w-full border border-gray-300">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="border px-4 py-2">Day</th>
+                        <th class="border px-4 py-2">Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($times as $time)
+                        @php
+                            // قسم الوقت لبداية ونهاية
+                            [$start, $end] = explode(' - ', $time->time);
+                            $startFormatted = \Carbon\Carbon::createFromFormat('H:i', trim($start))->format('h:i A');
+                            $endFormatted = \Carbon\Carbon::createFromFormat('H:i', trim($end))->format('h:i A');
+                        @endphp
+                        <tr>
+                            <td class="border px-4 py-2">{{ ucfirst($time->day) }}</td>
+                            <td class="border px-4 py-2">{{ $startFormatted }} - {{ $endFormatted }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+
 
 
         </div>

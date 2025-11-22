@@ -23,6 +23,7 @@ use App\Models\lesson;
 use App\Models\quizes;
 use App\Models\Result;
 use App\Models\studentReviews;
+use App\Models\times;
 use App\Models\visaenable;
 use App\Models\whyChooseUs;
 use App\Models\ZoomMeeting;
@@ -191,10 +192,11 @@ class homeController extends Controller
         }
 
         $result = Result::where('user_id', Auth::user()->id)->get();
-
+        $schedules = CourseSchedule::where('courses_id', $course->id)->pluck('id');
+        $times = times::whereIn('course_schedule_id', $schedules)->where('user_id', Auth::user()->id)->get();
         $assignemtns = assignment_submission::where('user_id', Auth::user()->id)->get();
 
-        return view('home.courses.enrolledCourse', compact('course', 'relatedCourses', 'projects', 'quizzes', 'zoommeeting', 'result', 'assignemtns'));
+        return view('home.courses.enrolledCourse', compact('course', 'times', 'relatedCourses', 'projects', 'quizzes', 'zoommeeting', 'result', 'assignemtns'));
     }
 
     public function showLesson()
