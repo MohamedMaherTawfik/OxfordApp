@@ -18,4 +18,9 @@ class CourseSchedule extends Model
     {
         return $this->belongsTo(Diplomas::class, 'diplomas_id');
     }
+
+    public function times()
+    {
+        return $this->hasMany(times::class);
+    }
 }

@@ -7,6 +7,7 @@ use App\Models\accessMeeting;
 use App\Models\Courses;
 use App\Models\CourseSchedule;
 use App\Models\Enrollments;
+use App\Models\times;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +25,7 @@ class certificateControllerAdmin extends Controller
      */
     public function create(Courses $course)
     {
+
         $day = request('day');
         return view('adminCourse.schedules.create', compact('course', 'day'));
     }
@@ -51,30 +53,14 @@ class certificateControllerAdmin extends Controller
 
     public function students(Courses $course)
     {
-        $day = request('day');
-        $enrollments = Enrollments::where('courses_id', $course->id)->pluck('user_id');
-        $users = User::whereIn('id', $enrollments)->get();
-        $access = accessMeeting::where('day', $day)->where('courses_id', $course->id)->get();
-        return view('adminCourse.schedules.assigns', compact('course', 'users', 'day', 'access'));
+        $schedules = CourseSchedule::where('courses_id', $course->id)->pluck('id');
+        $times = times::whereIn('course_schedule_id', $schedules)
+            ->where('day', request('day'))->where('time', 'like', request('time') . '%')
+            ->get();
+
+        return view('adminCourse.schedules.assigns', compact('course', 'times'));
     }
 
-
-    public function access(Courses $course, $day)
-    {
-        $userIds = request('users', []); // مصفوفة المستخدمين المختارين
-
-        foreach ($userIds as $userId) {
-            accessMeeting::create([
-                'user_id' => $userId,
-                'teacher_id' => Auth::id(),
-                'courses_id' => $course->id,
-                'access' => true,
-                'day' => $day,
-            ]);
-        }
-
-        return redirect()->back()->with('success', 'Access granted successfully!');
-    }
 
     public function revoke(accessMeeting $access)
     {

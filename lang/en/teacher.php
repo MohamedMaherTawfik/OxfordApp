@@ -153,6 +153,9 @@ return [
     'no_schedules' => 'No schedules added yet.',
     'create_meeting' => 'Create Zoom Meeting',
     'topic' => 'Topic',
+    'time' => 'Time',
+    'student_email' => 'Student Email',
+    'student_name' => 'Student Name',
     'date_time_local' => 'Date & Time (local)',
     'create_and_join' => 'Create & Join',
     'back' => 'Back',
@@ -179,7 +182,7 @@ return [
     'join_web' => 'Join (Web)',
     'open_app' => 'Open App',
     'no_meetings' => 'No meetings yet ',
-
+    'show_students' => 'Show Students',
     'add_time' => 'Add Time',
     'delete_time' => 'Delete Time',
     'assign_students' => 'Assign Students',

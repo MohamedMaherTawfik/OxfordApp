@@ -103,6 +103,7 @@ class homeController extends Controller
             }
         }
         $schedule = CourseSchedule::where('courses_id', $course->id)->get();
+        // dd($schedule);
         $course->cover_photo_url = $course->cover_photo && Storage::disk('public')->exists($course->cover_photo)
             ? asset('storage/' . $course->cover_photo)
             : asset('images/coursePlace.png');

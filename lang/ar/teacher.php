@@ -18,9 +18,13 @@ return [
     'your_courses' => 'كورساتك',
     // Existing translations...
     'assign_certificate_to' => 'تعيين الشهادة لـ',
+    'student_email' => 'بريد الطالب',
     'certificate' => 'الشهادة',
     'assign' => 'تعيين',
+    'time' => 'الوقت',
+    'student_name' => 'اسم الطالب',
     'create_certificate' => 'إنشاء شهادة',
+    'show_students' => 'اظهار الطلاب',
     'assign_certificate_to_student' => 'تعيين الشهادة للطالب',
     'revoke' => 'حذف',
     'certificate_name' => 'اسم الشهادة',

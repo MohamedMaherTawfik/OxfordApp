@@ -4,6 +4,7 @@ namespace App\Http\Controllers\home;
 
 use App\Models\Courses;
 use App\Models\Enrollments;
+use App\Models\times;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -28,8 +29,27 @@ class ClickPayController
 
     public function showPaymentForm(Courses $course)
     {
+        $scheduleTimes = request('days', []); // array زي اللي وريته
+
+        $selectedDays = array_keys($scheduleTimes); // ["saturday", "monday", "wednesday"]
+
+        foreach ($selectedDays as $day) {
+            if (isset($scheduleTimes[$day])) {
+                $item = $scheduleTimes[$day]; // item يحتوي على id و start_time و end_time
+
+                times::create([
+                    'course_schedule_id' => $item['id'], // ID
+                    'user_id' => Auth::user()->id,
+                    'time' => $item['start_time'] . ' - ' . $item['end_time'], // تخزين الوقت كنص
+                    'day' => $day,
+                ]);
+            }
+        }
+
         return view('payment.form', compact('course'));
     }
+
+
 
     public function initiatePayment(Request $request, Courses $course)
     {

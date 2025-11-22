@@ -8,7 +8,6 @@
                 <h1 class="text-2xl font-bold text-gray-700">
                     {{ $course->title }} {{ __('teacher.course_schedules') }}
                 </h1>
-
             </div>
 
             <!-- رسالة نجاح -->
@@ -45,34 +44,38 @@
                                 <td class="py-4 px-4 border-b font-semibold">
                                     {{ $day }}
                                 </td>
-                                @foreach ($schedules as $item)
-                                    @if ($item->day == $key)
-                                        <td class="py-4 px-4 border-b font-semibold">
-                                            {{ $item->start_time ?? '' }}
-                                        </td>
-                                        <td class="py-4 px-4 border-b font-semibold">
-                                            {{ $item->end_time ?? '' }}
-                                        </td>
-                                    @endif
-                                @endforeach
+                                <td class="py-4 px-4 border-b">
+                                    @foreach ($schedules->where('day', $key) as $item)
+                                        <div class="flex justify-center items-center gap-3 mb-1">
+                                            <span>{{ $item->start_time }}</span>
+                                            <span>-</span>
+                                            <span>{{ $item->end_time }}</span>
 
+                                            <!-- زرار Show Students -->
+                                            <a href="{{ route('admin.course-schedules.students', [$course, $key, $item->start_time]) }}"
+                                                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded shadow text-sm">
+                                                {{ __('teacher.show_students') }}
+                                            </a>
+
+                                        </div>
+                                    @endforeach
+                                </td>
+                                <td class="py-4 px-4 border-b"></td>
+                                <!-- ممكن نسيبها فاضية أو تحذف العمود لو مش محتاج -->
 
                                 @php
                                     $hasSchedule = $schedules->where('day', $key)->count() > 0;
-                                    $daySchedule = $schedules->where('day', $key)->first();
                                 @endphp
 
                                 <td class="py-4 px-4 border-b flex justify-center gap-3">
+                                    {{-- زرار إضافة ميعاد --}}
+                                    <a href="{{ route('admin.course-schedules.create', [$course, $key]) }}"
+                                        class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded shadow">
+                                        {{ __('teacher.add_time') }}
+                                    </a>
 
-                                    @if (!$hasSchedule)
-                                        {{-- لا يوجد ميعاد => يظهر زر الإضافة فقط --}}
-                                        <a href="{{ route('admin.course-schedules.create', [$course, $key]) }}"
-                                            class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded shadow">
-                                            {{ __('teacher.add_time') }}
-                                        </a>
-                                    @else
-                                        {{-- يوجد ميعاد => إخفاء الإضافة وإظهار حذف + تحديد الطلاب --}}
-
+                                    {{-- زرار حذف اليوم --}}
+                                    @if ($hasSchedule)
                                         <form action="{{ route('admin.course-schedules.destroy', [$course, $key]) }}"
                                             method="POST">
                                             @csrf
@@ -83,13 +86,7 @@
                                                 {{ __('teacher.delete_time') }}
                                             </button>
                                         </form>
-
-                                        <a href="{{ route('admin.course-schedules.students', [$course, $day]) }}"
-                                            class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded shadow">
-                                            {{ __('teacher.assign_students') }}
-                                        </a>
                                     @endif
-
                                 </td>
 
                             </tr>

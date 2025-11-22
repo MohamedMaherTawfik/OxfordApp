@@ -192,8 +192,8 @@ Route::group([
         Route::get('/admin/courses/{slug}/certificates/download/{user_id}/admin', 'downloadCertificate')->name('admin.certificates.download');
 
         Route::get('/admin/course-schedules/{course}/admin', [certificateControllerAdmin::class, 'index'])->name('admin.course-schedules.index');
-        Route::get('/admin/course-schedules/{course}/{day}/admin/students/acess', [certificateControllerAdmin::class, 'students'])->name('admin.course-schedules.students');
-        Route::post('/admin/course-schedules/{course}/{day}/admin/students/acess', [certificateControllerAdmin::class, 'access'])->name('admin.course-schedules.students');
+        Route::get('/admin/course-schedules/{course}/{day}/{time}/admin/students/acess/go/students', [certificateControllerAdmin::class, 'students'])->name('admin.course-schedules.students');
+        // Route::post('/admin/course-schedules/{course}/{day}/admin/students/acess', [certificateControllerAdmin::class, 'access'])->name('admin.course-schedules.students');
         Route::get('/admin/course-schedules/create/{course}/{day}/admin', [certificateControllerAdmin::class, 'create'])->name('admin.course-schedules.create');
         Route::post('/admin/course-schedules/create/{course}/admin', [certificateControllerAdmin::class, 'store'])->name('admin.course-schedules.store');
         Route::delete('/admin/course-schedules/{courseSchedule}/delete/admin', [certificateControllerAdmin::class, 'destroy'])->name('admin.course-schedules.destroy');
@@ -201,7 +201,6 @@ Route::group([
             '/admin/course-schedules/access/{access}',
             [certificateControllerAdmin::class, 'revoke']
         )->name('admin.course-schedules.students.revoke');
-
 
 
         Route::get('/admin/diplomas/categoreis', [diplomaCategoreyController::class, 'index'])->name('diplomas.categorey.index');
