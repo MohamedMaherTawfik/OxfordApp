@@ -300,6 +300,9 @@ Route::group([], function () {
 });
 
 
+Route::get('/pay/{course}/form/login', [ClickPayController::class, 'login'])->name('pay.form.login');
+Route::post('/pay/{course}/form/redirect', [ClickPayController::class, 'redirect'])->name('pay.form.redirect');
+
 Route::get('/pay/{course}/form', [ClickPayController::class, 'showPaymentForm'])->name('pay.form')->middleware('auth');
 Route::post('/pay/{course}/init', [ClickPayController::class, 'initiatePayment'])->name('pay.initiate')->middleware('auth');
 Route::get('/pay/callback/{course}', [ClickPayController::class, 'callback'])->name('pay.callback');

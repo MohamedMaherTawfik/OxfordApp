@@ -131,7 +131,6 @@
             </div>
         </div>
     </section>
-
     <!-- Training Schedule Selection - Updated -->
     <section class="py-12 bg-white" x-data="scheduleSelector()">
         <div class="container mx-auto px-4 md:px-6">
@@ -142,6 +141,7 @@
             <div class="max-w-5xl mx-auto">
                 <div
                     class="bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 p-6">
+
                     <!-- Schedule Table -->
                     <div class="overflow-x-auto mb-6">
                         <table class="min-w-full">
@@ -157,7 +157,6 @@
                                 </tr>
                             </thead>
                             <tbody class="divide-y divide-gray-200">
-
                                 @php
                                     $days = [
                                         'saturday' => __('messages.saturday'),
@@ -172,33 +171,37 @@
                                 @foreach ($days as $dayKey => $dayName)
                                     <tr class="hover:bg-gray-50 transition-colors"
                                         :class="selectedDays.includes('{{ $dayKey }}') ? 'bg-green-50' : ''">
-
-                                        <td class="px-6 py-4 font-medium text-gray-900">
-                                            {{ $dayName }}
-                                        </td>
-
+                                        <td class="px-6 py-4 font-medium text-gray-900">{{ $dayName }}</td>
                                         <td class="px-6 py-4 text-center">
-                                            <select x-model="scheduleTimes.{{ $dayKey }}" class="...">
-                                                <option value="">{{ __('messages.select_time') }}</option>
+                                            <select x-model="scheduleTimes.{{ $dayKey }}"
+                                                class="border border-gray-300 rounded-lg px-3 py-2 w-full">
+                                                <option value="">-- {{ __('messages.select_time') }} --</option>
                                                 @php $printed = []; @endphp
                                                 @foreach ($schedule as $item)
                                                     @if ($item->day == $dayKey)
                                                         @php
-                                                            $time = $item->start_time . '-' . $item->end_time;
+                                                            $start = \Carbon\Carbon::parse($item->start_time)->format(
+                                                                'g:i A',
+                                                            );
+                                                            $end = \Carbon\Carbon::parse($item->end_time)->format(
+                                                                'g:i A',
+                                                            );
+                                                            $timeValue =
+                                                                $item->start_time .
+                                                                '|' .
+                                                                $item->end_time .
+                                                                '|' .
+                                                                $item->id;
                                                         @endphp
-                                                        @if (!in_array($time, $printed))
-                                                            @php $printed[] = $time; @endphp
-                                                            <option
-                                                                value="{{ $item->start_time }}|{{ $item->end_time }}|{{ $item->id }}">
-                                                                {{ $item->start_time }} - {{ $item->end_time }}
-                                                            </option>
+                                                        @if (!in_array($timeValue, $printed))
+                                                            @php $printed[] = $timeValue; @endphp
+                                                            <option value="{{ $timeValue }}">{{ $start }} -
+                                                                {{ $end }}</option>
                                                         @endif
                                                     @endif
                                                 @endforeach
                                             </select>
-
                                         </td>
-
                                         <td class="px-6 py-4 text-center">
                                             <input type="checkbox" x-model="selectedDays" value="{{ $dayKey }}"
                                                 @change="handleDaySelection('{{ $dayKey }}')"
@@ -206,59 +209,56 @@
                                         </td>
                                     </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
                     </div>
 
-                    <!-- Note -->
-                    <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                        <p
-                            class="text-blue-800 text-sm {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
-                            <i class="fas fa-info-circle {{ app()->getLocale() === 'ar' ? 'ml-2' : 'mr-2' }}"></i>
-                            {{ __('messages.schedule_note') }}
-                        </p>
-                    </div>
+                    <!-- Payment Button -->
+                    <div x-show="selectedDays.length > 0 && selectedDays.every(day => scheduleTimes[day])" x-transition
+                        class="text-center">
 
-                    <!-- Selected Days Summary -->
-                    <div x-show="selectedDays.length > 0" x-transition class="mb-6">
-                        <div class="bg-green-50 border border-green-200 rounded-lg p-4">
-                            <p
-                                class="text-green-800 font-semibold mb-2 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
-                                {{ __('messages.selected_days') }}
-                            </p>
-                            <div class="flex flex-wrap gap-2">
+                        @guest
+                            <form action="{{ route('pay.form.login', $course) }}" method="GET" id="paymentForm">
                                 <template x-for="day in selectedDays" :key="day">
-                                    <span class="px-3 py-1 bg-green-200 text-green-800 rounded-full text-sm font-medium"
-                                        x-text="getDayName(day)"></span>
+                                    <div>
+                                        <input type="hidden" :name="'days[' + day + '][id]'"
+                                            :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[2] : ''">
+                                        <input type="hidden" :name="'days[' + day + '][start_time]'"
+                                            :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[0] : ''">
+                                        <input type="hidden" :name="'days[' + day + '][end_time]'"
+                                            :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[1] : ''">
+                                    </div>
                                 </template>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- Payment Button - Only shown when days are selected -->
-                    <div x-show="selectedDays.length > 0" x-transition class="text-center">
-                        <form action="{{ route('pay.form', $course) }}" method="GET" id="paymentForm">
-                            <template x-for="day in selectedDays" :key="day">
-                                <div>
-                                    <input type="hidden" :name="'days[' + day + '][id]'"
-                                        :value="scheduleTimes[day].split('|')[2]">
-                                    <input type="hidden" :name="'days[' + day + '][start_time]'"
-                                        :value="scheduleTimes[day].split('|')[0]">
-                                    <input type="hidden" :name="'days[' + day + '][end_time]'"
-                                        :value="scheduleTimes[day].split('|')[1]">
-                                </div>
-                            </template>
+                                <button type="submit"
+                                    class="px-8 py-4 bg-gradient-to-r from-[#79131d] to-[#5a0f16] hover:from-[#5a0f16] hover:to-[#79131d] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg">
+                                    {{ __('messages.proceed_to_payment') }}
+                                    <i
+                                        class="fas fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} {{ app()->getLocale() === 'ar' ? 'mr-2' : 'ml-2' }}"></i>
+                                </button>
+                            </form>
+                        @endguest
+                        @auth
+                            <form action="{{ route('pay.form', $course) }}" method="GET" id="paymentForm">
+                                <template x-for="day in selectedDays" :key="day">
+                                    <div>
+                                        <input type="hidden" :name="'days[' + day + '][id]'"
+                                            :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[2] : ''">
+                                        <input type="hidden" :name="'days[' + day + '][start_time]'"
+                                            :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[0] : ''">
+                                        <input type="hidden" :name="'days[' + day + '][end_time]'"
+                                            :value="scheduleTimes[day] ? scheduleTimes[day].split('|')[1] : ''">
+                                    </div>
+                                </template>
 
-                            <button type="submit"
-                                class="px-8 py-4 bg-gradient-to-r from-[#79131d] to-[#5a0f16] hover:from-[#5a0f16] hover:to-[#79131d] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg">
-                                {{ __('messages.proceed_to_payment') }}
-                                <i
-                                    class="fas fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} {{ app()->getLocale() === 'ar' ? 'mr-2' : 'ml-2' }}"></i>
-                            </button>
-                        </form>
-
-
+                                <button type="submit"
+                                    class="px-8 py-4 bg-gradient-to-r from-[#79131d] to-[#5a0f16] hover:from-[#5a0f16] hover:to-[#79131d] text-white font-bold rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 text-lg">
+                                    {{ __('messages.proceed_to_payment') }}
+                                    <i
+                                        class="fas fa-arrow-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} {{ app()->getLocale() === 'ar' ? 'mr-2' : 'ml-2' }}"></i>
+                                </button>
+                            </form>
+                        @endauth
                     </div>
 
                     <!-- Warning if no days selected -->
@@ -268,7 +268,66 @@
                 </div>
             </div>
         </div>
+
+        <script>
+            function scheduleSelector() {
+                return {
+                    selectedDays: [],
+                    scheduleTimes: {
+                        saturday: '',
+                        sunday: '',
+                        monday: '',
+                        tuesday: '',
+                        wednesday: '',
+                        thursday: ''
+                    },
+
+                    handleDaySelection(day) {
+                        // Sunday logic
+                        if (day === 'sunday') {
+                            if (this.selectedDays.includes('sunday')) {
+                                if (!this.selectedDays.includes('tuesday')) this.selectedDays.push('tuesday');
+                                if (!this.selectedDays.includes('thursday')) this.selectedDays.push('thursday');
+                                if (this.scheduleTimes.sunday) {
+                                    this.scheduleTimes.tuesday = this.scheduleTimes.sunday;
+                                    this.scheduleTimes.thursday = this.scheduleTimes.sunday;
+                                }
+                            } else {
+                                this.selectedDays = this.selectedDays.filter(d => d !== 'tuesday' && d !== 'thursday');
+                                this.scheduleTimes.tuesday = '';
+                                this.scheduleTimes.thursday = '';
+                            }
+                        }
+
+                        // Saturday logic
+                        if (day === 'saturday') {
+                            if (this.selectedDays.includes('saturday')) {
+                                if (!this.selectedDays.includes('monday')) this.selectedDays.push('monday');
+                                if (!this.selectedDays.includes('wednesday')) this.selectedDays.push('wednesday');
+                                if (this.scheduleTimes.saturday) {
+                                    this.scheduleTimes.monday = this.scheduleTimes.saturday;
+                                    this.scheduleTimes.wednesday = this.scheduleTimes.saturday;
+                                }
+                            } else {
+                                this.selectedDays = this.selectedDays.filter(d => d !== 'monday' && d !== 'wednesday');
+                                this.scheduleTimes.monday = '';
+                                this.scheduleTimes.wednesday = '';
+                            }
+                        }
+
+                        // Ensure dependencies
+                        if ((day === 'monday' || day === 'wednesday') && this.selectedDays.includes(day)) {
+                            if (!this.selectedDays.includes('saturday')) this.selectedDays.push('saturday');
+                        }
+                        if ((day === 'tuesday' || day === 'thursday') && this.selectedDays.includes(day)) {
+                            if (!this.selectedDays.includes('sunday')) this.selectedDays.push('sunday');
+                        }
+                    }
+                }
+            }
+        </script>
     </section>
+
 
     <!-- Course Content Section - Enhanced -->
     <section class="py-16 bg-white">

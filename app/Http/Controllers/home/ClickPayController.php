@@ -27,20 +27,38 @@ class ClickPayController
         $this->baseUrl = rtrim(config('services.clickpay.base_url'), '/');
     }
 
+    public function login(Courses $course)
+    {
+        $data = request()->except('_token');
+        return view('auth.pay.login', compact('course', 'data'));
+    }
+
+    public function redirect(Courses $course)
+    {
+        $data = request()->except('_token');
+
+        if (Auth::attempt(['email' => $data['email'], 'password' => $data['password']])) {
+            return redirect()->route('pay.form', $course->id)->with('days', $data['days']);
+        }
+
+        return redirect()->back()->withErrors(['email' => 'Invalid credentials']);
+    }
+
     public function showPaymentForm(Courses $course)
     {
-        $scheduleTimes = request('days', []); // array زي اللي وريته
+        // استرجاع البيانات من session
+        $scheduleTimes = session('days', []); // array زي اللي وريته
 
-        $selectedDays = array_keys($scheduleTimes); // ["saturday", "monday", "wednesday"]
+        $selectedDays = array_keys($scheduleTimes);
 
         foreach ($selectedDays as $day) {
             if (isset($scheduleTimes[$day])) {
-                $item = $scheduleTimes[$day]; // item يحتوي على id و start_time و end_time
+                $item = $scheduleTimes[$day]; // يحتوي على id و start_time و end_time
 
                 times::create([
-                    'course_schedule_id' => $item['id'], // ID
+                    'course_schedule_id' => $item['id'],
                     'user_id' => Auth::user()->id,
-                    'time' => $item['start_time'] . ' - ' . $item['end_time'], // تخزين الوقت كنص
+                    'time' => $item['start_time'] . ' - ' . $item['end_time'],
                     'day' => $day,
                 ]);
             }
