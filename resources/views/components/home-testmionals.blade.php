@@ -7,10 +7,10 @@
     <!-- Header Section -->
     <div class="mb-10">
         <h2 class="text-3xl text-center font-bold text-gray-900 mb-3">
-            {{ __('Messages.title') }}
+            {{ __('messages.title') }}
         </h2>
         <p class="text-center text-gray-600">
-            {{ __('Messages.subtitle') }}
+            {{ __('messages.subtitle') }}
         </p>
     </div>
 
