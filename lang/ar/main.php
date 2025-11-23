@@ -90,6 +90,7 @@ return [
     'dashboard' => 'لوحة التحكم',
     'applications' => 'التطبيقات',
     'students' => 'الطلاب',
+    'select_level' => 'حدد المستوى',
     'all_students' => 'جميع الطلاب',
     'add_new_student' => 'إضافة طالب جديد',
     'teachers' => 'المدرسين',

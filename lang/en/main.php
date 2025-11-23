@@ -105,6 +105,7 @@ return [
     'add_new_teacher' => 'Add New Teacher',
     'applies' => 'Applies',
     'pending' => 'Pending',
+    'select_level' => 'Select Level',
     'accepted' => 'Accepted',
     'rejected' => 'Rejected',
     'courses' => 'Courses',
