@@ -399,4 +399,11 @@ return [
     'schedule_cities' => 'Schedule Cities',
     'select_level' => 'Select level',
     'schedule_campuses' => 'Schedule Campuses',
+    'certificate' => 'Request For Certificate',
+    'name' => 'Name',
+    'requested_at' => 'Requested At',
+    'action' => 'Action',
+    'send_certificate' => 'Send Certificate',
+    'cancel' => 'Cancel',
+    'send' => 'Send',
 ];

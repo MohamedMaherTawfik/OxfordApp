@@ -17,13 +17,13 @@
         body {
             font-family: 'Cairo', sans-serif;
         }
-        
+
         /* RTL Support */
         [dir="rtl"] {
             direction: rtl;
             text-align: right;
         }
-        
+
         #meetingSDKElement {
             width: 100%;
             height: 100vh;
@@ -43,6 +43,31 @@
 
     <div class="mt-10">.</div>
     <div class="mt-10">.</div>
+    {{-- Success Message --}}
+    @if (session('success'))
+        <div class="mb-4 p-4 rounded-lg bg-green-100 text-green-800 border border-green-300">
+            {{ session('success') }}
+        </div>
+    @endif
+
+    {{-- Error Message --}}
+    @if (session('error'))
+        <div class="mb-4 p-4 rounded-lg bg-red-100 text-red-800 border border-red-300">
+            {{ session('error') }}
+        </div>
+    @endif
+
+    {{-- Validation Errors --}}
+    @if ($errors->any())
+        <div class="mb-4 p-4 rounded-lg bg-red-100 text-red-800 border border-red-300">
+            <ul class="list-disc pl-5">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="max-w-5xl mx-auto py-6 px-4" x-data="{ activeTab: 'overview' }">
 
         <!-- Navigator Tabs -->
@@ -60,20 +85,6 @@
                 id="notes-tab">
                 {{ __('messages.notes') }}
             </a>
-            {{--
-            <a href="#" @click.prevent="activeTab = 'graduation'" class="mr-6 font-medium transition-colors"
-                :class="activeTab === 'graduation' ? 'text-[#79131d] border-b-2 border-[#79131d]' :
-                    'text-gray-600 hover:text-[#79131d]'"
-                id="graduation-tab">
-                {{ __('messages.graduation_project') }}
-            </a>
-
-            <a href="#" @click.prevent="activeTab = 'quizzes'" class="mr-6 font-medium transition-colors"
-                :class="activeTab === 'quizzes' ? 'text-[#79131d] border-b-2 border-[#79131d]' :
-                    'text-gray-600 hover:text-[#79131d]'">
-                {{ __('messages.quizzes') }}
-            </a> --}}
-
             <a href="#" @click.prevent="activeTab = 'Join Meeting'" class="mr-6 font-medium transition-colors"
                 :class="activeTab === 'Join Meeting' ? 'text-[#79131d] border-b-2 border-[#79131d]' :
                     'text-gray-600 hover:text-[#79131d]'">
@@ -100,10 +111,31 @@
             </div>
 
             <!-- Learning Scheduler Section -->
+            <!-- Learning Scheduler Section -->
             <div class="bg-blue-50 border border-blue-100 rounded-lg p-4 mb-6">
                 <h3 class="font-bold text-lg mb-2">{{ __('messages.schedule_learning') }}</h3>
                 <p class="text-gray-700 mb-3">{{ $diplomas->description }}</p>
+
+                @if (!$requests)
+                    <form action="{{ route('gate.diplomas.request', $diplomas) }}" method="POST"
+                        class="inline-block mt-2">
+                        @csrf
+                        <button type="submit"
+                            class="px-5 py-2 bg-[#79131d] text-white rounded-lg font-semibold hover:bg-[#5a0f16] transition">
+                            {{ __('messages.certificate') }}
+                        </button>
+                    </form>
+                @else
+                    <p> هنا ستظهر شهادتك الخاصة بعد قبول طلبك من الإدارة.</p>
+                    <a href="{{ asset('storage/' . $send->file) }}" target="_blank"
+                        class="inline-block px-4 py-2 mt-2 rounded-lg bg-[#79131d] text-white font-semibold hover:bg-[#5c0f14] transition">
+                        الشهادة
+                    </a>
+                @endif
+
+
             </div>
+
 
             <!-- Course Schedule Table -->
             @if ($diplomas->courseSchedule && count($diplomas->courseSchedule) > 0)

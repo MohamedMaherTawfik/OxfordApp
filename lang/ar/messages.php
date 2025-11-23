@@ -380,6 +380,7 @@ return [
     'most_enrolled_programs' => 'أكثر البرامج تسجيلاً لعام 2023',
     'pay_later' => 'دفع لاحقاً',
     'saturday' => 'السبت',
+    'certificate' => 'طلب شهادة',
     'sunday' => 'الأحد',
     'monday' => 'الاثنين',
     'tuesday' => 'الثلاثاء',
@@ -391,6 +392,12 @@ return [
     'proceed_to_payment' => 'المتابعة للدفع',
     'please_select_days' => 'يرجى اختيار أيام التدريب أولاً',
     'selected_days' => 'الأيام المختارة:',
+    'name' => 'الاسم',
+    'requested_at' => 'تاريخ الطلب',
+    'action' => 'الإجراء',
+    'send_certificate' => 'إرسال شهادة',
+    'cancel' => 'إلغاء',
+    'send' => 'إرسال',
 ];
 
 ?>

@@ -3,6 +3,7 @@
 use App\Http\Controllers\admin\AdminCreateController;
 use App\Http\Controllers\admin\diplomaCategoreyController;
 use App\Http\Controllers\admin\diplomaController;
+use App\Http\Controllers\admin\diplomaRequestsController;
 use App\Http\Controllers\admin\FooterController;
 use App\Http\Controllers\admin\payment\adminpaymentController;
 use App\Http\Controllers\admin\QuestionController;
@@ -217,12 +218,16 @@ Route::group([
         Route::post('/admin/diplomas/categoreis/create/{categorey}', [diplomaCategoreyController::class, 'create'])->name('diplomas.categorey.create');
         Route::post('/admin/diplomas/categoreis/update/{categorey}', [diplomaCategoreyController::class, 'update'])->name('diplomas.categorey.update');
 
+
         Route::get('/admin/diplomas', [diplomaController::class, 'index'])->name('diplomas.index');
         Route::get('/admin/diplomas/create', [diplomaController::class, 'create'])->name('diplomas.create');
         Route::post('/admin/diplomas/store', [diplomaController::class, 'store'])->name('diplomas.store');
         Route::get('/admin/diplomas/edit/{diploma}', [diplomaController::class, 'edit'])->name('diplomas.edit');
         Route::post('/admin/diplomas/update/{diploma}', [diplomaController::class, 'update'])->name('diplomas.update');
         Route::delete('/admin/diplomas/delete/{diploma}', [diplomaController::class, 'delete'])->name('diplomas.delete');
+
+        Route::get('/admin/diplomas/requests/{diploma}', [diplomaRequestsController::class, 'requests'])->name('diplomas.requests');
+        Route::post('/admin/diplomas/requests/{diploma}', [diplomaRequestsController::class, 'send'])->name('diplomas.send');
 
 
         Route::get('/admin/diplomas/lesson/{diploma}', [diplomaLessonController::class, 'index'])->name('diplomas.lesson');
@@ -377,6 +382,7 @@ Route::group([], function () {
     Route::get('/gate/category/{slug}/show', [GateController::class, 'showcategorey'])->name('gate.diplomas.categorey.show');
     Route::get('/gate/me/diplomas/', [GateController::class, 'me'])->name('gate.diplomas.me');
     Route::get('/gate/diplomas/lesson/{lesson}/show', [GateController::class, 'showlesson'])->name('gate.diplomas.lesson.show');
+    Route::post('/gate/diplomas/{diploma}/request', [GateController::class, 'request'])->name('gate.diplomas.request');
 });
 
 

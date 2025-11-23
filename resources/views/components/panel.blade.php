@@ -9,20 +9,23 @@
     <script src="https://cdn.tailwindcss.com"></script>
     {{-- FontAwesome cdn --}}
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" />
+
+    {{-- alpine cdn --}}
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     {{-- Cairo Font --}}
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    
+
     <style>
         body {
             font-family: 'Cairo', sans-serif;
         }
-        
+
         /* RTL Support */
         [dir="rtl"] .mr-2 {
             margin-right: 0 !important;
             margin-left: 0.5rem !important;
         }
-        
+
         [dir="rtl"] .ml-2 {
             margin-left: 0 !important;
             margin-right: 0.5rem !important;
@@ -49,13 +52,13 @@
                         <div class="flex items-center gap-2">
                             <a href="{{ route('lang.switch', 'ar') }}"
                                 class="px-3 py-1 rounded text-sm font-medium transition
-                   {{ app()->getLocale() == 'ar' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                   {{ app()->getLocale() == 'ar' ? 'bg-[#79131d] text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
                                 عربي
                             </a>
 
                             <a href="{{ route('lang.switch', 'en') }}"
                                 class="px-3 py-1 rounded text-sm font-medium transition
-                   {{ app()->getLocale() == 'en' ? 'bg-indigo-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
+                   {{ app()->getLocale() == 'en' ? 'bg-[#79131d] text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300' }}">
                                 EN
                             </a>
                         </div>

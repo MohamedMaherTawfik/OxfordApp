@@ -5,6 +5,7 @@ namespace App\Http\Controllers\gate;
 use App\Http\Controllers\Controller;
 use App\Models\Diplomas;
 use App\Models\lesson;
+use App\Models\sendCertificates;
 use Illuminate\Http\Request;
 
 class GateController extends Controller
@@ -37,7 +38,9 @@ class GateController extends Controller
         $diplomas = \App\Models\Diplomas::where('slug', request('slug'))->first();
         $relatedCourses = Diplomas::where('diplomas_categorey_id', $diplomas->diplomas_categorey_id)->take(3)->get();
         $zoommeeting = \App\Models\ZoomMeeting::where('diplomas_id', $diplomas->id)->first();
-        return view('gate.showDiploma', compact('diplomas', 'relatedCourses', 'zoommeeting'));
+        $requests = \App\Models\RequestCertificate::where('diplomas_id', $diplomas->id)->where('user_id', auth()->user()->id)->first();
+        $send = sendCertificates::where('diplomas_id', $diplomas->id)->where('user_id', auth()->user()->id)->first();
+        return view('gate.showDiploma', compact('diplomas', 'relatedCourses', 'zoommeeting', 'requests', 'send'));
     }
 
     public function me()
@@ -51,6 +54,16 @@ class GateController extends Controller
     public function showLesson(lesson $lesson)
     {
         return view('gate.singleLesson', compact('lesson'));
+    }
+
+
+    public function request(Diplomas $diploma)
+    {
+        $diploma->requests()->create([
+            'user_id' => auth()->user()->id,
+            'diplomas_id' => $diploma->id,
+        ]);
+        return redirect()->back()->with('success', 'تم ارسال طلبك بنجاح');
     }
 
 }

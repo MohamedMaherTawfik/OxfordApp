@@ -33,4 +33,14 @@ class Diplomas extends Model
     {
         return $this->hasMany(ZoomMeeting::class);
     }
+
+    public function requests()
+    {
+        return $this->hasMany(RequestCertificate::class);
+    }
+
+    public function sendCertificate()
+    {
+        return $this->hasMany(sendCertificates::class);
+    }
 }

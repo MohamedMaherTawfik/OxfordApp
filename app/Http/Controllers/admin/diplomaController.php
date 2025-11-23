@@ -13,7 +13,8 @@ class diplomaController extends Controller
     public function index()
     {
         $diplomas = Diplomas::with('categorey', 'user')->get();
-        return view('admin.diplomas.index', compact('diplomas'));
+        $requests = \App\Models\RequestCertificate::all();
+        return view('admin.diplomas.index', compact('diplomas', 'requests'));
     }
 
     public function create()
@@ -88,4 +89,6 @@ class diplomaController extends Controller
         $diploma->delete();
         return back()->with('success', 'Diploma Deleted Successfully!');
     }
+
+
 }
