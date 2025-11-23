@@ -392,6 +392,7 @@ return [
     'please_select_days' => 'Please select days first',
     'proceed_to_payment' => 'Proceed to payment',
     'schedule_times' => 'Schedule Times',
+    'no_students_found' => 'No students found',
     'schedule_days' => 'Schedule Days',
     'selected_days' => 'Selected Days',
     'pay_later' => 'Pay Later',

@@ -367,6 +367,7 @@ return [
     'search_courses' => 'بحث عن الدورات',
     'course_name' => 'اسم الدورة',
     'level' => 'المستوى',
+    'no_students_found' => 'لا يوجد طلاب',
     'categories' => 'التصنيفات',
     'my_course' => 'دورتي',
     'no_courses_match' => 'لا توجد دورات تطابق الفلاتر المحددة.',

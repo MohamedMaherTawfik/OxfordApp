@@ -248,7 +248,9 @@ Route::group([
         Route::get('/admin/zoom/{meeting}/delete/diploma', [diplomaMeetingController::class, 'deleteZoom'])->name('admin.zoom.diploma.delete')->middleware(CheckAdmin::class);
 
         Route::get('admin/payments', [adminpaymentController::class, 'index'])->name('admin.payments.index')->middleware(CheckAdmin::class);
+        Route::get('admin/payments/cash/all', [adminpaymentController::class, 'students'])->name('admin.payments.cash')->middleware(CheckAdmin::class);
         Route::post('admin/payments', [adminpaymentController::class, 'edit'])->name('admin.payments.edit')->middleware(CheckAdmin::class);
+        Route::post('admin/payments/{enrollments}', [adminpaymentController::class, 'success'])->name('admin.payments.success')->middleware(CheckAdmin::class);
     });
 });
 

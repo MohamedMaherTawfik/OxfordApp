@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin\payment;
 
 use App\Http\Controllers\Controller;
+use App\Models\Enrollments;
 use App\Models\visaenable;
 use Illuminate\Http\Request;
 
@@ -26,5 +27,17 @@ class adminpaymentController extends Controller
             return redirect()->route('admin.payments.index')->with('success', 'Payment updated successfully!');
         }
         return redirect()->route('admin.payments.index')->with('success', 'Payment updated successfully!');
+    }
+
+    public function students()
+    {
+        $enrollments = Enrollments::with('user')->where('transaction_type', 'cash')->get();
+        return view('admin.payment.cash', compact('enrollments'));
+    }
+
+    public function success(Enrollments $enrollments)
+    {
+        $enrollments->update(['transaction_type' => 'done']);
+        return redirect()->route('admin.payments.cash')->with('success', 'Payment updated successfully!');
     }
 }
