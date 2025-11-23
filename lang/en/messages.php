@@ -396,5 +396,6 @@ return [
     'selected_days' => 'Selected Days',
     'pay_later' => 'Pay Later',
     'schedule_cities' => 'Schedule Cities',
+    'select_level' => 'Select level',
     'schedule_campuses' => 'Schedule Campuses',
 ];
