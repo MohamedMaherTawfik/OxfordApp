@@ -170,23 +170,37 @@
                                 @endphp
 
                                 @foreach ($days as $dayKey => $dayName)
-                                    <tr class="hover:bg-gray-50 transition-colors"
+                                    @php
+                                        $hasSchedule = $schedule->where('day', $dayKey)->count() > 0;
+                                    @endphp
+
+                                    <tr class="hover:bg-gray-50 transition-colors {{ !$hasSchedule ? 'bg-gray-100 opacity-60' : '' }}"
                                         :class="selectedDays.includes('{{ $dayKey }}') ? 'bg-green-50' : ''">
-                                        <td class="px-6 py-4 font-medium text-gray-900">{{ $dayName }}</td>
+
+                                        <td class="px-6 py-4 font-medium text-gray-900">
+                                            {{ $dayName }}
+                                            @if (!$hasSchedule)
+                                                <span class="text-sm text-red-500 block">لا يوجد مواعيد</span>
+                                            @endif
+                                        </td>
+
                                         <td class="px-6 py-4 text-center">
                                             <select x-model="scheduleTimes.{{ $dayKey }}"
-                                                class="border border-gray-300 rounded-lg px-3 py-2 w-full">
+                                                class="border border-gray-300 rounded-lg px-3 py-2 w-full {{ !$hasSchedule ? 'bg-gray-200 cursor-not-allowed' : '' }}"
+                                                {{ !$hasSchedule ? 'disabled' : '' }}>
+
                                                 <option value="">-- {{ __('messages.select_time') }} --</option>
+
                                                 @php $printed = []; @endphp
                                                 @foreach ($schedule as $item)
                                                     @if ($item->day == $dayKey)
                                                         @php
-                                                            $startTime = new \DateTime($item->start_time);
-                                                            $endTime = new \DateTime($item->end_time);
-
-                                                            $start = $startTime->format('g:i A');
-                                                            $end = $endTime->format('g:i A');
-
+                                                            $start = \Carbon\Carbon::parse($item->start_time)->format(
+                                                                'g:i A',
+                                                            );
+                                                            $end = \Carbon\Carbon::parse($item->end_time)->format(
+                                                                'g:i A',
+                                                            );
                                                             $timeValue =
                                                                 $item->start_time .
                                                                 '|' .
@@ -204,10 +218,12 @@
                                                 @endforeach
                                             </select>
                                         </td>
+
                                         <td class="px-6 py-4 text-center">
                                             <input type="checkbox" x-model="selectedDays" value="{{ $dayKey }}"
                                                 @change="handleDaySelection('{{ $dayKey }}')"
-                                                class="w-5 h-5 text-[#79131d] border-gray-300 rounded focus:ring-[#79131d]">
+                                                class="w-5 h-5 text-[#79131d] border-gray-300 rounded focus:ring-[#79131d]"
+                                                {{ !$hasSchedule ? 'disabled' : '' }}>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -279,7 +295,7 @@
                                         </template>
                                         <button type="submit"
                                             class="px-8 py-4 bg-gray-700 text-white font-bold rounded-xl">
-                                            الدفع لاحقاً
+                                            {{ __('messages.payLater') }}
                                         </button>
                                     </form>
                                 @endguest
@@ -299,7 +315,7 @@
                                         </template>
                                         <button type="submit"
                                             class="px-8 py-4 bg-gray-700 text-white font-bold rounded-xl">
-                                            الدفع لاحقاً
+                                            {{ __('messages.payLater') }}
                                         </button>
                                     </form>
                                 @endauth

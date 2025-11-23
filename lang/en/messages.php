@@ -394,6 +394,7 @@ return [
     'schedule_times' => 'Schedule Times',
     'no_students_found' => 'No students found',
     'schedule_days' => 'Schedule Days',
+    'payLater' => 'Pay Later',
     'selected_days' => 'Selected Days',
     'pay_later' => 'Pay Later',
     'schedule_cities' => 'Schedule Cities',

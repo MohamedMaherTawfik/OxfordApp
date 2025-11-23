@@ -29,8 +29,8 @@ return [
         'احترام الوقت والاحترافية',
     ],
 
-
     'stats_teachers' => 'مدرس',
+    'payLater' => 'الدفع لاحقا',
     'stats_students' => 'طالب',
     'stats_countries' => 'دولة نخدمها',
     'stats_satisfaction' => 'رضا الطلاب',
