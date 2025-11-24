@@ -77,13 +77,14 @@
                                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v3.586a1 1 0 00.293.707l2 2a1 1 0 001.414-1.414L11 9.586V6z"
                                                     clip-rule="evenodd" />
                                             </svg>
-                                            {{ $course->duration ?? 0 }} hours
+                                            {{ $course->duration ?? 0 }} {{ __('messages.hours') }}
                                         </div>
                                     </div>
                                     <div class="mt-auto">
                                         <div class="flex items-center justify-between text-sm text-gray-700 mb-2">
                                             <div>
-                                                <span class="font-bold text-base">Instructor:</span>
+                                                <span
+                                                    class="font-bold text-base">{{ __('messages.instructor') }}:</span>
                                                 <span class="opacity-60">{{ $course->user->name }}</span>
                                             </div>
                                             <div class="flex items-center">
@@ -103,12 +104,12 @@
                                             <!-- زر فتح المودال -->
                                             <button onclick="openModal('{{ $course->id }}')"
                                                 class="px-4 py-2 bg-[#e4ce96] text-[#79131d] text-sm font-medium rounded-md hover:bg-[#d7bd88] transition-colors duration-300">
-                                                سعر الأدمن
+                                                {{ __('messages.admin_price') }}
                                             </button>
 
                                             <a href="{{ route('admin.courses.show', $course->slug) }}"
                                                 class="px-4 py-2 bg-[#79131DD2] text-[#e4ce96] text-sm font-medium rounded-md hover:bg-[#79131d] transition-colors duration-300">
-                                                Show Course
+                                                {{ __('messages.show') }}
                                             </a>
                                         </div>
                                     </div>

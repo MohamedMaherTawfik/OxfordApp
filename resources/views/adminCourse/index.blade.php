@@ -2,7 +2,8 @@
 
     <section class="bg-gray-50 py-10 px-4">
         <div class="container mx-auto">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6">Your Courses :<span class="text-sm font-normal"></span></h2>
+            <h2 class="text-2xl font-bold text-gray-800 mb-6"> {{ __('teacher.your_courses') }}<span
+                    class="text-sm font-normal"></span></h2>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
 
@@ -20,14 +21,15 @@
                         <div class="flex items-center justify-between text-sm text-gray-700">
                             {{-- <p class="text-blue-700 font-medium">Eng. Osama Elzero</p> --}}
                             <div class="flex items-center gap-1">
-                                <span>⭐{{ $course->rating }} </span><span>(640)</span>
+                                <span>⭐{{ $course->rating }} </span><span>(0)</span>
                             </div>
                         </div>
 
                         <div class="flex items-center justify-between mt-4">
                             <a href="{{ route('teacher.courses.show', $course->slug) }}"
-                                class="bg-[#79131DC0] text-white px-4 py-1 rounded hover:bg-[#79131DFF]">Course
-                                Detail
+                                class="bg-[#79131DC0] text-white px-4 py-1 rounded hover:bg-[#79131DFF]">
+                                {{ __('teacher.course_detail') }}
+
                             </a>
                         </div>
                     </div>

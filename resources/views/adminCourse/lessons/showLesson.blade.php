@@ -2,21 +2,21 @@
     use App\Models\comments;
     use Illuminate\Support\Str;
     $comments = comments::where('lesson_id', $lesson->id)->get();
-    
+
     function extractYoutubeId($url)
     {
         if (Str::contains($url, 'youtube.com')) {
             parse_str(parse_url($url, PHP_URL_QUERY), $params);
             return $params['v'] ?? null;
         }
-    
+
         if (Str::contains($url, 'youtu.be')) {
             return Str::after($url, 'youtu.be/');
         }
-    
+
         return null;
     }
-    
+
     $videoId = extractYoutubeId($lesson->video_url);
     ?>
     <x-panel>
@@ -35,19 +35,19 @@
                 <div x-data="{ open: false }" class="relative inline-block text-left">
                     <button @click="open = !open"
                         class="bg-[#79131DC0] text-white px-4 py-2 rounded-lg shadow hover:bg-[#79131d]">
-                        Options +
+                        {{ __('teacher.options') }}
                     </button>
 
                     <div x-show="open" @click.away="open = false"
                         class="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
                         <a href="{{ route('admin.lessons.edit', $lesson->slug) }}"
-                            class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Edit lesson</a>
+                            class="block px-4 py-2 text-gray-700 hover:bg-gray-100"> {{ __('teacher.edit') }}</a>
                         <form method="POST" action="{{ route('admin.lessons.delete', $lesson->id) }}">
                             @csrf
                             @method('DELETE')
                             <button type="submit"
                                 class="block w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100">
-                                Delete
+                                {{ __('teacher.delete') }}
                             </button>
                         </form>
 

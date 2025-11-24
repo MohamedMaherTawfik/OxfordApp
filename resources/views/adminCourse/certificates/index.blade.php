@@ -35,10 +35,12 @@
         <table class="min-w-full divide-y divide-gray-200 border rounded-lg shadow">
             <thead class="bg-gray-100">
                 <tr>
-                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Student</th>
-                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Course</th>
-                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Enrollment Date</th>
-                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">Action</th>
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700"> {{ __('teacher.student') }}
+                    </th>
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700"> {{ __('teacher.course') }}</th>
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700">
+                        {{ __('teacher.enrollment_date') }}</th>
+                    <th class="px-4 py-2 text-left text-sm font-semibold text-gray-700"> {{ __('teacher.action') }}</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-100 bg-white">
@@ -53,7 +55,7 @@
                             <td class="px-4 py-2">
                                 <a href="{{ route('admin.certificates.download', ['slug' => $course->slug, 'user_id' => $enrollment->user->id]) }}"
                                     class="inline-block px-3 py-1 text-white text-sm rounded bg-[#79131d] hover:bg-[#5e1017] transition">
-                                    Download Certificate
+                                    {{ __('teacher.download_certificate') }}
                                 </a>
                             </td>
                         </tr>
@@ -67,7 +69,7 @@
                             <td class="px-4 py-2">
                                 <a href="{{ route('admin.certificates.assign', ['slug' => $course->slug, 'user_id' => $enrollment->user->id]) }}"
                                     class="inline-block px-3 py-1 text-white text-sm rounded bg-[#79131d] hover:bg-[#5e1017] transition">
-                                    Assign Certificate
+                                    {{ __('teacher.assign_certificate') }}
                                 </a>
                             </td>
                         </tr>

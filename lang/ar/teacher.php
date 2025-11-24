@@ -16,7 +16,6 @@ return [
 
     'admin' => 'مسؤول',
     'your_courses' => 'كورساتك',
-    // Existing translations...
     'assign_certificate_to' => 'تعيين الشهادة لـ',
     'student_email' => 'بريد الطالب',
     'certificate' => 'الشهادة',
@@ -28,9 +27,12 @@ return [
     'assign_certificate_to_student' => 'تعيين الشهادة للطالب',
     'revoke' => 'حذف',
     'certificate_name' => 'اسم الشهادة',
+    'riyal' => 'ريال سعودي',
     'select' => 'اختر',
     'certificate_description' => 'وصف الشهادة',
     'upload_certificate_file' => 'رفع ملف الشهادة',
+
+    'review' => 'التقييم',
     'student' => 'الطالب',
     'course' => 'الكورس',
     'enrollment_date' => 'تاريخ التسجيل',

@@ -1,7 +1,7 @@
 <x-panel>
     <div class="min-h-screen flex items-center justify-center bg-gray-100">
         <div class="bg-white shadow rounded-lg p-6 w-full max-w-lg">
-            <h1 class="text-2xl font-bold mb-4">Create Zoom Meeting</h1>
+            <h1 class="text-2xl font-bold mb-4"> {{ __('teacher.create_and_join') }}</h1>
 
             <div id="alert" class="mb-4 text-sm"></div>
 
@@ -9,28 +9,24 @@
                 <input id="course_id" type="hidden" value="{{ $course->id }}">
 
                 <div>
-                    <label class="block text-sm">Topic</label>
+                    <label class="block text-sm"> {{ __('teacher.topic') }}</label>
                     <input id="class_topic" type="text" required class="w-full p-2 border rounded">
                 </div>
 
                 <div>
-                    <label class="block text-sm">Date & Time (local)</label>
+                    <label class="block text-sm"> {{ __('teacher.date_time_local') }}</label>
                     <input id="class_date_and_time" type="datetime-local" value="{{ now()->format('Y-m-d\TH:i') }}"
                         class="w-full p-2 border rounded">
                 </div>
 
                 <div class="flex gap-2">
                     <button id="createBtn" type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">
-                        Create & Join
+                        {{ __('teacher.create_and_join') }}
                     </button>
-                    <a href="{{ route('admin.zoom.index', $course) }}"
-                        class="bg-gray-600 text-white px-4 py-2 rounded">Back</a>
+                    <a href="{{ route('admin.zoom.index', $course) }}" class="bg-gray-600 text-white px-4 py-2 rounded">
+                        {{ __('teacher.back') }}</a>
                 </div>
             </form>
-
-            <p class="mt-4 text-xs text-gray-500">
-                Console logs will show each step — افتح DevTools (Console) عشان تشوف الـ debug.
-            </p>
         </div>
     </div>
 

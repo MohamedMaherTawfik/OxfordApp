@@ -2,10 +2,10 @@
     <div class="max-w-5xl mx-auto bg-white shadow-md rounded-lg p-6 mt-3">
         <!-- Header -->
         <div class="flex justify-between items-center mb-6">
-            <h1 class="text-2xl font-bold text-gray-800 mr-2">Zoom Meetings</h1>
+            <h1 class="text-2xl font-bold text-gray-800 mr-2"> {{ __('teacher.meetings') }}</h1>
             <a href="{{ route('admin.zoom.create', $course) }}"
                 class="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg shadow">
-                + New Meeting
+                {{ __('teacher.create_and_join') }}
             </a>
         </div>
 
@@ -15,9 +15,9 @@
                 <thead class="bg-gray-100 text-gray-700 uppercase text-xs">
                     <tr>
                         <th class="px-4 py-2 border">#</th>
-                        <th class="px-4 py-2 border text-left">Topic</th>
-                        <th class="px-4 py-2 border">Date</th>
-                        <th class="px-4 py-2 border">Actions</th>
+                        <th class="px-4 py-2 border text-left"> {{ __('teacher.topic') }}</th>
+                        <th class="px-4 py-2 border"> {{ __('teacher.date') }}</th>
+                        <th class="px-4 py-2 border"> {{ __('teacher.action') }}</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -31,22 +31,23 @@
                             <td class="px-4 py-2 border space-x-2">
                                 <a href="{{ route('admin.zoom.join', $m->id) }}"
                                     class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded shadow">
-                                    Join (Web)
+                                    {{ __('teacher.join_web') }}
                                 </a>
                                 <a href="{{ $m->join_url }}" target="_blank"
                                     class="bg-gray-600 hover:bg-gray-700 text-white px-3 py-1 rounded shadow">
-                                    Open App
+                                    {{ __('teacher.open_app') }}
                                 </a>
                                 <a href="{{ route('admin.zoom.delete', $m->id) }}"
                                     class="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded shadow"
                                     onclick="return confirm('Are you sure you want to delete this meeting?')">
-                                    Delete
+                                    {{ __('teacher.delete') }}
                                 </a>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" class="p-4 text-center text-gray-500">No meetings yet 🚀</td>
+                            <td colspan="4" class="p-4 text-center text-gray-500"> {{ __('teacher.no_meetings') }}
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>

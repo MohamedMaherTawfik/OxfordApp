@@ -35,6 +35,7 @@ return [
     'total_revenue' => 'Total Revenue',
     'enrollments' => 'Enrollments',
     'lesson_image' => 'Lesson Image',
+    'riyal' => 'Saudi Riyal',
     'view_lesson' => 'View Lesson',
     'level' => 'Level',
     'select_level' => 'Select level',
@@ -113,7 +114,7 @@ return [
     'user' => 'User',
     'project' => 'Graduation Project',
     'view_project' => 'View Project',
-
+    'review' => 'Reqview',
     'evaluate' => 'Evaluate',
     'evaluate_project' => 'Evaluate Project',
     'save' => 'Save',

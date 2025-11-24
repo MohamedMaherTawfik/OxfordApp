@@ -142,10 +142,19 @@ return [
     'no_quizzes' => 'لا توجد اختبارات متاحة حالياً',
     'attempted_quiz' => 'تم محاولة الاختبار',
     'view_result' => 'عرض النتيجة',
+    'happen' => 'اليك ما حدث اليوم',
     'start_quiz' => 'ابدأ الاختبار',
+    'Options' => 'خيارات +',
+    'add_lesson' => 'اضافه درس',
+    'option' => 'خيارات +',
+
+    'edit_lesson' => 'تعديل ',
+    'price' => 'السعر',
+    'delete_lesson' => 'حذف ',
     'my_diploma' => 'الدبلومه الخاصة بي',
 
     'featured' => 'الدورات المميزة',
+    'Welcomeback' => 'مرحبا بعودتك ',
     'boost' => 'قم بتطوير مهاراتك مع أفضل الدورات التدريبية لدينا.',
     'hours' => 'ساعات',
     'instructor' => 'المدرب',
@@ -397,7 +406,22 @@ return [
     'action' => 'الإجراء',
     'send_certificate' => 'إرسال شهادة',
     'cancel' => 'إلغاء',
+    'admin_price' => 'سعر الادمن',
     'send' => 'إرسال',
+    'teacher_register' => 'تسجيل  المعلم',
+    'teacher_register_desc' => 'املئ الحقول التاليه',
+    'phone_placeholder' => 'ادخل رقم الهاتف',
+    'topic_placeholder' => 'ادخل الماده الدراسيه',
+    'upload_documents' => 'ارسل السره الذاتيه والشهاده الخاصه بك',
+    'upload_cv' => 'ارسال السيره الذاتيه',
+    'topic' => 'الماده العلميه',
+    'upload_certificate' => 'ارسال الشهاده',
+    'submit_application' => 'ارسال النموذج',
+    'teacher_register_info' => 'معلومات التسجيل',
+    'success' => 'تم بنجاح',
+    'application_submitted' => 'تم ارسال انموذج',
+    'go_to_home' => 'الصفحه الرئيسيه',
+    'response_time' => 'وقت الرد'
 ];
 
 ?>

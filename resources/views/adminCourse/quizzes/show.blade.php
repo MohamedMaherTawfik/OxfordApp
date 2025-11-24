@@ -8,17 +8,17 @@
             <table class="table-auto w-full text-sm border border-gray-200">
                 <thead class="bg-gray-100 text-gray-700">
                     <tr>
-                        <th class="px-4 py-2 text-left">Course</th>
-                        <th class="px-4 py-2 text-left">Duration</th>
-                        <th class="px-4 py-2 text-left">Start At</th>
-                        <th class="px-4 py-2 text-left">End At</th>
-                        <th class="px-4 py-2 text-left">Created By</th>
+                        <th class="px-4 py-2 text-left"> {{ __('teacher.course') }}</th>
+                        <th class="px-4 py-2 text-left"> {{ __('teacher.duration') }}</th>
+                        <th class="px-4 py-2 text-left"> {{ __('teacher.start_at') }}</th>
+                        <th class="px-4 py-2 text-left"> {{ __('teacher.end_at') }}</th>
+                        <th class="px-4 py-2 text-left"> {{ __('teacher.created_by') }}</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="text-gray-800">
                         <td class="px-4 py-2 border">{{ $course->title }}</td>
-                        <td class="px-4 py-2 border">{{ $quiz->duration }} minutes</td>
+                        <td class="px-4 py-2 border">{{ $quiz->duration }} {{ __('teacher.duration') }}</td>
                         <td class="px-4 py-2 border">{{ $quiz->start_at }}</td>
                         <td class="px-4 py-2 border">{{ $quiz->end_at }}</td>
                         <td class="px-4 py-2 border">{{ $quiz->user->name ?? 'N/A' }}</td>
@@ -29,7 +29,7 @@
             <div class="mt-6 text-right">
                 <a href="{{ route('teacherDashboard.quizzes.edit', [$course->slug, $quiz->slug]) }}"
                     class="bg-[#79131DD5] text-white px-4 py-2 rounded hover:[#79131d]">
-                    Edit Quiz
+                    {{ __('teacher.edit_quiz') }}
                 </a>
             </div>
         </div>
@@ -37,10 +37,10 @@
         <!-- Questions Table -->
         <div class="bg-white shadow rounded p-6">
             <div class="flex items-center justify-between mb-4">
-                <h2 class="text-xl font-bold">Questions</h2>
+                <h2 class="text-xl font-bold"> {{ __('teacher.question') }}</h2>
                 <a href="{{ route('questions.create', [$course->slug, $quiz->slug]) }}"
                     class="bg-[#79131DD5] text-white px-4 py-2 rounded hover:bg-[#79131d]">
-                    + Add Question
+                    {{ __('teacher.add_question') }}
                 </a>
             </div>
 
@@ -49,8 +49,8 @@
                     <thead class="bg-gray-100 text-gray-700">
                         <tr>
                             <th class="px-4 py-2 border">#</th>
-                            <th class="px-4 py-2 border text-left">Question</th>
-                            <th class="px-4 py-2 border text-center">Actions</th>
+                            <th class="px-4 py-2 border text-left"> {{ __('teacher.question') }}</th>
+                            <th class="px-4 py-2 border text-center"> {{ __('teacher.action') }}</th>
                         </tr>
                     </thead>
                     <tbody class="text-sm text-gray-800 divide-y divide-gray-100">
@@ -81,7 +81,7 @@
                     </tbody>
                 </table>
             @else
-                <p class="text-gray-500">No questions found for this quiz.</p>
+                <p class="text-gray-500"> {{ __('teacher.no_questions') }}</p>
             @endif
         </div>
     </div>

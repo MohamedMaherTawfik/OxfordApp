@@ -77,13 +77,14 @@
                                                     d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v3.586a1 1 0 00.293.707l2 2a1 1 0 001.414-1.414L11 9.586V6z"
                                                     clip-rule="evenodd" />
                                             </svg>
-                                            {{ $course->duration ?? 0 }} hours
+                                            {{ $course->duration ?? 0 }} {{ __('messages.hours') }}
                                         </div>
                                     </div>
                                     <div class="mt-auto">
                                         <div class="flex items-center justify-between text-sm text-gray-700 mb-2">
                                             <div>
-                                                <span class="font-bold text-base">Instructor:</span>
+                                                <span
+                                                    class="font-bold text-base">{{ __('messages.instructor') }}:</span>
                                                 <span class="opacity-60">{{ $course->user->name }}</span>
                                             </div>
                                             <div class="flex items-center">
@@ -95,9 +96,10 @@
                                         </div>
                                         <div
                                             class="pt-4 border-t border-gray-100 flex items-center justify-between gap-2">
-                                            <span class="text-lg font-bold text-[#79131d]">سعر المعلم:
+                                            <span class="text-lg font-bold text-[#79131d]"> {{ __('messages.pric') }}:
                                                 {{ $course->price ?? 0 }} ﷼</span>
-                                            <span class="text-lg font-bold text-[#79131d]">سعر الادمن:
+                                            <span class="text-lg font-bold text-[#79131d]">
+                                                {{ __('messages.admin_price') }}:
                                                 {{ $course->admin_price ?? 0 }} ﷼</span>
 
                                             <!-- زر فتح المودال -->
@@ -115,7 +117,7 @@
                                                 <button type="submit"
                                                     class="bg-[#79131d] hover:bg-[#57060EFF] text-white font-medium px-4 py-2 rounded-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-1"
                                                     title="حذف">
-                                                    حذف
+                                                    {{ __('messages.delete_lesson') }}
                                                 </button>
                                             </form>
 
@@ -123,7 +125,7 @@
                                             @if ($course->user_id == auth()->user()->id)
                                                 <a href="{{ route('admin.courses.show', $course->slug) }}"
                                                     class="px-4 py-2 bg-[#79131d] text-[#e4ce96] text-sm font-medium rounded-md hover:bg-[#57060EFF] transition-colors duration-300">
-                                                    Show Course
+                                                    {{ __('messages.show') }}
                                                 </a>
                                             @endif
 
@@ -140,14 +142,15 @@
                                         class="absolute top-3 right-3 text-gray-500 hover:text-gray-700">
                                         ✖
                                     </button>
-                                    <h3 class="text-lg font-semibold text-[#79131d] mb-4">تحديد سعر الأدمن</h3>
+                                    <h3 class="text-lg font-semibold text-[#79131d] mb-4">
+                                        {{ __('messages.admin_price') }}</h3>
 
                                     <form method="POST" action="{{ route('admin.courses.adminPrice', $course->id) }}">
                                         @csrf
                                         <div class="mb-4">
                                             <label for="admin_price_{{ $course->id }}"
                                                 class="block text-sm font-medium text-gray-700 mb-1">
-                                                السعر (﷼)
+                                                {{ __('messages.price') }} (﷼)
                                             </label>
                                             <input type="number" step="0.01" name="admin_price"
                                                 id="admin_price_{{ $course->id }}"
@@ -157,11 +160,11 @@
                                         <div class="flex justify-end gap-2">
                                             <button type="button" onclick="closeModal('{{ $course->id }}')"
                                                 class="px-4 py-2 bg-gray-200 text-gray-700 rounded-md hover:bg-gray-300">
-                                                إلغاء
+                                                {{ __('teacher.cancel') }}
                                             </button>
                                             <button type="submit"
                                                 class="px-4 py-2 bg-[#79131d] text-[#e4ce96] rounded-md hover:bg-[#5f0f16]">
-                                                حفظ
+                                                {{ __('teacher.save') }}
                                             </button>
                                         </div>
                                     </form>
@@ -191,7 +194,7 @@
                 <button id="prev-btn"
                     class="px-4 py-2 border rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
                     disabled>
-                    Previous
+                    {{ __('messages.prev') }}
                 </button>
 
                 <div id="tabs" class="flex space-x-1">
@@ -213,7 +216,7 @@
 
                 <button id="next-btn"
                     class="px-4 py-2 border rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    Next
+                    {{ __('messages.next') }}
                 </button>
             </div>
         </div>
