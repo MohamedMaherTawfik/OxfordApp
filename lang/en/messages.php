@@ -281,6 +281,7 @@ return [
     'assistant_title' => 'Smart Assistant',
     'assistant_placeholder' => 'Type your message...',
     'assistant_send' => 'Send',
+    'create_account'=>'Create Account',
     'assistant_start' => 'Start the conversation now...',
     'assistant_error' => 'An error occurred while connecting.',
     'assistant_retry' => 'Connection failed, please try again.',

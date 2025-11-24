@@ -149,6 +149,7 @@ return [
     'option' => 'خيارات +',
 
     'edit_lesson' => 'تعديل ',
+    'create_account' => 'انشاء حساب',
     'price' => 'السعر',
     'delete_lesson' => 'حذف ',
     'my_diploma' => 'الدبلومه الخاصة بي',
