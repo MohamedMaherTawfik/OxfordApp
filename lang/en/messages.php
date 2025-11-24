@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'title' => 'College',
+    'title' => 'Oxford College',
     'home' => 'Home',
     'MyCourses' => 'My Courses',
     'Mydiplomas' => 'My Diplomas',
@@ -97,7 +97,7 @@ return [
     'value_3_text' => 'We are committed to delivering high-quality courses, expert instructors, and trusted learning resources for all learners.',
 
     'register' => 'Register',
-    'WelcomeMessage' => 'Welcome to the',
+    'WelcomeMessage' => 'Welcome to ',
     'welcomeDescription' => 'Your journey to learning starts here. Discover skills, interact, and
                 earn
                 certified achievements.',
