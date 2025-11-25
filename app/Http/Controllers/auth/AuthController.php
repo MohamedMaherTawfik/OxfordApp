@@ -82,10 +82,10 @@ class AuthController extends Controller
         return view('auth.teacherApplied');
     }
 
-    public function resetPage()
-    {
+    // public function resetPage()
+    // {
 
-    }
+    // }
 
     public function updatePassword(Request $request)
     {

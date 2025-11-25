@@ -94,34 +94,6 @@
                 <p class="text-gray-700 mb-3">{{ $course->description }}</p>
             </div>
 
-            <table class="min-w-full border border-gray-300">
-                <thead>
-                    <tr class="bg-gray-200">
-                        <th class="border px-4 py-2">Day</th>
-                        <th class="border px-4 py-2">Time</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($times as $time)
-                        @php
-                            // قسم الوقت لبداية ونهاية
-                            $timeValue = explode('|', $time->time)[0]; // في حالة وجود ID بعد |
-
-                            [$start, $end] = explode(' - ', $timeValue);
-
-                            $startFormatted = date('h:i A', strtotime(trim($start)));
-                            $endFormatted = date('h:i A', strtotime(trim($end)));
-                        @endphp
-
-                        <tr>
-                            <td class="border px-4 py-2">{{ ucfirst($time->day) }}</td>
-                            <td class="border px-4 py-2">{{ $startFormatted }} - {{ $endFormatted }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-
-
 
         </div>
 

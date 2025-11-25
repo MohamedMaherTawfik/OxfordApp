@@ -231,8 +231,7 @@
                         </table>
                     </div>
 
-                    <div x-show="selectedDays.length > 0 && selectedDays.every(day => scheduleTimes[day])"
-                        class="text-center">
+                    <div x-show="canShowPayment()" class="text-center">
                         <div class="flex flex-wrap justify-center gap-4 mt-6">
 
                             {{-- Visa Enabled --}}
@@ -557,63 +556,20 @@
                 },
 
                 handleDaySelection(day) {
-                    // Sunday logic
-                    if (day === 'sunday') {
-                        if (this.selectedDays.includes('sunday')) {
-                            if (!this.selectedDays.includes('tuesday')) this.selectedDays.push('tuesday');
-                            if (!this.selectedDays.includes('thursday')) this.selectedDays.push('thursday');
-                            if (this.scheduleTimes.sunday) {
-                                this.scheduleTimes.tuesday = this.scheduleTimes.sunday;
-                                this.scheduleTimes.thursday = this.scheduleTimes.sunday;
-                            }
-                        } else {
-                            this.selectedDays = this.selectedDays.filter(d => d !== 'tuesday' && d !== 'thursday');
-                            this.scheduleTimes.tuesday = '';
-                            this.scheduleTimes.thursday = '';
-                        }
-                    }
-
-                    // Saturday logic
-                    if (day === 'saturday') {
-                        if (this.selectedDays.includes('saturday')) {
-                            if (!this.selectedDays.includes('monday')) this.selectedDays.push('monday');
-                            if (!this.selectedDays.includes('wednesday')) this.selectedDays.push('wednesday');
-                            if (this.scheduleTimes.saturday) {
-                                this.scheduleTimes.monday = this.scheduleTimes.saturday;
-                                this.scheduleTimes.wednesday = this.scheduleTimes.saturday;
-                            }
-                        } else {
-                            this.selectedDays = this.selectedDays.filter(d => d !== 'monday' && d !== 'wednesday');
-                            this.scheduleTimes.monday = '';
-                            this.scheduleTimes.wednesday = '';
-                        }
-                    }
-
-                    // Monday/Wednesday requires Saturday
-                    if ((day === 'monday' || day === 'wednesday') && this.selectedDays.includes(day)) {
-                        if (!this.selectedDays.includes('saturday')) this.selectedDays.push('saturday');
-                    }
-
-                    // Tuesday/Thursday requires Sunday
-                    if ((day === 'tuesday' || day === 'thursday') && this.selectedDays.includes(day)) {
-                        if (!this.selectedDays.includes('sunday')) this.selectedDays.push('sunday');
+                    // لو شال علامة الصح نمسح الوقت المختار
+                    if (!this.selectedDays.includes(day)) {
+                        this.scheduleTimes[day] = '';
                     }
                 },
 
-                getDayName(day) {
-                    const days = {
-                        'saturday': '{{ __('messages.saturday') }}',
-                        'sunday': '{{ __('messages.sunday') }}',
-                        'monday': '{{ __('messages.monday') }}',
-                        'tuesday': '{{ __('messages.tuesday') }}',
-                        'wednesday': '{{ __('messages.wednesday') }}',
-                        'thursday': '{{ __('messages.thursday') }}'
-                    };
-                    return days[day] || day;
+                canShowPayment() {
+                    // على الأقل يوم واحد مختار ومعه وقت
+                    return this.selectedDays.some(day => this.scheduleTimes[day] !== '');
                 }
             }
         }
     </script>
+
 </body>
 
 </html>
