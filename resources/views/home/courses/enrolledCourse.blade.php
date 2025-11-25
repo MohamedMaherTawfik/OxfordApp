@@ -4,6 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ $course->title }}</title>
+    <meta name="viewport" content="width=device-width">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://source.zoom.us/3.11.5/lib/vendor/react.min.js"></script>
     <script src="https://source.zoom.us/3.11.5/lib/vendor/react-dom.min.js"></script>
@@ -32,12 +35,12 @@
 
 <body class="bg-gray-50 text-gray-800">
 
-    {{-- navbar --}}
-    <x-navbar />
+    <header class="relative z-50">
+        <x-navbar />
+    </header>
 
     <!-- Course Header -->
-
-    <div class="mt-10">.</div>
+    <div class="mt-5">.</div>
     <div class="mt-10">.</div>
     <div class="max-w-5xl mx-auto py-6 px-4" x-data="{ activeTab: 'overview' }">
 
@@ -247,127 +250,6 @@
         <div class="w-16 h-16 border-[6px] border-[#79131d] border-t-transparent rounded-full animate-spin"></div>
     </div>
 
-    {{-- <div class="max-w-5xl mx-auto px-4 mb-16" x-data="{ expandedCard: null }"
-        dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
-        <h2 class="text-2xl font-semibold mb-6">{{ __('messages.lessons_title') }}</h2>
-
-        @if ($lessons->isEmpty())
-            <div class="text-center py-10 text-gray-600 bg-white rounded-lg shadow border">
-                {{ __('messages.no_lessons') }}
-            </div>
-        @else
-            <!-- Lessons Tabs -->
-            <div id="lessons-wrapper" class="relative">
-                @for ($page = 1; $page <= $totalPages; $page++)
-                    <div class="lesson-page grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-300 ease-in-out"
-                        data-page="{{ $page }}" style="{{ $page !== 1 ? 'display:none' : '' }}">
-                        @foreach ($lessons->forPage($page, $perPage) as $lesson)
-                            <!-- كارد الدرس -->
-                            <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1"
-                                x-data="{ isHovered: false }" @mouseenter="isHovered = true"
-                                @mouseleave="isHovered = false"
-                                :class="{
-                                    'scale-105 z-10': expandedCard === {{ $lesson->id }},
-                                    'scale-100': expandedCard !== {{ $lesson->id }}
-                                }"
-                                @click="expandedCard = expandedCard === {{ $lesson->id }} ? null : {{ $lesson->id }}">
-                                <!-- صورة -->
-                                <div class="relative">
-                                    <img src="{{ asset('storage/' . $lesson->image) }}" alt="{{ $lesson->title }}"
-                                        class="h-40 w-full object-cover transition-all duration-300"
-                                        :class="{ 'brightness-75': isHovered }">
-
-                                    <!-- زر التشغيل -->
-                                    <div class="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300"
-                                        :class="{ 'opacity-100': isHovered }">
-                                        <div class="bg-[#79131DDA] bg-opacity-80 rounded-full p-3">
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white"
-                                                viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd"
-                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <!-- المحتوى -->
-                                <div class="p-4 flex-1 flex flex-col justify-between transition-all duration-300"
-                                    :class="{
-                                        'h-auto': expandedCard === {{ $lesson->id }},
-                                        'h-40': expandedCard !== {{ $lesson->id }}
-                                    }">
-                                    <div>
-                                        <h3 class="text-lg font-bold mb-1 text-gray-800">
-                                            {{ \Illuminate\Support\Str::limit($lesson->title, 25) }}
-                                        </h3>
-                                        <p class="text-sm text-gray-600 transition-all duration-300"
-                                            :class="{
-                                                'line-clamp-3': expandedCard !== {{ $lesson->id }},
-                                                'line-clamp-none': expandedCard === {{ $lesson->id }}
-                                            }">
-                                            {{ $lesson->description }}
-                                        </p>
-                                    </div>
-                                    <div class="mt-4 transition-all duration-300"
-                                        :class="{
-                                            'opacity-100 translate-y-0': expandedCard === {{ $lesson->id }} ||
-                                                isHovered,
-                                            'opacity-0 translate-y-2': expandedCard !== {{ $lesson->id }} && !
-                                                isHovered
-                                        }">
-                                        <a href="{{ route('lesson.show', $lesson->slug) }}"
-                                            class="inline-block bg-[#79131DDA] text-[#e4ce96] px-4 py-2 rounded hover:bg-[#5a0e16] font-medium text-sm transition-colors duration-300 flex items-center">
-                                            {{ __('messages.go_to_lesson') }}
-                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1"
-                                                viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd"
-                                                    d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-                @endfor
-            </div>
-
-            <!-- Pagination -->
-            <div class="mt-10 flex justify-center items-center space-x-2"
-                dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
-                <button id="lesson-prev-btn"
-                    class="px-4 py-2 border rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50 transition-colors duration-200"
-                    disabled>
-                    {{ __('messages.prev') }}
-                </button>
-
-                <div id="lesson-tabs" class="flex space-x-1">
-                    @php
-                        $currentPage = 1;
-                        $visibleTabs = 4;
-                        $start = 1;
-                        $end = min($totalPages, $visibleTabs);
-                    @endphp
-
-                    @for ($i = $start; $i <= $end; $i++)
-                        <button data-page="{{ $i }}"
-                            class="w-10 h-10 flex items-center justify-center rounded-md text-sm font-semibold transition-all duration-200 border border-[#79131d]
-                    {{ $i === 1 ? 'bg-[#79131d] text-white' : 'bg-transparent text-gray-700 hover:bg-[#79131d] hover:text-white' }}">
-                            {{ $i }}
-                        </button>
-                    @endfor
-                </div>
-
-                <button id="lesson-next-btn"
-                    class="px-4 py-2 border rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors duration-200">
-                    {{ __('messages.next') }}
-                </button>
-            </div>
-        @endif
-    </div> --}}
-
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             document.getElementById('lesson-loader').style.display = 'none';
@@ -478,32 +360,32 @@
     </style>
 
     <!-- Related Courses -->
-    <div class="bg-gray-100 py-10 px-4" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
-        <div class="max-w-5xl mx-auto">
-            <h2 class="text-2xl font-semibold mb-6">{{ __('messages.related_courses') }}</h2>
+    <div class="bg-gray-100 py-8 sm:py-10 px-3 sm:px-4" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
+        <div class="max-w-7xl mx-auto">
+            <h2 class="text-xl sm:text-2xl font-semibold mb-6 text-center sm:text-start">
+                {{ __('messages.related_courses') }}
+            </h2>
 
             @if ($relatedCourses->isEmpty())
                 <div class="text-center py-10 text-gray-600 bg-white rounded-lg shadow border">
                     {{ __('messages.no_related_courses') }}
                 </div>
             @else
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                     @foreach ($relatedCourses as $related)
-                        <div class="bg-white rounded-xl shadow-lg border border-gray-200 overflow-hidden flex flex-col transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1 cursor-pointer"
-                            x-data="{ isHovered: false }" @mouseenter="isHovered = true" @mouseleave="isHovered = false"
-                            :class="{ 'scale-105 z-10': isHovered, 'scale-100': !isHovered }">
+                        <div class="bg-white rounded-2xl shadow-md border border-gray-200 overflow-hidden flex flex-col transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+                            x-data="{ isHovered: false }" @mouseenter="isHovered = true" @mouseleave="isHovered = false">
 
-                            <!-- الصورة -->
+                            <!-- IMAGE -->
                             <div class="relative">
                                 <img src="{{ $related->cover_photo_url }}" alt="{{ $related->title }}"
-                                    class="h-40 w-full object-cover transition-all duration-300"
+                                    class="h-48 sm:h-44 md:h-40 w-full object-cover transition duration-300"
                                     :class="{ 'brightness-75': isHovered }">
 
-                                <!-- زر التشغيل -->
-                                <div class="absolute inset-0 flex items-center justify-center opacity-0 transition-opacity duration-300"
+                                <div class="absolute inset-0 flex items-center justify-center opacity-0 transition duration-300"
                                     :class="{ 'opacity-100': isHovered }">
-                                    <div class="bg-[#79131DDA] bg-opacity-80 rounded-full p-3">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-white"
+                                    <div class="bg-[#79131D] bg-opacity-90 rounded-full p-3">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 text-white"
                                             viewBox="0 0 20 20" fill="currentColor">
                                             <path fill-rule="evenodd"
                                                 d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z"
@@ -513,23 +395,29 @@
                                 </div>
                             </div>
 
-                            <!-- المحتوى -->
-                            <div class="p-4 flex-1 flex flex-col justify-between">
+                            <!-- CONTENT -->
+                            <div class="p-4 flex flex-col justify-between flex-1">
                                 <div>
-                                    <h3 class="text-lg font-bold text-gray-800 mb-1">
+                                    <h3 class="text-base sm:text-lg font-bold text-gray-800 mb-2">
                                         {{ \Illuminate\Support\Str::limit($related->title, 40) }}
                                     </h3>
                                     <p class="text-sm text-gray-600 line-clamp-2">
                                         {{ \Illuminate\Support\Str::limit($related->description, 80) }}
                                     </p>
                                 </div>
+
                                 <div class="mt-4 transition-all duration-300"
-                                    :class="{ 'opacity-100 translate-y-0': isHovered, 'opacity-0 translate-y-2': !isHovered }">
+                                    :class="{
+                                        'opacity-100 translate-y-0': isHovered,
+                                        'opacity-100 sm:opacity-0 translate-y-2':
+                                            !isHovered
+                                    }">
+
                                     <a href="{{ route('course.show', $related->slug) }}"
-                                        class="inline-block bg-[#79131d] p-2 mt-2 text-[#e4ce96] hover:bg-[#5a0e16] text-sm font-medium rounded transition duration-300 flex items-center">
+                                        class="w-full text-center bg-[#79131d] px-4 py-2 text-[#e4ce96] hover:bg-[#5a0e16] text-sm font-semibold rounded-lg transition flex items-center justify-center gap-1">
                                         {{ __('messages.view_course') }}
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1"
-                                            viewBox="0 0 20 20" fill="currentColor">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20"
+                                            fill="currentColor">
                                             <path fill-rule="evenodd"
                                                 d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z"
                                                 clip-rule="evenodd" />
@@ -537,12 +425,14 @@
                                     </a>
                                 </div>
                             </div>
+
                         </div>
                     @endforeach
                 </div>
             @endif
         </div>
     </div>
+
     {{-- footer --}}
     <x-footer />
 

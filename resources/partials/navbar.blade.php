@@ -1,4 +1,4 @@
-<nav class="bg-white fixed shadow-sm z-50 fixed top-0 w-full" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}"
+<nav class="bg-white shadow-sm z-50 fixed top-0 w-full" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}"
     x-data="{ open: false, userMenu: false }">
 
     <!-- Top Section -->
