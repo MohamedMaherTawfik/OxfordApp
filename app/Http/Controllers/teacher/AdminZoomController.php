@@ -5,7 +5,7 @@ namespace App\Http\Controllers\teacher;
 use App\Http\Controllers\Controller;
 use App\Models\Courses;
 use App\Models\ZoomMeeting;
-use App\Services\ZoomLiveService;
+use App\services\ZoomLiveService;
 use Illuminate\Http\Request;
 
 class AdminZoomController extends Controller
