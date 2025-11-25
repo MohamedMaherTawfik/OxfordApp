@@ -1,26 +1,20 @@
 <?php
 
-namespace App\Http\Controllers\api\student;
+namespace App\Http\Controllers\admin;
 
+use App\Http\Controllers\api\student\apiResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\lessonRequest;
-use App\Interfaces\LessonInterface;
-use App\Models\comments;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Diplomas;
+use App\Models\lesson;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
-class lessonController extends Controller
+class lessonDiplomaController extends Controller
 {
-    use apiResponse;
-    private $lessonRepository;
-
-    public function __construct(LessonInterface $lessonInterface)
-    {
-        $this->lessonRepository = $lessonInterface;
-    }
-
+    use ApiResponse;
     public function allLessons()
     {
-        $lessons = $this->lessonRepository->allLessons(request('id'));
+        $lessons = Diplomas::with('lessons')->get();
         try {
             if (count($lessons) == 0) {
                 return $this->noContent();
@@ -32,45 +26,60 @@ class lessonController extends Controller
     }
     public function lessonDetails()
     {
-        $data = $this->lessonRepository->getLesson(request('id'));
+        $data = lesson::find(request('id'));
         try {
             if (!empty($data)) {
-                $comments = comments::with(['user:id,name,photo'])->where('lesson_id', $data->id)->get();
                 return response()->json([
                     'status' => 'true',
                     'message' => 'lesson with user and comments with user fetched',
                     'lesson' => $data,
-                    'comments' => $comments,
                 ], 200);
             } else {
-                return $this->notFound(__('messages.notFound_Message'));
+                return $this->notFound('Resource not found');
             }
         } catch (\Throwable $th) {
             return $this->serverError($th->getMessage());
         }
     }
-    public function createLesson(lessonRequest $request)
+    public function createLesson(Request $request)
     {
-        $fields = $request->validated();
+        $fields = $request->all();
         if (request()->hasFile('image')) {
             $fields['image'] = request()->file('image')->store('lessonsImage', 'public');
         }
         if (request()->hasFile('video_url')) {
             $fields['video_url'] = request()->file('video_url')->store('lessonsVideo', 'public');
         }
-        $lesson = $this->lessonRepository->createLessonApi($fields, request('id'));
+        $fields['slug'] = Str::slug($fields['title']) . '-' . time();
+        $lesson = lesson::create([
+            'title' => $fields['title'] ?? 'null',
+            'description' => $fields['description'] ?? 'null',
+            'image' => $fields['image'] ?? 'null',
+            'video_url' => $fields['video_url'] ?? 'null',
+            'diplomas_id' => request('id'),
+            'slug' => $fields['slug'],
+            'user_id' => auth()->id(),
+        ]);
         return $this->success($lesson, 'Lesson Created Successfully');
     }
     public function updateLesson()
     {
         $fields = request()->all();
-        $lesson = $this->lessonRepository->updateLesson($fields, request('id'));
+        if (request()->hasFile('image')) {
+            $fields['image'] = request()->file('image')->store('lessonsImage', 'public');
+        }
+        if (request()->hasFile('video_url')) {
+            $fields['video_url'] = request()->file('video_url')->store('lessonsVideo', 'public');
+        }
+        $lesson = lesson::find(request('id'));
+        $lesson->update($fields);
         return $this->success($lesson, 'lesson Updated Successfully');
     }
 
     public function deleteLesson()
     {
-        $this->lessonRepository->deleteLesson(request('id'));
+        $lesson = lesson::find(request('id'));
+        $lesson->delete();
         return $this->noContent();
     }
 }

@@ -1,8 +1,10 @@
 <?php
+use App\Http\Controllers\admin\lessonDiplomaController;
 use App\Http\Controllers\api\auth\AuthController;
 use App\Http\Controllers\api\diploma\DiplomacategoreyController;
 use App\Http\Controllers\api\diploma\DiplomasApiController;
 use App\Http\Controllers\api\firebase\FirebaseController;
+use App\Http\Controllers\api\schedulesController;
 use App\Http\Controllers\api\student\categoreyController;
 use App\Http\Controllers\api\student\commentController;
 use App\Http\Controllers\api\student\CourseController;
@@ -145,6 +147,38 @@ Route::group([
             Route::post('/update/{id}', 'updateCategory');
             Route::delete('/delete/{id}', 'deleteCategory');
             Route::get('/detail/{id}/courses', 'coursesPerCategorey');
+        }
+    );
+});
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'diplomalesson',
+], function () {
+    Route::controller(lessonDiplomaController::class)->group(
+        function () {
+            Route::get('/all/{id}', 'allLessons')->middleware('jwt.auth');
+            Route::get('/detail/{id}', 'lessonDetails')->middleware('jwt.auth');
+            Route::post('/{id}/create', 'createLesson')->middleware('jwt.auth');
+            Route::post('/update/{id}', 'updateLesson')->middleware('jwt.auth');
+            Route::delete('/delete/{id}', 'deleteLesson')->middleware('jwt.auth');
+        }
+    );
+});
+
+
+
+Route::group([
+    'middleware' => 'api',
+    'prefix' => 'Schedules',
+], function () {
+    Route::controller(schedulesController::class)->group(
+        function () {
+            Route::get('/all/{id}', 'index')->middleware('jwt.auth');
+            Route::get('/detail/{id}', 'show')->middleware('jwt.auth');
+            Route::post('/{id}/create', 'create')->middleware('jwt.auth');
+            Route::post('/update/{id}', 'update')->middleware('jwt.auth');
+            Route::delete('/delete/{id}', 'destroy')->middleware('jwt.auth');
         }
     );
 });
