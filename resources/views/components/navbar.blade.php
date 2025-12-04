@@ -28,6 +28,7 @@
             <div class="relative" x-data="{ langMenu: false }">
                 <button @click="langMenu = !langMenu"
                     class="flex items-center gap-2 px-3 py-2 rounded-lg text-gray-700 hover:bg-gray-50 transition-all duration-200 border border-gray-200 hover:border-[#79131d] hover:shadow-sm group">
+                    <span class="fi {{ app()->getLocale() === 'ar' ? 'fi-sa' : 'fi-us' }}" style="font-size: 1.2rem;"></span>
                     <span
                         class="text-lg font-bold {{ app()->getLocale() === 'ar' ? 'text-[#79131d]' : 'text-gray-700' }}">
                         {{ app()->getLocale() === 'ar' ? 'عربي' : 'English' }}
@@ -48,7 +49,7 @@
                     class="absolute {{ app()->getLocale() === 'ar' ? 'left-0' : 'right-0' }} mt-2 w-40 bg-white border border-gray-200 rounded-xl shadow-xl z-50 overflow-hidden">
                     <a href="{{ route('lang.switch', ['locale' => 'en']) }}"
                         class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-[#79131d] hover:text-white transition-all duration-200 {{ app()->getLocale() === 'en' ? 'bg-gray-50 font-semibold' : '' }}">
-                        <span class="text-lg">🇬🇧</span>
+                        <span class="fi fi-us"></span>
                         <span>English</span>
                         @if (app()->getLocale() === 'en')
                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -62,7 +63,7 @@
                     </a>
                     <a href="{{ route('lang.switch', ['locale' => 'ar']) }}"
                         class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-[#79131d] hover:text-white transition-all duration-200 {{ app()->getLocale() === 'ar' ? 'bg-gray-50 font-semibold' : '' }}">
-                        <span class="text-lg">🇸🇦</span>
+                        <span class="fi fi-sa"></span>
                         <span>العربية</span>
                         @if (app()->getLocale() === 'ar')
                             <svg xmlns="http://www.w3.org/2000/svg"

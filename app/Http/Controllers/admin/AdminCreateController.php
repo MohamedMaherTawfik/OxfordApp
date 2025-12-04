@@ -86,6 +86,10 @@ class AdminCreateController extends Controller
         $fields = request()->all();
         $course = $this->courseRepository->getCourseBySlug(request('slug'));
         if (request()->hasFile('cover_photo')) {
+            // Delete old image if exists
+            if ($course->cover_photo && \Storage::disk('public')->exists($course->cover_photo)) {
+                \Storage::disk('public')->delete($course->cover_photo);
+            }
             $fields['cover_photo'] = request()->file('cover_photo')->store('courses', 'public');
         }
         $fields['slug'] = str_replace(' ', '-', strtolower($fields['title']));
@@ -147,9 +151,17 @@ class AdminCreateController extends Controller
         $fields = request()->all();
         $lesson = $this->lessonRepository->getLessonBySlug(request('slug'));
         if (request()->hasFile('image')) {
+            // Delete old image if exists
+            if ($lesson->image && \Storage::disk('public')->exists($lesson->image)) {
+                \Storage::disk('public')->delete($lesson->image);
+            }
             $fields['image'] = request()->file('image')->store('lessonsImage', 'public');
         }
         if (request()->hasFile('video')) {
+            // Delete old video if exists
+            if ($lesson->video_url && \Storage::disk('public')->exists($lesson->video_url)) {
+                \Storage::disk('public')->delete($lesson->video_url);
+            }
             $fields['video'] = request()->file('video')->store('lessonsVideo', 'public');
         }
         $this->lessonRepository->updateLesson($fields, $lesson->id);

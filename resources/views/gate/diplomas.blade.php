@@ -69,7 +69,7 @@
     </style>
 </head>
 
-<body class="bg-gray-50" x-data="diplomaFilter()" x-cloak>
+<body class="bg-gray-50 flex flex-col min-h-screen" x-data="diplomaFilter()" x-cloak>
     <x-gate-navbar />
 
     <div class="mt-10"></div>
@@ -79,7 +79,7 @@
         <div class="max-w-7xl mx-auto">
 
             <!-- Header -->
-            <div class="text-center lg:text-left mb-6">
+            <div class="text-center {{ app()->getLocale() === 'ar' ? 'lg:text-right' : 'lg:text-left' }} mb-6">
                 <h2 class="text-3xl font-bold text-gray-900">{{ __('messages.featured_diplomas') }}</h2>
                 <p class="text-gray-600">{{ __('messages.boost_diplomas') }}</p>
             </div>
@@ -118,7 +118,12 @@
                         <div class="mb-4">
                             <label class="block text-sm font-medium text-gray-700 mb-2">
                                 {{ __('messages.price_range') }}:
-                                <span x-text="minPrice"></span> – <span x-text="maxPrice"></span> ﷼
+                                <span class="flex items-baseline gap-1">
+                                    <span x-text="minPrice"></span> – <span x-text="maxPrice"></span>
+                                    <img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" 
+                                         alt="SAR" 
+                                         class="w-4 h-4 inline-block align-baseline">
+                                </span>
                             </label>
                             <div class="flex items-center gap-2 mb-1">
                                 <input type="range" min="0" :max="globalMaxPrice" x-model="minPrice"
@@ -182,8 +187,13 @@
 
                                     <!-- Price + Link -->
                                     <div class="pt-4 flex justify-between items-center">
-                                        <span class="text-lg font-bold text-[#79131d]"
-                                            x-text="diploma.price + ' ﷼'"></span>
+                                        <div class="flex items-baseline gap-1">
+                                            <span class="text-lg font-bold text-[#79131d]"
+                                                x-text="diploma.price"></span>
+                                            <img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" 
+                                                 alt="SAR" 
+                                                 class="w-[1em] h-[1em] inline-block align-baseline">
+                                        </div>
 
                                         <!-- 🔥 الرابط حسب المالك -->
                                         <a :href="window.authId === diploma.user_id ? diploma.owner_url : diploma.guest_url"

@@ -86,21 +86,21 @@
                                 <i class="fas fa-map-marker-alt mt-1 {{ app()->getLocale() === 'ar' ? 'ml-4 mr-0' : 'mr-4' }}"></i>
                                 <div class="{{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
                                     <h4 class="font-semibold">{{ __('messages.address') }}</h4>
-                                    <p class="text-sm opacity-80">{{ $contact->address }}</p>
+                                    <p class="text-sm opacity-80">{{ $contact->address ?? '' }}</p>
                                 </div>
                             </div>
                             <div class="flex items-start {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }}">
                                 <i class="fas fa-phone-alt mt-1 {{ app()->getLocale() === 'ar' ? 'ml-4 mr-0' : 'mr-4' }}"></i>
                                 <div>
                                     <h4 class="font-semibold">{{ __('messages.phone') }}</h4>
-                                    <p class="text-sm opacity-80">{{ $contact->phone }}</p>
+                                    <p class="text-sm opacity-80">{{ $contact->phone ?? '' }}</p>
                                 </div>
                             </div>
                             <div class="flex items-start {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }}">
                                 <i class="fas fa-envelope mt-1 {{ app()->getLocale() === 'ar' ? 'ml-4 mr-0' : 'mr-4' }}"></i>
                                 <div>
                                     <h4 class="font-semibold">{{ __('messages.email') }}</h4>
-                                    <p class="text-sm opacity-80">{{ $contact->email }}</p>
+                                    <p class="text-sm opacity-80">{{ $contact->email ?? '' }}</p>
                                 </div>
                             </div>
                         </div>

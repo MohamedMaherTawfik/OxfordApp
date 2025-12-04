@@ -22,7 +22,7 @@ class diplomaCategoreyController extends Controller
             'photo' => 'required|image|mimes:jpg,png,jpeg,webp|max:2048',
         ]);
 
-        $validated['photo'] = $request->photo->store('diploma_categories');
+        $validated['photo'] = $request->photo->store('diploma_categories', 'public');
         $validated['slug'] = Str::slug($validated['name']) . '-' . time();
         DiplomasCategorey::create($validated);
 
@@ -39,7 +39,11 @@ class diplomaCategoreyController extends Controller
         ]);
 
         if ($request->hasFile('photo')) {
-            $validated['photo'] = $request->photo->store('diploma_categories');
+            // Delete old image if exists
+            if ($categorey->photo && \Storage::disk('public')->exists($categorey->photo)) {
+                \Storage::disk('public')->delete($categorey->photo);
+            }
+            $validated['photo'] = $request->photo->store('diploma_categories', 'public');
         }
 
         $validated['slug'] = Str::slug($validated['name']) . '-' . time();

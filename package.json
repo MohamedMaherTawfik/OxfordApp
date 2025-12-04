@@ -18,6 +18,7 @@
     },
     "dependencies": {
         "@zoom/meetingsdk": "^4.0.7",
-        "@zoomus/websdk": "^2.18.3"
+        "@zoomus/websdk": "^2.18.3",
+        "flag-icons": "^7.5.0"
     }
 }

@@ -37,7 +37,7 @@ class diplomaController extends Controller
 
         $validated['slug'] = Str::slug($request->name) . '-' . time();
         $validated['user_id'] = auth()->id();
-        $validated['image'] = $request->image->store('diplomas');
+        $validated['image'] = $request->image->store('diplomas', 'public');
         Diplomas::create([
             'name' => $validated['name'],
             'diplomas_categorey_id' => $validated['diplomas_categorey_id'],
@@ -76,7 +76,11 @@ class diplomaController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            $validated['image'] = $request->image->store('diplomas');
+            // Delete old image if exists
+            if ($diploma->image && \Storage::disk('public')->exists($diploma->image)) {
+                \Storage::disk('public')->delete($diploma->image);
+            }
+            $validated['image'] = $request->image->store('diplomas', 'public');
         }
 
         $diploma->update($validated);

@@ -54,7 +54,7 @@
                                 {{ $item->user->email ?? '---' }}
                             </td>
                             <td class="border px-4 py-2 text-center font-semibold text-[#79131d]">
-                                ريال {{ $item->price }}
+                                <img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" alt="SAR" class="inline-block sar-symbol"> {{ $item->price }}
                             </td>
                             <td class="border px-4 py-2 text-center">
                                 <form action="{{ route('admin.payments.success', $item) }}" method="POST"

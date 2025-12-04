@@ -16,6 +16,8 @@
 
     <!-- Cairo Font -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Flag Icons -->
+    <link rel="stylesheet" href="{{ asset('node_modules/flag-icons/css/flag-icons.min.css') }}">
 
     <style>
         body {

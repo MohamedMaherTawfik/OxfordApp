@@ -1,210 +1,166 @@
 <x-panel>
+    @include('components.messages')
 
-    {{-- course section --}}
-    @php
-        $perPage = 3;
-        $totalCourses = count($courses);
-        $totalPages = ceil($totalCourses / $perPage);
-    @endphp
-
-    {{-- Success Message --}}
-    @if (session('success'))
-        <div class="mb-4 p-3 rounded-lg bg-green-100 border border-green-400 text-green-700">
-            {{ session('success') }}
-        </div>
-    @endif
-
-    {{-- Error Message --}}
-    @if (session('error'))
-        <div class="mb-4 p-3 rounded-lg bg-red-100 border border-red-400 text-red-700">
-            {{ session('error') }}
-        </div>
-    @endif
-
-    {{-- Validation Errors --}}
-    @if ($errors->any())
-        <div class="mb-4 p-3 rounded-lg bg-yellow-100 border border-yellow-400 text-yellow-700">
-            <ul class="list-disc list-inside">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <section class="bg-gray-50 py-12 px-4 sm:px-6 mt-10 lg:px-8" id="courses">
-        <div class="max-w-7xl mx-auto">
-
-            <!-- Course Pages -->
-            <div id="courses-wrapper">
-                @for ($page = 1; $page <= $totalPages; $page++)
-                    <div class="course-page grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                        data-page="{{ $page }}" style="{{ $page !== 1 ? 'display:none' : '' }}">
-
-                        @foreach ($courses->forPage($page, $perPage) as $course)
-                            <div
-                                class="bg-white rounded-xl shadow-md border border-gray-200 overflow-hidden flex flex-col transition-all duration-300 ease-in-out hover:shadow-xl hover:-translate-y-1">
-
-                                <div class="h-48 overflow-hidden relative">
-                                    <img src="{{ $course->cover_photo_url }}"
-                                        class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
-
-                                    <!-- Start Date -->
-                                    <div
-                                        class="absolute bottom-2 left-2 bg-white/80 text-gray-800 text-xs font-medium px-2 py-1 rounded">
-                                        {{ \Carbon\Carbon::parse($course->start_Date)->format('d M Y') }}
-                                    </div>
-
-                                    <!-- Level -->
-                                    <div
-                                        class="absolute bottom-2 right-2 bg-[#79131d]/90 text-[#e4ce96] text-xs font-semibold px-2 py-1 rounded">
-                                        {{ __('main.levels.' . strtolower($course->level ?? 'beginner')) }}
-                                    </div>
-                                </div>
-
-                                <div class="p-6 flex-1 flex flex-col justify-between">
-                                    <div>
-                                        <div class="flex items-center mb-2">
-                                            <span
-                                                class="inline-block px-3 py-1 text-xs font-semibold text-[#e4ce96] bg-[#79131d] rounded-full">
-                                                {{ $course->category->name ?? __('main.general') }}
-                                            </span>
-                                        </div>
-
-                                        <h3 class="text-xl font-semibold text-gray-900 mb-1">
-                                            {{ $course->title }}
-                                        </h3>
-
-                                        <p class="text-gray-600 text-sm mb-3">
-                                            {{ Str::limit($course->description, 50) }}
-                                        </p>
-
-                                        <div class="flex items-center text-sm text-gray-500 mb-2">
-                                            <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                <path fill-rule="evenodd"
-                                                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v3.586a1 1 0 00.293.707l2 2a1 1 0 001.414-1.414L11 9.586V6z"
-                                                    clip-rule="evenodd" />
-                                            </svg>
-                                            {{ $course->duration ?? 0 }} {{ __('main.hours') }}
-                                        </div>
-                                    </div>
-
-                                    <div class="mt-auto">
-                                        <div class="flex items-center justify-between text-sm text-gray-700 mb-2">
-                                            <div>
-                                                <span class="font-bold text-base">
-                                                    {{ __('main.instructor') }}:
-                                                </span>
-                                                <span class="opacity-60">{{ $course->user->name }}</span>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <span class="text-yellow-400">★</span>
-                                                <span class="ml-1 text-gray-600">
-                                                    {{ $course->rating ?? 0 }}
-                                                    ({{ $course->reviews_count ?? __('main.no_reviews') }})
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
-                                            <span class="text-lg font-bold text-[#79131d]">
-                                                {{ __('main.teacher_price') }} : {{ $course->price ?? 0 }}
-                                            </span>
-
-                                            <a href="{{ route('admin.course.edit', $course) }}"
-                                                class="px-4 py-2 bg-[#79131DD2] text-[#e4ce96] text-sm font-medium rounded-md hover:bg-[#79131d] transition-colors duration-300">
-                                                {{ __('main.edit_price') }}
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-
-                    </div>
-                @endfor
-            </div>
-
-            <!-- Pagination Controls -->
-            <div class="mt-12 flex justify-center items-center space-x-2">
-                <button id="prev-btn"
-                    class="px-4 py-2 border rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:opacity-50"
-                    disabled>
-                    {{ __('main.previous') }}
-                </button>
-
-                <div id="tabs" class="flex space-x-1"></div>
-
-                <button id="next-btn"
-                    class="px-4 py-2 border rounded-md text-sm font-medium text-gray-700 hover:bg-gray-50">
-                    {{ __('main.next') }}
-                </button>
+    <div class="p-6 bg-gradient-to-br from-gray-50 via-white to-gray-50 min-h-screen">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">جميع الدورات</h1>
+                <p class="text-gray-600">عرض وإدارة جميع الدورات المتاحة</p>
             </div>
         </div>
-    </section>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const coursePages = document.querySelectorAll('.course-page');
-            const prevBtn = document.getElementById('prev-btn');
-            const nextBtn = document.getElementById('next-btn');
-            const totalPages = {{ $totalPages }};
-            const maxTabs = 4;
-            let currentPage = 1;
+        <!-- Stats Card -->
+        <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-[#79131d] mb-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-gray-500 text-sm font-medium">إجمالي الدورات</p>
+                    <h3 class="text-2xl font-bold text-gray-900 mt-1">{{ $courses->count() }}</h3>
+                </div>
+                <div class="bg-[#79131d]/10 rounded-full p-3">
+                    <i class="fas fa-book-open text-[#79131d] text-xl"></i>
+                </div>
+            </div>
+        </div>
 
-            function updateCourseView() {
-                coursePages.forEach(page => {
-                    page.style.display = parseInt(page.dataset.page) === currentPage ? 'grid' : 'none';
-                });
-            }
+        <!-- Courses Table -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-gradient-to-r from-[#79131d] to-[#5a0f16] px-6 py-4">
+                <h2 class="text-lg font-bold text-white flex items-center">
+                    <i class="fas fa-list mr-3"></i>
+                    قائمة الدورات
+                </h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-4 text-right text-xs font-semibold text-gray-700 uppercase tracking-wider">الصورة</th>
+                            <th class="px-6 py-4 text-right text-xs font-semibold text-gray-700 uppercase tracking-wider">الدورة</th>
+                            <th class="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">التصنيف</th>
+                            <th class="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">المدرب</th>
+                            <th class="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">المدة</th>
+                            <th class="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">السعر</th>
+                            <th class="px-6 py-4 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @forelse($courses as $course)
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <!-- Image -->
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="w-20 h-20 rounded-lg overflow-hidden bg-gray-200 flex-shrink-0">
+                                        <img src="{{ $course->cover_photo_url }}"
+                                            alt="{{ $course->title }}" 
+                                            class="w-full h-full object-cover">
+                                    </div>
+                                </td>
+                                
+                                <!-- Course Info -->
+                                <td class="px-6 py-4">
+                                    <div class="flex flex-col">
+                                        <h3 class="text-sm font-bold text-gray-900 mb-1">{{ $course->title }}</h3>
+                                        <p class="text-xs text-gray-500 mb-2 line-clamp-2">{{ Str::limit($course->description, 60) }}</p>
+                                        <div class="flex items-center gap-2 flex-wrap">
+                                            <span class="px-2 py-1 text-xs font-semibold rounded-full bg-[#79131d]/10 text-[#79131d]">
+                                                {{ __('main.levels.' . strtolower($course->level ?? 'beginner')) }}
+                                            </span>
+                                            <span class="text-xs text-gray-500">
+                                                <i class="far fa-calendar-alt mr-1"></i>
+                                                {{ \Carbon\Carbon::parse($course->start_Date)->format('d M Y') }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </td>
+                                
+                                <!-- Category -->
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                        {{ $course->category->name ?? __('main.general') }}
+                                    </span>
+                                </td>
+                                
+                                <!-- Instructor -->
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <div class="flex items-center justify-center">
+                                        <div class="w-8 h-8 rounded-full bg-gray-200 mr-2 overflow-hidden">
+                                            <img src="{{ $course->user->photo ? asset('storage/' . $course->user->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($course->user->name) . '&background=79131d&color=fff' }}"
+                                                alt="{{ $course->user->name }}" 
+                                                class="w-full h-full object-cover">
+                                        </div>
+                                        <span class="text-sm text-gray-900">{{ $course->user->name ?? 'N/A' }}</span>
+                                    </div>
+                                </td>
+                                
+                                <!-- Duration -->
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <div class="flex items-center justify-center text-sm text-gray-600">
+                                        <i class="far fa-clock mr-1"></i>
+                                        <span>{{ $course->duration ?? 0 }} {{ __('main.hours') }}</span>
+                                    </div>
+                                </td>
+                                
+                                <!-- Price -->
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <div class="flex items-center justify-center gap-1">
+                                        <img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" 
+                                             alt="SAR" 
+                                             class="inline-block" 
+                                             style="width: 0.9em; height: 0.9em; vertical-align: middle;">
+                                        <span class="text-sm font-bold text-gray-900">{{ number_format($course->price ?? 0, 2) }}</span>
+                                    </div>
+                                </td>
+                                
+                                <!-- Actions -->
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <a href="{{ route('admin.course.edit', $course) }}" 
+                                           class="text-yellow-600 hover:text-yellow-800 p-2 rounded-lg hover:bg-yellow-50 transition-colors"
+                                           title="تعديل السعر">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="{{ route('admin.courses.show', $course->slug) }}" 
+                                           class="text-blue-600 hover:text-blue-800 p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                                           title="عرض">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <form action="{{ route('admin.courses.delete', $course->id) }}" 
+                                              method="POST" 
+                                              class="inline"
+                                              onsubmit="return confirm('هل أنت متأكد من حذف هذه الدورة؟');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" 
+                                                    class="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 transition-colors"
+                                                    title="حذف">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="7" class="px-6 py-12 text-center">
+                                    <div class="flex flex-col items-center">
+                                        <i class="fas fa-book-open text-6xl text-gray-300 mb-4"></i>
+                                        <p class="text-gray-500 text-lg font-medium">لا توجد دورات</p>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 
-            function renderTabs() {
-                const tabsContainer = document.getElementById('tabs');
-                tabsContainer.innerHTML = '';
-
-                let start = Math.max(1, currentPage - Math.floor(maxTabs / 2));
-                let end = start + maxTabs - 1;
-
-                if (end > totalPages) {
-                    end = totalPages;
-                    start = Math.max(1, end - maxTabs + 1);
-                }
-
-                for (let i = start; i <= end; i++) {
-                    const btn = document.createElement('button');
-                    btn.textContent = i;
-                    btn.className = `w-10 h-10 flex items-center justify-center rounded-md text-sm font-semibold transition border border-[#79131d] ${
-                i === currentPage ? 'bg-[#79131d] text-white' : 'bg-transparent text-gray-700 hover:bg-[#79131d] hover:text-white'
-            }`;
-                    btn.onclick = () => {
-                        currentPage = i;
-                        updateView();
-                    };
-                    tabsContainer.appendChild(btn);
-                }
-            }
-
-            function updateView() {
-                updateCourseView();
-                renderTabs();
-                prevBtn.disabled = currentPage === 1;
-                nextBtn.disabled = currentPage === totalPages;
-            }
-
-            prevBtn.onclick = () => {
-                if (currentPage > 1) {
-                    currentPage--;
-                    updateView();
-                }
-            };
-            nextBtn.onclick = () => {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    updateView();
-                }
-            };
-            updateView();
-        });
-    </script>
-
+    <style>
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
 </x-panel>

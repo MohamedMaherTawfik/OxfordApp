@@ -26,6 +26,7 @@
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('node_modules/flag-icons/css/flag-icons.min.css') }}">
     <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
 
@@ -196,7 +197,7 @@
     </style>
 </head>
 
-<body class="bg-white text-gray-800">
+<body class="bg-white text-gray-800 flex flex-col min-h-screen">
 
     <!-- ✅ شريط التقدم -->
     <div class="progress-container fixed top-0 right-0 w-full h-1 bg-transparent z-50">

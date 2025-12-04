@@ -16,10 +16,20 @@ class Teacher
      */
     public function handle(Request $request, Closure $next): Response
     {
-        // dd(Auth::user());
         if (auth()->check()) {
-            if (auth()->user()->role == 'teacher' && auth()->user()->applyTeacher->status == 'accepted') {
-                return $next($request);
+            $user = auth()->user();
+            
+            // Check if user is a teacher
+            if ($user->role == 'teacher') {
+                // If user has an applyTeacher record, check if it's accepted
+                if ($user->applyTeacher) {
+                    if ($user->applyTeacher->status == 'accepted') {
+                        return $next($request);
+                    }
+                } else {
+                    // If no applyTeacher record exists, allow access (teacher created directly by admin)
+                    return $next($request);
+                }
             }
         }
 

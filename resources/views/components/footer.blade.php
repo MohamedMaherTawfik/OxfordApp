@@ -1,6 +1,19 @@
 <?php
 use App\Models\footer;
 $footer = footer::first();
+
+// إرجاع قيم افتراضية إذا لم تكن هناك بيانات
+if (!$footer) {
+    $footer = (object) [
+        'phone' => '#',
+        'facebook' => '#',
+        'instgram' => '#',
+        'whatsapp' => '#',
+        'telegram' => '#',
+        'google_play' => '#',
+        'app_store' => '#',
+    ];
+}
 ?>
 <style>
     :root {
@@ -159,8 +172,33 @@ $footer = footer::first();
         opacity: 1;
         transform: translateY(0);
     }
+
+    /* Fixed Footer - Works on all pages */
+    html {
+        height: 100%;
+    }
+    
+    body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Ensure main content takes available space */
+    main, 
+    .main-content,
+    section:not(footer),
+    .content-wrapper {
+        flex: 1 0 auto;
+    }
+    
+    /* Footer always at bottom */
+    footer {
+        flex-shrink: 0;
+        margin-top: auto;
+    }
 </style>
-<footer class="gradient-bg py-10 px-4 text-[#e4ce96]" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
+<footer class="gradient-bg py-10 px-4 text-[#e4ce96] mt-auto" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
     <div class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-8">
 
         <!-- Quick Links -->
@@ -181,7 +219,7 @@ $footer = footer::first();
             <h4 class="font-bold border-b-2 border-[#e4ce96] inline-block mb-4">{{ __('messages.SupportContact') }}</h4>
             <ul class="space-y-2 text-gray-100">
                 <li><a href="#" class="hover:text-[#e4ce96]">{{ __('messages.who are we') }}</a></li>
-                <li><a href="{{ $footer->phone }}" target="_blank"
+                <li><a href="{{ $footer->phone ?? '#' }}" target="_blank"
                         class="hover:text-[#e4ce96]">{{ __('messages.contact') }}</a></li>
                 <li><a href="#" class="hover:text-[#e4ce96]">{{ __('messages.Copyrigth') }}</a></li>
                 <li><a href="#" class="hover:text-[#e4ce96]">{{ __('messages.Terms') }}</a></li>
@@ -197,21 +235,33 @@ $footer = footer::first();
                     class="w-24 mx-auto md:mx-0 mb-2 rounded-full">
                 <p class="font-semibold text-gray-100">{{ __('messages.Follow us') }}</p>
                 <div class="flex justify-center md:justify-start gap-4 mt-2 text-[#e4ce96] text-xl">
-                    <a href="{{ $footer->facebook }}" target="_blank"><i class="fab fa-facebook-square"></i></a>
-                    <a href="{{ $footer->instgram }}" target="_blank"><i class="fab fa-instagram"></i></a>
-                    <a href="{{ $footer->whatsapp }}" target="_blank"><i class="fab fa-whatsapp"></i></a>
-                    <a href="{{ $footer->telegram }}" target="_blank"><i class="fab fa-telegram"></i></a>
+                    @if($footer->facebook)
+                        <a href="{{ $footer->facebook }}" target="_blank"><i class="fab fa-facebook-square"></i></a>
+                    @endif
+                    @if($footer->instgram)
+                        <a href="{{ $footer->instgram }}" target="_blank"><i class="fab fa-instagram"></i></a>
+                    @endif
+                    @if($footer->whatsapp)
+                        <a href="{{ $footer->whatsapp }}" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                    @endif
+                    @if($footer->telegram)
+                        <a href="{{ $footer->telegram }}" target="_blank"><i class="fab fa-telegram"></i></a>
+                    @endif
                 </div>
             </div>
 
             <p class="text-sm text-gray-100 mb-2">{{ __('messages.learn anythime') }}</p>
             <div class="flex justify-center md:justify-start gap-4 mb-4">
-                <a href="{{ $footer->google_play }}" target="_blank"><img
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/512px-Google_Play_Store_badge_EN.svg.png"
-                        alt="Google Play" class="w-32"></a>
-                <a href="{{ $footer->app_store }}" target="_blank"><img
-                        src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
-                        alt="App Store" class="w-28"></a>
+                @if($footer->google_play)
+                    <a href="{{ $footer->google_play }}" target="_blank"><img
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/512px-Google_Play_Store_badge_EN.svg.png"
+                            alt="Google Play" class="w-32"></a>
+                @endif
+                @if($footer->app_store)
+                    <a href="{{ $footer->app_store }}" target="_blank"><img
+                            src="https://developer.apple.com/assets/elements/badges/download-on-the-app-store.svg"
+                            alt="App Store" class="w-28"></a>
+                @endif
             </div>
 
             <p class="text-sm text-gray-100">{{ __('messages.All rigths') }}</p>

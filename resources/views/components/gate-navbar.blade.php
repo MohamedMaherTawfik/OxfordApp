@@ -1,9 +1,9 @@
 <!-- Top Bar with Marquee -->
-<div class="bg-[#79131d] text-white py-3 px-6 text-sm fixed top-0 w-full z-50 overflow-hidden"
+<div class="bg-[#79131d] text-white py-3 px-6 text-sm sticky top-0 w-full z-50 overflow-hidden"
     dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}" x-data="{ langMenuTop: false }">
 
     <!-- Marquee Wrapper -->
-    <div class="whitespace-nowrap animate-marquee flex items-center justify-between">
+    <div class="flex items-center justify-between">
 
         <!-- LEFT SIDE (Call + Social) -->
         <div class="flex items-center gap-6 ml-20">
@@ -59,10 +59,10 @@
                     class="flex items-center gap-2 bg-white text-gray-800 px-2 py-1 rounded text-xs">
 
                     @if (app()->getLocale() === 'ar')
-                        <img src="https://flagcdn.com/w20/sa.png" class="w-5 h-5 rounded-sm">
+                        <span class="fi fi-sa"></span>
                         <span>AR</span>
                     @else
-                        <img src="https://flagcdn.com/w20/gb.png" class="w-5 h-5 rounded-sm">
+                        <span class="fi fi-us"></span>
                         <span>EN</span>
                     @endif
                 </button>
@@ -72,12 +72,12 @@
 
                     <a href="{{ route('lang.switch', ['locale' => 'en']) }}"
                         class="flex items-center gap-2 px-3 py-2 hover:bg-gray-100">
-                        <img src="https://flagcdn.com/w20/gb.png" class="w-5 h-5"> EN
+                        <span class="fi fi-us"></span> EN
                     </a>
 
                     <a href="{{ route('lang.switch', ['locale' => 'ar']) }}"
                         class="flex items-center gap-2 px-3 py-2 hover:bg-gray-100">
-                        <img src="https://flagcdn.com/w20/sa.png" class="w-5 h-5"> AR
+                        <span class="fi fi-sa"></span> AR
                     </a>
                 </div>
             </div>
@@ -96,27 +96,11 @@
     </div>
 </div>
 
-<!-- Animation -->
-<style>
-    @keyframes marquee {
-        0% {
-            transform: translateX(100%);
-        }
-
-        100% {
-            transform: translateX(-100%);
-        }
-    }
-
-    .animate-marquee {
-        animation: marquee 20s linear infinite;
-    }
-</style>
 
 
 
 <!-- Main Navigation Bar (White) -->
-<nav class="shadow-sm z-40 fixed top-[48px] w-full bg-white text-gray-800"
+<nav class="shadow-sm z-40 sticky top-[48px] w-full bg-white text-gray-800"
     dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}" x-data="{ open: false }">
 
     <div class="container mx-auto px-6 py-2 flex items-center justify-between">

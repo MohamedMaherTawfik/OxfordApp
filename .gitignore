@@ -24,3 +24,16 @@ Homestead.yaml
 npm-debug.log
 Thumbs.db
 yarn-error.log
+
+# Temporary files
+/storage/app/private/tmp/*
+!/storage/app/private/tmp/.gitkeep
+/storage/app/public/lessonsVideo/tmp/*
+!/storage/app/public/lessonsVideo/tmp/.gitkeep
+
+# Large video files
+/public/web/video.mp4
+
+# Logs
+/storage/logs/*.log
+!/storage/logs/.gitkeep

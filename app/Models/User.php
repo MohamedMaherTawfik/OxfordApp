@@ -95,6 +95,11 @@ class User extends Authenticatable implements JWTSubject
     {
         return $this->hasMany(Courses::class);
     }
+    
+    public function courses()
+    {
+        return $this->hasMany(Courses::class);
+    }
     public function Enrolledcourse()
     {
         return $this->belongsToMany(Courses::class, 'enrollments', 'user_id', 'courses_id')
@@ -135,5 +140,29 @@ class User extends Authenticatable implements JWTSubject
     public function sentNotifications()
     {
         return $this->hasMany(Notification::class, 'sender_id');
+    }
+
+    /**
+     * Get the staff permissions for the user.
+     */
+    public function staffPermissions()
+    {
+        return $this->hasOne(Staff::class);
+    }
+
+    /**
+     * Check if user has a specific permission.
+     */
+    public function hasPermission(string $permission): bool
+    {
+        if ($this->role === 'admin') {
+            return true; // Admin has all permissions
+        }
+
+        if ($this->role === 'staff' && $this->staffPermissions) {
+            return $this->staffPermissions->$permission ?? false;
+        }
+
+        return false;
     }
 }

@@ -13,6 +13,7 @@ return [
     'applications' => 'التطبيقات',
     'courses' => 'الكورسات',
     'add_new_course' => 'إضافة كورس جديد',
+    'update_course' => 'تحديث الكورس',
 
     'admin' => 'مسؤول',
     'your_courses' => 'كورساتك',

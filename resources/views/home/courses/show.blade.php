@@ -7,544 +7,14 @@
     <title>{{ $course->title }} - {{ __('course.details_page_title') }}</title>
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-        }
-
-        /* تصحيح المسافات تلقائياً حسب الاتجاه */
-        [dir="rtl"] .space-x-2> :not([hidden])~ :not([hidden]) {
-            margin-right: 0.5rem;
-            margin-left: 0;
-        }
-
-        [dir="ltr"] .space-x-2> :not([hidden])~ :not([hidden]) {
-            margin-left: 0.5rem;
-            margin-right: 0;
-        }
-
-        .course-hero {
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        }
-    </style>
-</head>
-
-<body class="bg-gray-50">
-
-    <x-navbar />
-
-    <div class="mt-10">.</div>
-    <div class="mt-5">.</div>
-
-    <section class="course-hero py-16 bg-gradient-to-br from-gray-50 via-white to-gray-50">
-        <div class="container mx-auto px-4 md:px-6">
-            <div
-                class="flex flex-col lg:flex-row gap-8 lg:gap-12 {{ app()->getLocale() === 'ar' ? 'lg:flex-row-reverse' : '' }}">
-
-                <!-- Image - Enhanced -->
-                <div class="lg:w-2/5">
-                    <div class="relative rounded-2xl overflow-hidden shadow-2xl group">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent z-10"></div>
-                        <img src="{{ $course->cover_photo_url }}"
-                            class="w-full h-96 lg:h-[500px] object-cover transition-transform duration-500 group-hover:scale-110">
-                        <!-- Badge -->
-                        <div class="absolute top-4 {{ app()->getLocale() === 'ar' ? 'left-4' : 'right-4' }} z-20">
-                            <span class="px-4 py-2 bg-[#79131d] text-white rounded-full text-sm font-bold shadow-lg">
-                                {{ $course->category->name }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Content - Enhanced -->
-                <div
-                    class="lg:w-3/5 flex flex-col justify-center space-y-6 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
-
-                    <div>
-                        <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4 leading-tight">
-                            {{ $course->title }}
-                        </h1>
-                        <p class="text-lg md:text-xl text-gray-600 leading-relaxed">
-                            {{ Str::limit($course->description, 200) }}
-                        </p>
-                    </div>
-
-                    <!-- Info Cards -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 my-6">
-                        <div
-                            class="bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                            <div
-                                class="flex items-center gap-3 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }}">
-                                <div class="p-2 bg-[#79131d]/10 rounded-lg">
-                                    <svg class="w-6 h-6 text-[#79131d]" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
-                                        </path>
-                                    </svg>
-                                </div>
-                                <div class="{{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
-                                    <p class="text-sm text-gray-500">{{ __('messages.starts') }}</p>
-                                    <p class="font-semibold text-gray-900">
-                                        {{ \Carbon\Carbon::parse($course->start_Date)->format('M d, Y') }}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div
-                            class="bg-white/80 backdrop-blur-sm p-4 rounded-xl border border-gray-200 shadow-sm hover:shadow-md transition-shadow">
-                            <div
-                                class="flex items-center gap-3 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }}">
-                                <div class="p-2 bg-[#79131d]/10 rounded-lg">
-                                    <svg class="w-6 h-6 text-[#79131d]" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </div>
-                                <div class="{{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
-                                    <p class="text-sm text-gray-500">{{ __('messages.duration') }}</p>
-                                    <p class="font-semibold text-gray-900">{{ $course->duration }}
-                                        {{ __('messages.hours') }}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Price & CTA - Hidden until schedule selection -->
-                    <div class="bg-gradient-to-r from-[#79131d] to-[#5a0f16] p-6 rounded-2xl shadow-xl">
-                        <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
-                            <div>
-                                <p class="text-white/80 text-sm mb-1">{{ __('messages.pricing') }}</p>
-                                <p class="text-4xl font-bold text-white">
-                                    {{ $course->admin_price > 0 ? number_format($course->admin_price, 2) : number_format($course->price, 2) }}
-                                    <span class="text-2xl text-[#e4ce96]">{{ __('messages.currency') }}</span>
-                                </p>
-                            </div>
-                            <!-- Payment button will be shown after schedule selection -->
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Training Schedule Selection - Updated -->
-    <section class="py-12 bg-white" x-data="scheduleSelector()">
-        <div class="container mx-auto px-4 md:px-6">
-            <h3 class="text-3xl font-bold text-gray-900 mb-8 text-center">
-                <span
-                    class="inline-block pb-2 border-b-4 border-[#79131d]">{{ __('messages.select_training_days') }}</span>
-            </h3>
-            <div class="max-w-5xl mx-auto">
-                <div
-                    class="bg-gradient-to-br from-gray-50 to-white rounded-2xl shadow-xl overflow-hidden border border-gray-200 p-6">
-
-                    <!-- Schedule Table -->
-                    <div class="overflow-x-auto mb-6">
-                        <table class="min-w-full">
-                            <thead class="bg-gradient-to-r from-[#79131d] to-[#5a0f16]">
-                                <tr>
-                                    <th
-                                        class="px-6 py-4 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }} text-white font-semibold">
-                                        {{ __('messages.day') }}</th>
-                                    <th class="px-6 py-4 text-center text-white font-semibold">
-                                        {{ __('messages.select_time') }}</th>
-                                    <th class="px-6 py-4 text-center text-white font-semibold">
-                                        {{ __('messages.select_day') }}</th>
-                                </tr>
-                            </thead>
-                            <tbody class="divide-y divide-gray-200">
-                                @php
-                                    $days = [
-                                        'saturday' => __('messages.saturday'),
-                                        'sunday' => __('messages.sunday'),
-                                        'monday' => __('messages.monday'),
-                                        'tuesday' => __('messages.tuesday'),
-                                        'wednesday' => __('messages.wednesday'),
-                                        'thursday' => __('messages.thursday'),
-                                    ];
-                                @endphp
-
-                                @foreach ($days as $dayKey => $dayName)
-                                    @php
-                                        $hasSchedule = $schedule->where('day', $dayKey)->count() > 0;
-                                    @endphp
-
-                                    <tr class="hover:bg-gray-50 transition-colors {{ !$hasSchedule ? 'bg-gray-100 opacity-60' : '' }}"
-                                        :class="selectedDays.includes('{{ $dayKey }}') ? 'bg-green-50' : ''">
-
-                                        <td class="px-6 py-4 font-medium text-gray-900">
-                                            {{ $dayName }}
-                                            @if (!$hasSchedule)
-                                                <span class="text-sm text-red-500 block">لا يوجد مواعيد</span>
-                                            @endif
-                                        </td>
-
-                                        <td class="px-6 py-4 text-center">
-                                            <select x-model="scheduleTimes.{{ $dayKey }}"
-                                                class="border border-gray-300 rounded-lg px-3 py-2 w-full {{ !$hasSchedule ? 'bg-gray-200 cursor-not-allowed' : '' }}"
-                                                {{ !$hasSchedule ? 'disabled' : '' }}>
-
-                                                <option value="">-- {{ __('messages.select_time') }} --</option>
-
-                                                @php $printed = []; @endphp
-                                                @foreach ($schedule as $item)
-                                                    @if ($item->day == $dayKey)
-                                                        @php
-                                                            $start = \Carbon\Carbon::parse($item->start_time)->format(
-                                                                'g:i A',
-                                                            );
-                                                            $end = \Carbon\Carbon::parse($item->end_time)->format(
-                                                                'g:i A',
-                                                            );
-                                                            $timeValue =
-                                                                $item->start_time .
-                                                                '|' .
-                                                                $item->end_time .
-                                                                '|' .
-                                                                $item->id;
-                                                        @endphp
-
-                                                        @if (!in_array($timeValue, $printed))
-                                                            @php $printed[] = $timeValue; @endphp
-                                                            <option value="{{ $timeValue }}">{{ $start }} -
-                                                                {{ $end }}</option>
-                                                        @endif
-                                                    @endif
-                                                @endforeach
-                                            </select>
-                                        </td>
-
-                                        <td class="px-6 py-4 text-center">
-                                            <input type="checkbox" x-model="selectedDays" value="{{ $dayKey }}"
-                                                @change="handleDaySelection('{{ $dayKey }}')"
-                                                class="w-5 h-5 text-[#79131d] border-gray-300 rounded focus:ring-[#79131d]"
-                                                {{ !$hasSchedule ? 'disabled' : '' }}>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div x-show="canShowPayment()" class="text-center">
-                        <div class="flex flex-wrap justify-center gap-4 mt-6">
-
-                            {{-- Visa Enabled --}}
-                            @if ($visaenables->visa_enable == 1)
-                                @guest
-                                    <form action="{{ route('pay.form.login', [$course, 'visa']) }}" method="post">
-                                        @csrf
-                                        <template x-for="day in selectedDays" :key="day">
-                                            <div>
-                                                <input type="hidden" :name="'days[' + day + '][id]'"
-                                                    :value="scheduleTimes[day].split('|')[2]">
-                                                <input type="hidden" :name="'days[' + day + '][start_time]'"
-                                                    :value="scheduleTimes[day].split('|')[0]">
-                                                <input type="hidden" :name="'days[' + day + '][end_time]'"
-                                                    :value="scheduleTimes[day].split('|')[1]">
-                                            </div>
-                                        </template>
-                                        <button type="submit"
-                                            class="px-8 py-4 bg-gradient-to-r from-[#79131d] to-[#5a0f16] text-white font-bold rounded-xl">
-                                            {{ __('messages.proceed_to_payment') }}
-                                        </button>
-                                    </form>
-                                @endguest
-
-                                @auth
-                                    <form action="{{ route('pay.form.auth', $course) }}" method="get">
-                                        @csrf
-                                        <template x-for="day in selectedDays" :key="day">
-                                            <div>
-                                                <input type="hidden" :name="'days[' + day + '][id]'"
-                                                    :value="scheduleTimes[day].split('|')[2]">
-                                                <input type="hidden" :name="'days[' + day + '][start_time]'"
-                                                    :value="scheduleTimes[day].split('|')[0]">
-                                                <input type="hidden" :name="'days[' + day + '][end_time]'"
-                                                    :value="scheduleTimes[day].split('|')[1]">
-                                            </div>
-                                        </template>
-                                        <button type="submit"
-                                            class="px-8 py-4 bg-gradient-to-r from-[#79131d] to-[#5a0f16] text-white font-bold rounded-xl">
-                                            {{ __('messages.proceed_to_payment') }}
-                                        </button>
-                                    </form>
-                                @endauth
-                            @endif
-
-                            {{-- Cash Enabled --}}
-                            @if ($visaenables->cash_enable == 1)
-                                @guest
-                                    <form action="{{ route('pay.form.login', [$course, 'cash']) }}" method="POST">
-                                        @csrf
-                                        <template x-for="day in selectedDays" :key="day">
-                                            <div>
-                                                <input type="hidden" :name="'days[' + day + '][id]'"
-                                                    :value="scheduleTimes[day].split('|')[2]">
-                                                <input type="hidden" :name="'days[' + day + '][start_time]'"
-                                                    :value="scheduleTimes[day].split('|')[0]">
-                                                <input type="hidden" :name="'days[' + day + '][end_time]'"
-                                                    :value="scheduleTimes[day].split('|')[1]">
-                                            </div>
-                                        </template>
-                                        <button type="submit"
-                                            class="px-8 py-4 bg-gray-700 text-white font-bold rounded-xl">
-                                            {{ __('messages.payLater') }}
-                                        </button>
-                                    </form>
-                                @endguest
-
-                                @auth
-                                    <form action="{{ route('pay.later.auth', $course) }}" method="get">
-                                        @csrf
-                                        <template x-for="day in selectedDays" :key="day">
-                                            <div>
-                                                <input type="hidden" :name="'days[' + day + '][id]'"
-                                                    :value="scheduleTimes[day].split('|')[2]">
-                                                <input type="hidden" :name="'days[' + day + '][start_time]'"
-                                                    :value="scheduleTimes[day].split('|')[0]">
-                                                <input type="hidden" :name="'days[' + day + '][end_time]'"
-                                                    :value="scheduleTimes[day].split('|')[1]">
-                                            </div>
-                                        </template>
-                                        <button type="submit"
-                                            class="px-8 py-4 bg-gray-700 text-white font-bold rounded-xl">
-                                            {{ __('messages.payLater') }}
-                                        </button>
-                                    </form>
-                                @endauth
-                            @endif
-                        </div>
-                    </div>
-
-
-                    <!-- Warning if no days selected -->
-                    <div x-show="selectedDays.length === 0" x-transition class="text-center">
-                        <p class="text-gray-500 italic">{{ __('messages.please_select_days') }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <script>
-            function scheduleSelector() {
-                return {
-                    selectedDays: [],
-                    scheduleTimes: {
-                        saturday: '',
-                        sunday: '',
-                        monday: '',
-                        tuesday: '',
-                        wednesday: '',
-                        thursday: ''
-                    },
-
-                    handleDaySelection(day) {
-                        // Sunday logic
-                        if (day === 'sunday') {
-                            if (this.selectedDays.includes('sunday')) {
-                                if (!this.selectedDays.includes('tuesday')) this.selectedDays.push('tuesday');
-                                if (!this.selectedDays.includes('thursday')) this.selectedDays.push('thursday');
-                                if (this.scheduleTimes.sunday) {
-                                    this.scheduleTimes.tuesday = this.scheduleTimes.sunday;
-                                    this.scheduleTimes.thursday = this.scheduleTimes.sunday;
-                                }
-                            } else {
-                                this.selectedDays = this.selectedDays.filter(d => d !== 'tuesday' && d !== 'thursday');
-                                this.scheduleTimes.tuesday = '';
-                                this.scheduleTimes.thursday = '';
-                            }
-                        }
-
-                        // Saturday logic
-                        if (day === 'saturday') {
-                            if (this.selectedDays.includes('saturday')) {
-                                if (!this.selectedDays.includes('monday')) this.selectedDays.push('monday');
-                                if (!this.selectedDays.includes('wednesday')) this.selectedDays.push('wednesday');
-                                if (this.scheduleTimes.saturday) {
-                                    this.scheduleTimes.monday = this.scheduleTimes.saturday;
-                                    this.scheduleTimes.wednesday = this.scheduleTimes.saturday;
-                                }
-                            } else {
-                                this.selectedDays = this.selectedDays.filter(d => d !== 'monday' && d !== 'wednesday');
-                                this.scheduleTimes.monday = '';
-                                this.scheduleTimes.wednesday = '';
-                            }
-                        }
-
-                        // Ensure dependencies
-                        if ((day === 'monday' || day === 'wednesday') && this.selectedDays.includes(day)) {
-                            if (!this.selectedDays.includes('saturday')) this.selectedDays.push('saturday');
-                        }
-                        if ((day === 'tuesday' || day === 'thursday') && this.selectedDays.includes(day)) {
-                            if (!this.selectedDays.includes('sunday')) this.selectedDays.push('sunday');
-                        }
-                    }
-                }
-            }
-        </script>
-    </section>
-
-
-    <!-- Course Content Section - Enhanced -->
-    <section class="py-16 bg-white">
-        <div class="container mx-auto px-4 md:px-6">
-            <div class="max-w-5xl mx-auto">
-                <!-- What You Will Learn -->
-                <div class="mb-16">
-                    <div class="flex items-center gap-3 mb-8">
-                        <div class="p-3 bg-[#79131d]/10 rounded-xl">
-                            <svg class="w-8 h-8 text-[#79131d]" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z">
-                                </path>
-                            </svg>
-                        </div>
-                        <h2 class="text-3xl font-bold text-gray-900">{{ __('messages.what_you_will_learn') }}</h2>
-                    </div>
-                    <div
-                        class="bg-gradient-to-br from-gray-50 to-white p-8 rounded-2xl border border-gray-200 shadow-lg {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
-                        <div
-                            class="prose max-w-none text-gray-700 leading-relaxed text-lg {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
-                            {!! nl2br(e($course->description)) !!}
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Course Details - Enhanced -->
-                <div class="border-t-2 border-gray-200 pt-16">
-                    <h2 class="text-3xl font-bold text-gray-900 mb-10 text-center">
-                        <span
-                            class="inline-block pb-2 border-b-4 border-[#79131d]">{{ __('messages.course_details') }}</span>
-                    </h2>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                        <!-- Course Info Card -->
-                        <div
-                            class="bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl border-2 border-gray-200 shadow-xl hover:shadow-2xl hover:border-[#79131d] transition-all duration-300">
-                            <div class="flex items-center gap-3 mb-6">
-                                <div class="p-3 bg-[#79131d]/10 rounded-xl">
-                                    <svg class="w-6 h-6 text-[#79131d]" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </div>
-                                <h3 class="text-xl font-bold text-gray-900">{{ __('messages.course_info') }}</h3>
-                            </div>
-                            <ul class="space-y-4">
-                                <li
-                                    class="flex {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : 'justify-between' }} items-center p-3 bg-white rounded-lg border border-gray-100">
-                                    <span class="text-gray-600 font-medium">{{ __('messages.category') }}:</span>
-                                    <span
-                                        class="px-3 py-1 bg-[#79131d]/10 text-[#79131d] rounded-full font-semibold">{{ $course->category->name }}</span>
-                                </li>
-                                <li
-                                    class="flex {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : 'justify-between' }} items-center p-3 bg-white rounded-lg border border-gray-100">
-                                    <span class="text-gray-600 font-medium">{{ __('messages.start_date') }}:</span>
-                                    <span
-                                        class="text-gray-900 font-semibold">{{ \Carbon\Carbon::parse($course->start_Date)->format('M d, Y') }}</span>
-                                </li>
-                                <li
-                                    class="flex {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : 'justify-between' }} items-center p-3 bg-white rounded-lg border border-gray-100">
-                                    <span class="text-gray-600 font-medium">{{ __('messages.duration') }}:</span>
-                                    <span class="text-gray-900 font-semibold">{{ $course->duration }}
-                                        {{ __('messages.hours') }}</span>
-                                </li>
-                                <li
-                                    class="flex {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : 'justify-between' }} items-center p-3 bg-white rounded-lg border border-gray-100">
-                                    <span class="text-gray-600 font-medium">{{ __('messages.created_at') }}:</span>
-                                    <span
-                                        class="text-gray-900 font-semibold">{{ \Carbon\Carbon::parse($course->created_at)->format('M d, Y') }}</span>
-                                </li>
-                            </ul>
-                        </div>
-
-                        <!-- Pricing Card -->
-                        <div
-                            class="bg-gradient-to-br from-[#79131d] to-[#5a0f16] p-8 rounded-2xl shadow-2xl text-white">
-                            <div
-                                class="flex items-center gap-3 mb-6 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }}">
-                                <div class="p-3 bg-white/20 rounded-xl backdrop-blur-sm">
-                                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
-                                        </path>
-                                    </svg>
-                                </div>
-                                <h3
-                                    class="text-xl font-bold {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
-                                    {{ __('messages.pricing') }}</h3>
-                            </div>
-                            <div class="mb-6">
-                                <p class="text-white/80 text-sm mb-2">{{ __('messages.enroll_course') }}</p>
-                                <p class="text-5xl font-bold mb-2">
-                                    {{ $course->admin_price > 0 ? number_format($course->admin_price, 2) : number_format($course->price, 2) }}
-                                </p>
-                                <p class="text-2xl text-[#e4ce96] font-semibold">{{ __('messages.currency') }}</p>
-                            </div>
-                            <!-- Payment button hidden - will be shown after schedule selection -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-
-    <!-- Instructor - Enhanced -->
-    <section class="py-16 bg-gradient-to-br from-gray-50 to-white">
-        <div class="container mx-auto px-4 md:px-6">
-            <h2 class="text-3xl font-bold text-gray-900 mb-10 text-center">
-                <span class="inline-block pb-2 border-b-4 border-[#79131d]">{{ __('messages.instructor') }}</span>
-            </h2>
-            <div class="max-w-3xl mx-auto">
-                <div
-                    class="bg-white rounded-2xl shadow-xl p-8 border border-gray-200 hover:shadow-2xl transition-shadow duration-300">
-                    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-6">
-                        <div class="relative">
-                            <img src="{{ $course->user->photo ?? 'https://cdn.vectorstock.com/i/1000v/66/13/default-avatar-profile-icon-social-media-user-vector-49816613.jpg' }}"
-                                class="w-24 h-24 rounded-full object-cover border-4 border-[#79131d] shadow-lg">
-                            <div class="absolute -bottom-2 -right-2 bg-[#e4ce96] rounded-full p-2 shadow-md">
-                                <svg class="w-6 h-6 text-[#79131d]" fill="currentColor" viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                            </div>
-                        </div>
-                        <div
-                            class="flex-1 text-center sm:{{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
-                            <h3 class="text-2xl font-bold text-gray-900 mb-2">{{ $course->user->name }}</h3>
-                            <p class="text-gray-600 leading-relaxed mb-4">
-                                {{ __('messages.instructor_bio_placeholder') }}</p>
-                            <div class="flex items-center gap-2 text-[#79131d]">
-                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                                    <path
-                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                    </path>
-                                </svg>
-                                <span class="font-semibold">خبير معتمد</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <x-footer />
-    {{-- alpine cdn --}}
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('node_modules/flag-icons/css/flag-icons.min.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <script>
         function scheduleSelector() {
             return {
+                activeTab: 'schedule',
                 selectedDays: [],
                 scheduleTimes: {
                     saturday: '',
@@ -554,22 +24,583 @@
                     wednesday: '',
                     thursday: ''
                 },
-
                 handleDaySelection(day) {
-                    // لو شال علامة الصح نمسح الوقت المختار
                     if (!this.selectedDays.includes(day)) {
                         this.scheduleTimes[day] = '';
                     }
-                },
+                    
+                    if (day === 'sunday') {
+                        if (this.selectedDays.includes('sunday')) {
+                            if (!this.selectedDays.includes('tuesday')) this.selectedDays.push('tuesday');
+                            if (!this.selectedDays.includes('thursday')) this.selectedDays.push('thursday');
+                            if (this.scheduleTimes.sunday) {
+                                this.scheduleTimes.tuesday = this.scheduleTimes.sunday;
+                                this.scheduleTimes.thursday = this.scheduleTimes.sunday;
+                            }
+                        } else {
+                            this.selectedDays = this.selectedDays.filter(d => d !== 'tuesday' && d !== 'thursday');
+                            this.scheduleTimes.tuesday = '';
+                            this.scheduleTimes.thursday = '';
+                        }
+                    }
 
+                    if (day === 'saturday') {
+                        if (this.selectedDays.includes('saturday')) {
+                            if (!this.selectedDays.includes('monday')) this.selectedDays.push('monday');
+                            if (!this.selectedDays.includes('wednesday')) this.selectedDays.push('wednesday');
+                            if (this.scheduleTimes.saturday) {
+                                this.scheduleTimes.monday = this.scheduleTimes.saturday;
+                                this.scheduleTimes.wednesday = this.scheduleTimes.saturday;
+                            }
+                        } else {
+                            this.selectedDays = this.selectedDays.filter(d => d !== 'monday' && d !== 'wednesday');
+                            this.scheduleTimes.monday = '';
+                            this.scheduleTimes.wednesday = '';
+                        }
+                    }
+
+                    if ((day === 'monday' || day === 'wednesday') && this.selectedDays.includes(day)) {
+                        if (!this.selectedDays.includes('saturday')) this.selectedDays.push('saturday');
+                    }
+                    if ((day === 'tuesday' || day === 'thursday') && this.selectedDays.includes(day)) {
+                        if (!this.selectedDays.includes('sunday')) this.selectedDays.push('sunday');
+                    }
+                },
                 canShowPayment() {
-                    // على الأقل يوم واحد مختار ومعه وقت
                     return this.selectedDays.some(day => this.scheduleTimes[day] !== '');
+                },
+                hasSelectedSchedule() {
+                    return this.selectedDays.length > 0 && this.selectedDays.some(day => this.scheduleTimes[day] !== '');
                 }
             }
         }
     </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
 
+        [dir="rtl"] {
+            direction: rtl;
+            text-align: right;
+        }
+        
+        [dir="rtl"] .text-left {
+            text-align: right !important;
+        }
+        
+        [dir="rtl"] .flex-row {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .ml-2 {
+            margin-left: 0 !important;
+            margin-right: 0.5rem !important;
+        }
+        
+        [dir="rtl"] .mr-2 {
+            margin-right: 0 !important;
+            margin-left: 0.5rem !important;
+        }
+        
+        [dir="rtl"] .space-x-2 > * + * {
+            margin-left: 0 !important;
+            margin-right: 0.5rem !important;
+        }
+        
+        [dir="rtl"] .space-x-reverse > * + * {
+            margin-right: 0 !important;
+            margin-left: 0.5rem !important;
+        }
+        
+        [dir="rtl"] table {
+            direction: rtl;
+        }
+        
+        [dir="rtl"] .text-right {
+            text-align: right !important;
+        }
+        
+        [dir="rtl"] .justify-end {
+            justify-content: flex-end !important;
+        }
+        
+        [dir="rtl"] .justify-start {
+            justify-content: flex-start !important;
+        }
+        
+        .sticky-sidebar {
+            position: sticky;
+            top: 100px;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .schedule-table {
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .schedule-table thead th:first-child {
+            border-top-left-radius: 0.75rem;
+        }
+        
+        .schedule-table thead th:last-child {
+            border-top-right-radius: 0.75rem;
+        }
+    </style>
+</head>
+
+<body class="bg-white flex flex-col min-h-screen" x-data="scheduleSelector()" data-is-auth="{{ auth()->check() ? 'true' : 'false' }}">
+    <x-navbar />
+
+    <main class="flex-1">
+    <!-- Hero Section - Udemy Style -->
+    <section class="bg-white border-b border-gray-200 pt-24 md:pt-28">
+        <div class="container mx-auto px-4 md:px-6 py-8">
+            <div class="max-w-7xl mx-auto">
+                <!-- Breadcrumb -->
+                <nav class="mb-6 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                    <ol class="flex items-center space-x-2 text-sm text-gray-600 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse space-x-reverse' : '' }}">
+                        <li><a href="{{ route('home') }}" class="hover:text-[#79131d]">{{ __('messages.home') ?? 'Home' }}</a></li>
+                        <li><i class="fas fa-chevron-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} text-xs"></i></li>
+                        <li><a href="{{ route('courses.all') }}" class="hover:text-[#79131d]">{{ __('messages.courses') ?? 'Courses' }}</a></li>
+                        <li><i class="fas fa-chevron-{{ app()->getLocale() === 'ar' ? 'left' : 'right' }} text-xs"></i></li>
+                        <li class="text-gray-900 font-medium">{{ Str::limit($course->title, 50) }}</li>
+                    </ol>
+                </nav>
+
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Course Image -->
+                    <div class="lg:w-2/5 {{ app()->getLocale() === 'ar' ? 'lg:order-2' : 'lg:order-1' }}">
+                        <div class="relative rounded-lg overflow-hidden shadow-lg">
+                            <img src="{{ $course->cover_photo_url }}" 
+                                 alt="{{ $course->title }}"
+                                 class="w-full h-64 lg:h-96 object-cover">
+                            <div class="absolute top-4 {{ app()->getLocale() === 'ar' ? 'right-4' : 'left-4' }}">
+                                <span class="px-3 py-1 bg-[#79131d] text-white text-xs font-semibold rounded">
+                                    {{ $course->category->name }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Course Info -->
+                    <div class="lg:w-3/5 flex flex-col {{ app()->getLocale() === 'ar' ? 'text-right lg:order-1' : 'text-left lg:order-2' }}">
+                        <h1 class="text-3xl lg:text-4xl font-bold text-gray-900 mb-4 leading-tight">
+                            {{ $course->title }}
+                        </h1>
+                        
+                        <p class="text-lg text-gray-600 mb-6 leading-relaxed">
+                            {{ Str::limit($course->description, 200) }}
+                        </p>
+
+                        <!-- Course Stats -->
+                        <div class="flex flex-wrap items-center gap-4 mb-6 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse justify-end' : 'justify-start' }}">
+                            <div class="flex items-center gap-2 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }}">
+                                <div class="flex items-center gap-1 text-yellow-500">
+                                    <i class="fas fa-star text-sm"></i>
+                                    <i class="fas fa-star text-sm"></i>
+                                    <i class="fas fa-star text-sm"></i>
+                                    <i class="fas fa-star text-sm"></i>
+                                    <i class="fas fa-star text-sm"></i>
+                                </div>
+                                <span class="text-sm font-semibold text-gray-900 mx-1">5.0</span>
+                                <span class="text-sm text-gray-600 mx-1">(0 {{ __('messages.reviews') ?? 'reviews' }})</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-gray-600 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }}">
+                                <i class="fas fa-users text-sm"></i>
+                                <span class="text-sm mx-1">0 {{ __('messages.students') ?? 'students' }}</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-gray-600 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }}">
+                                <i class="far fa-clock text-sm"></i>
+                                <span class="text-sm mx-1">{{ $course->duration }} {{ __('messages.hours') }}</span>
+                            </div>
+                        </div>
+
+                        <!-- Instructor Info -->
+                        <div class="flex items-center gap-3 mb-6 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse justify-end' : 'justify-start' }}">
+                            <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex-shrink-0">
+                                <img src="{{ ($course->user && $course->user->photo) ? asset('storage/' . $course->user->photo) : 'https://cdn.vectorstock.com/i/1000v/66/13/default-avatar-profile-icon-social-media-user-vector-49816613.jpg' }}"
+                                     alt="{{ $course->user->name ?? 'Instructor' }}"
+                                     class="w-full h-full object-cover">
+                            </div>
+                            <div class="{{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                <p class="text-sm text-gray-600 mb-1">{{ __('messages.created_by') ?? 'Created by' }}</p>
+                                <p class="font-semibold text-gray-900">{{ $course->user->name ?? 'N/A' }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Last Updated -->
+                        <div class="text-sm text-gray-600 mb-6 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                            <i class="far fa-calendar-alt {{ app()->getLocale() === 'ar' ? 'ml-2' : 'mr-2' }}"></i>
+                            <span>{{ __('messages.last_updated') ?? 'Last updated' }}: {{ \Carbon\Carbon::parse($course->updated_at)->format('M Y') }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content with Sidebar -->
+    <section class="py-8 bg-gray-50">
+        <div class="container mx-auto px-4 md:px-6">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex flex-col lg:flex-row gap-8">
+                    <!-- Main Content -->
+                    <div class="lg:w-2/3 {{ app()->getLocale() === 'ar' ? 'lg:order-1 text-right' : 'lg:order-1 text-left' }}">
+                        <!-- Tabs Navigation -->
+                        <div class="bg-white border-b border-gray-200 mb-6">
+                            <nav class="flex {{ app()->getLocale() === 'ar' ? 'justify-end flex-row-reverse space-x-reverse' : 'justify-start space-x-8' }}" aria-label="Tabs" style="{{ app()->getLocale() === 'ar' ? 'gap: 2rem;' : '' }}">
+                                <button @click="activeTab = 'overview'" 
+                                        :class="activeTab === 'overview' ? 'border-[#79131d] text-[#79131d]' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                                        class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                    {{ __('messages.overview') ?? 'Overview' }}
+                                </button>
+                                <button @click="activeTab = 'curriculum'" 
+                                        :class="activeTab === 'curriculum' ? 'border-[#79131d] text-[#79131d]' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                                        class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                    {{ __('messages.curriculum') ?? 'Curriculum' }}
+                                </button>
+                                <button @click="activeTab = 'instructor'" 
+                                        :class="activeTab === 'instructor' ? 'border-[#79131d] text-[#79131d]' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                                        class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                    {{ __('messages.instructor') ?? 'Instructor' }}
+                                </button>
+                                <button @click="activeTab = 'schedule'" 
+                                        :class="activeTab === 'schedule' ? 'border-[#79131d] text-[#79131d]' : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'"
+                                        class="whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                    {{ app()->getLocale() === 'ar' ? 'الحجز' : __('messages.schedule') ?? 'Schedule' }}
+                                </button>
+                            </nav>
+                        </div>
+
+                        <!-- Tab Content: Overview -->
+                        <div x-show="activeTab === 'overview'" class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900 mb-4 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                {{ __('messages.what_you_will_learn') }}
+                            </h2>
+                            <div class="prose max-w-none text-gray-700 leading-relaxed {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                {!! nl2br(e($course->description)) !!}
+                            </div>
+
+                            <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                {{ __('messages.course_content') }}
+                            </h2>
+                            <ul class="space-y-3 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                <li class="flex items-start gap-3 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse justify-end' : 'justify-start' }}">
+                                    <i class="fas fa-check-circle text-[#79131d] mt-1 flex-shrink-0"></i>
+                                    <span class="text-gray-700">{{ $course->duration }} {{ __('messages.hours') }} {{ __('messages.on_demand_video') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse justify-end' : 'justify-start' }}">
+                                    <i class="fas fa-check-circle text-[#79131d] mt-1 flex-shrink-0"></i>
+                                    <span class="text-gray-700">{{ __('messages.full_lifetime_access') }}</span>
+                                </li>
+                                <li class="flex items-start gap-3 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse justify-end' : 'justify-start' }}">
+                                    <i class="fas fa-check-circle text-[#79131d] mt-1 flex-shrink-0"></i>
+                                    <span class="text-gray-700">{{ __('messages.certificate_of_completion') }}</span>
+                                </li>
+                            </ul>
+
+                            <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                {{ __('messages.requirements') }}
+                            </h2>
+                            <ul class="list-disc space-y-2 text-gray-700 {{ app()->getLocale() === 'ar' ? 'text-right list-inside' : 'text-left list-inside' }}">
+                                <li>{{ __('messages.no_prerequisites') }}</li>
+                                <li>{{ __('messages.willingness_to_learn') }}</li>
+                            </ul>
+                        </div>
+
+                        <!-- Tab Content: Curriculum -->
+                        <div x-show="activeTab === 'curriculum'" class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900 mb-6 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                {{ __('messages.course_content') ?? 'Course Content' }}
+                            </h2>
+                            @if($course->lessons && $course->lessons->count() > 0)
+                                <div class="space-y-4">
+                                    @foreach($course->lessons as $lesson)
+                                        <div class="border border-gray-200 rounded-lg p-4 hover:border-[#79131d] transition-colors">
+                                            <div class="flex items-center justify-between {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }}">
+                                                <div class="flex items-center gap-3 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }}">
+                                                    <i class="fas fa-play-circle text-[#79131d] text-xl"></i>
+                                                    <div>
+                                                        <h3 class="font-semibold text-gray-900">{{ $lesson->title }}</h3>
+                                                        <p class="text-sm text-gray-600">{{ $lesson->duration ?? '10:00' }} {{ __('messages.min') ?? 'min' }}</p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @else
+                                <p class="text-gray-600 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">{{ __('messages.no_lessons_available') ?? 'No lessons available yet' }}</p>
+                            @endif
+                        </div>
+
+                        <!-- Tab Content: Instructor -->
+                        <div x-show="activeTab === 'instructor'" class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                            <div class="flex flex-col md:flex-row gap-6 {{ app()->getLocale() === 'ar' ? 'md:flex-row-reverse' : '' }}">
+                                <div class="flex-shrink-0">
+                                    <img src="{{ ($course->user && $course->user->photo) ? asset('storage/' . $course->user->photo) : 'https://cdn.vectorstock.com/i/1000v/66/13/default-avatar-profile-icon-social-media-user-vector-49816613.jpg' }}"
+                                         alt="{{ $course->user->name ?? 'Instructor' }}"
+                                         class="w-32 h-32 rounded-full object-cover border-4 border-[#79131d]">
+                                </div>
+                                <div class="flex-1 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                    <h2 class="text-2xl font-bold text-gray-900 mb-2">
+                                        {{ $course->user->name ?? 'N/A' }}
+                                    </h2>
+                                    <p class="text-gray-600 mb-4">{{ __('messages.certified_expert') ?? 'Certified Expert' }}</p>
+                                    <div class="grid grid-cols-2 gap-4 mb-6">
+                                        <div class="{{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                            <p class="text-sm text-gray-600">{{ __('messages.total_students') ?? 'Total Students' }}</p>
+                                            <p class="text-lg font-semibold text-gray-900">0</p>
+                                        </div>
+                                        <div class="{{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                            <p class="text-sm text-gray-600">{{ __('messages.courses') ?? 'Courses' }}</p>
+                                            <p class="text-lg font-semibold text-gray-900">{{ ($course->user && $course->user->courses) ? $course->user->courses->count() : 0 }}</p>
+                                        </div>
+                                        <div class="{{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                            <p class="text-sm text-gray-600">{{ __('messages.rating') ?? 'Rating' }}</p>
+                                            <p class="text-lg font-semibold text-gray-900">5.0</p>
+                                        </div>
+                                        <div class="{{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                            <p class="text-sm text-gray-600">{{ __('messages.reviews') ?? 'Reviews' }}</p>
+                                            <p class="text-lg font-semibold text-gray-900">0</p>
+                                        </div>
+                                    </div>
+                                    <div class="{{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                        <h3 class="font-semibold text-gray-900 mb-2">{{ __('messages.about_instructor') ?? 'About Instructor' }}</h3>
+                                        <p class="text-gray-700 leading-relaxed">
+                                            {{ __('messages.instructor_bio_placeholder') ?? 'Professional instructor with years of experience in teaching and professional development.' }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tab Content: Schedule -->
+                        <div x-show="activeTab === 'schedule'" class="bg-white rounded-lg shadow-sm p-6 mb-6">
+                            <h2 class="text-2xl font-bold text-gray-900 mb-6 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                {{ __('messages.select_training_days') }}
+                            </h2>
+                            <div class="overflow-x-auto">
+                                <table class="schedule-table min-w-full bg-white rounded-lg border border-gray-200 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                    <thead class="bg-[#79131d]">
+                                        <tr>
+                                            <th class="px-6 py-4 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }} text-white font-semibold">
+                                                {{ __('messages.day') }}
+                                            </th>
+                                            <th class="px-6 py-4 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-center' }} text-white font-semibold">
+                                                {{ __('messages.select_time') }}
+                                            </th>
+                                            <th class="px-6 py-4 text-center text-white font-semibold">
+                                                {{ __('messages.select_day') }}
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-gray-200">
+                                        @php
+                                            $days = [
+                                                'saturday' => __('messages.saturday'),
+                                                'sunday' => __('messages.sunday'),
+                                                'monday' => __('messages.monday'),
+                                                'tuesday' => __('messages.tuesday'),
+                                                'wednesday' => __('messages.wednesday'),
+                                                'thursday' => __('messages.thursday'),
+                                            ];
+                                        @endphp
+
+                                        @foreach ($days as $dayKey => $dayName)
+                                            @php
+                                                $hasSchedule = $schedule->where('day', $dayKey)->count() > 0;
+                                            @endphp
+
+                                            <tr class="hover:bg-gray-50 {{ !$hasSchedule ? 'bg-gray-100 opacity-60' : '' }}"
+                                                :class="selectedDays.includes('{{ $dayKey }}') ? 'bg-green-50' : ''">
+                                                <td class="px-6 py-4 font-medium text-gray-900 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                                    {{ $dayName }}
+                                                    @if (!$hasSchedule)
+                                                        <span class="text-xs text-red-500 block mt-1 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                                            <i class="fas fa-exclamation-circle {{ app()->getLocale() === 'ar' ? 'ml-1' : 'mr-1' }}"></i> {{ __('messages.no_schedule') ?? 'No schedule' }}
+                                                        </span>
+                                                    @endif
+                                                </td>
+                                                <td class="px-6 py-4">
+                                                    <select x-model="scheduleTimes.{{ $dayKey }}"
+                                                            class="w-full border border-gray-300 rounded px-3 py-2 text-sm focus:border-[#79131d] focus:ring-1 focus:ring-[#79131d] {{ !$hasSchedule ? 'bg-gray-200 cursor-not-allowed' : '' }} {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}"
+                                                            {{ !$hasSchedule ? 'disabled' : '' }}>
+                                                        <option value="">-- {{ __('messages.select_time') }} --</option>
+                                                        @php $printed = []; @endphp
+                                                        @foreach ($schedule as $item)
+                                                            @if ($item->day == $dayKey)
+                                                                @php
+                                                                    $start = \Carbon\Carbon::parse($item->start_time)->format('g:i A');
+                                                                    $end = \Carbon\Carbon::parse($item->end_time)->format('g:i A');
+                                                                    $timeValue = $item->start_time . '|' . $item->end_time . '|' . $item->id;
+                                                                @endphp
+                                                                @if (!in_array($timeValue, $printed))
+                                                                    @php $printed[] = $timeValue; @endphp
+                                                                    <option value="{{ $timeValue }}">{{ $start }} - {{ $end }}</option>
+                                                                @endif
+                                                            @endif
+                                                        @endforeach
+                                                    </select>
+                                                </td>
+                                                <td class="px-6 py-4 text-center">
+                                                    <input type="checkbox" 
+                                                           x-model="selectedDays" 
+                                                           value="{{ $dayKey }}"
+                                                           @change="handleDaySelection('{{ $dayKey }}')"
+                                                           class="w-5 h-5 text-[#79131d] border-gray-300 rounded focus:ring-[#79131d] {{ !$hasSchedule ? 'cursor-not-allowed opacity-50' : '' }}"
+                                                           {{ !$hasSchedule ? 'disabled' : '' }}>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar: Price & CTA -->
+                    <div class="lg:w-1/3 {{ app()->getLocale() === 'ar' ? 'lg:order-2 text-left' : 'lg:order-2 text-left' }}">
+                        <div class="sticky-sidebar bg-white border border-gray-200 rounded-lg shadow-lg p-6">
+                            <div class="mb-6">
+                                <div class="flex items-baseline gap-2 mb-4 justify-start">
+                                    @if(app()->getLocale() === 'ar')
+                                        <span class="text-4xl font-bold text-gray-900">
+                                            {{ $course->admin_price > 0 ? number_format($course->admin_price, 2) : number_format($course->price, 2) }}
+                                        </span>
+                                        <img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" 
+                                             alt="SAR" 
+                                             class="w-6 h-6 sar-symbol" 
+                                             style="display: inline-block;">
+                                    @else
+                                        <img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" 
+                                             alt="SAR" 
+                                             class="w-6 h-6 sar-symbol" 
+                                             style="display: inline-block;">
+                                        <span class="text-4xl font-bold text-gray-900">
+                                            {{ $course->admin_price > 0 ? number_format($course->admin_price, 2) : number_format($course->price, 2) }}
+                                        </span>
+                                    @endif
+                                </div>
+                                
+                                <!-- Payment Buttons - Only show when schedule is selected -->
+                                <div x-show="hasSelectedSchedule()" class="space-y-3 mb-4">
+                                    @if ($visaenables && $visaenables->visa_enable == 1)
+                                        @guest
+                                            <form action="{{ route('pay.form.login', [$course, 'visa']) }}" method="post" id="visaFormGuest">
+                                                @csrf
+                                                <template x-for="day in selectedDays" :key="day">
+                                                    <div>
+                                                        <input type="hidden" :name="'days[' + day + '][id]'" :value="scheduleTimes[day].split('|')[2]">
+                                                        <input type="hidden" :name="'days[' + day + '][start_time]'" :value="scheduleTimes[day].split('|')[0]">
+                                                        <input type="hidden" :name="'days[' + day + '][end_time]'" :value="scheduleTimes[day].split('|')[1]">
+                                                    </div>
+                                                </template>
+                                                <button type="submit" class="w-full bg-[#79131d] text-white font-bold py-4 rounded-lg hover:bg-[#5a0f16] transition-colors">
+                                                    <i class="fas fa-credit-card {{ app()->getLocale() === 'ar' ? 'ml-2' : 'mr-2' }}"></i>
+                                                    {{ __('messages.proceed_to_payment') }}
+                                                </button>
+                                            </form>
+                                        @endguest
+                                        @auth
+                                            <form action="{{ route('pay.form.auth', $course) }}" method="get" id="visaFormAuth">
+                                                <template x-for="day in selectedDays" :key="day">
+                                                    <div>
+                                                        <input type="hidden" :name="'days[' + day + '][id]'" :value="scheduleTimes[day].split('|')[2]">
+                                                        <input type="hidden" :name="'days[' + day + '][start_time]'" :value="scheduleTimes[day].split('|')[0]">
+                                                        <input type="hidden" :name="'days[' + day + '][end_time]'" :value="scheduleTimes[day].split('|')[1]">
+                                                    </div>
+                                                </template>
+                                                <button type="submit" class="w-full bg-[#79131d] text-white font-bold py-4 rounded-lg hover:bg-[#5a0f16] transition-colors">
+                                                    <i class="fas fa-credit-card {{ app()->getLocale() === 'ar' ? 'ml-2' : 'mr-2' }}"></i>
+                                                    {{ __('messages.proceed_to_payment') }}
+                                                </button>
+                                            </form>
+                                        @endauth
+                                    @endif
+
+                                    @if ($visaenables && $visaenables->cash_enable == 1)
+                                        @guest
+                                            <form action="{{ route('pay.form.login', [$course, 'cash']) }}" method="post" id="cashFormGuest">
+                                                @csrf
+                                                <template x-for="day in selectedDays" :key="day">
+                                                    <div>
+                                                        <input type="hidden" :name="'days[' + day + '][id]'" :value="scheduleTimes[day].split('|')[2]">
+                                                        <input type="hidden" :name="'days[' + day + '][start_time]'" :value="scheduleTimes[day].split('|')[0]">
+                                                        <input type="hidden" :name="'days[' + day + '][end_time]'" :value="scheduleTimes[day].split('|')[1]">
+                                                    </div>
+                                                </template>
+                                                <button type="submit" class="w-full bg-[#e4ce96] text-[#79131d] font-bold py-4 rounded-lg hover:bg-[#d4be86] transition-colors">
+                                                    <i class="fas fa-money-bill-wave {{ app()->getLocale() === 'ar' ? 'ml-2' : 'mr-2' }}"></i>
+                                                    {{ __('messages.pay_cash') }}
+                                                </button>
+                                            </form>
+                                        @endguest
+                                        @auth
+                                            <form action="{{ route('pay.later.auth', $course) }}" method="get" id="cashFormAuth">
+                                                <template x-for="day in selectedDays" :key="day">
+                                                    <div>
+                                                        <input type="hidden" :name="'days[' + day + '][id]'" :value="scheduleTimes[day].split('|')[2]">
+                                                        <input type="hidden" :name="'days[' + day + '][start_time]'" :value="scheduleTimes[day].split('|')[0]">
+                                                        <input type="hidden" :name="'days[' + day + '][end_time]'" :value="scheduleTimes[day].split('|')[1]">
+                                                    </div>
+                                                </template>
+                                                <button type="submit" class="w-full bg-[#e4ce96] text-[#79131d] font-bold py-4 rounded-lg hover:bg-[#d4be86] transition-colors">
+                                                    <i class="fas fa-money-bill-wave {{ app()->getLocale() === 'ar' ? 'ml-2' : 'mr-2' }}"></i>
+                                                    {{ __('messages.pay_cash') }}
+                                                </button>
+                                            </form>
+                                        @endauth
+                                    @endif
+                                </div>
+                                
+                                <!-- Message when no schedule selected -->
+                                <div x-show="!hasSelectedSchedule()" class="mb-4">
+                                    <p class="text-xs text-gray-500 text-center {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                        <i class="fas fa-info-circle {{ app()->getLocale() === 'ar' ? 'ml-1' : 'mr-1' }}"></i>
+                                        {{ app()->getLocale() === 'ar' ? 'يجب تحديد وقت الحجز أولاً' : __('messages.select_booking_time_first') ?? 'Please select booking time first' }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="border-t border-gray-200 pt-6 space-y-4">
+                                <div class="{{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                    <h3 class="font-semibold text-gray-900 mb-2">
+                                        {{ __('messages.this_course_includes') ?? 'This course includes:' }}
+                                    </h3>
+                                    <ul class="space-y-2 text-sm text-gray-700">
+                                        <li class="flex items-center gap-2 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse justify-end' : 'justify-start' }}">
+                                            <i class="fas fa-video text-[#79131d]"></i>
+                                            <span>{{ $course->duration }} {{ __('messages.hours') }} {{ __('messages.on_demand_video') ?? 'on-demand video' }}</span>
+                                        </li>
+                                        <li class="flex items-center gap-2 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse justify-end' : 'justify-start' }}">
+                                            <i class="fas fa-mobile-alt text-[#79131d]"></i>
+                                            <span>{{ __('messages.access_on_mobile_tv') ?? 'Access on mobile and TV' }}</span>
+                                        </li>
+                                        <li class="flex items-center gap-2 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse justify-end' : 'justify-start' }}">
+                                            <i class="fas fa-certificate text-[#79131d]"></i>
+                                            <span>{{ __('messages.certificate_of_completion') ?? 'Certificate of completion' }}</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    </main>
+
+    <x-footer />
 </body>
-
 </html>

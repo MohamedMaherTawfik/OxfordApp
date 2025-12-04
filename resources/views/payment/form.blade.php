@@ -3,233 +3,217 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Payment Confirmation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ __('messages.payment_confirmation') ?? 'Payment Confirmation' }}</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        body {
             font-family: 'Cairo', sans-serif;
         }
 
-        body {
-            background: #f8f5f1;
-            color: #333;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 450px;
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border: 1px solid #e4ce96;
-        }
-
-        h2 {
-            text-align: center;
-            color: #79131d;
-            margin-bottom: 25px;
-            font-size: 26px;
-        }
-
-        .payment-info {
-            background-color: #fdfaf4;
-            border: 1px solid #e4ce96;
-            border-radius: 8px;
-            padding: 15px;
-            margin-bottom: 25px;
-            font-size: 15px;
-            line-height: 1.6;
-        }
-
-        .info-item {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-
-        .info-label {
-            color: #79131d;
-            font-weight: 600;
-        }
-
-        .info-value {
-            color: #555;
-        }
-
-        .amount {
-            font-size: 20px;
-            font-weight: bold;
-            color: #79131d;
-            text-align: center;
-            margin: 15px 0;
-        }
-
-        form {
-            margin-top: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
-            color: #79131d;
-        }
-
-        input[type="text"] {
-            width: 100%;
-            padding: 12px 16px;
-            border: 1px solid #e4ce96;
-            border-radius: 8px;
-            background-color: #fdfaf4;
-            color: #333;
-            font-size: 15px;
-            transition: border-color 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        input[type="text"]:focus {
+        .form-input:focus {
             border-color: #79131d;
-            outline: none;
-            box-shadow: 0 0 5px rgba(121, 19, 29, 0.3);
-        }
-
-        button {
-            background-color: #79131d;
-            color: #e4ce96;
-            border: none;
-            padding: 14px 20px;
-            width: 100%;
-            font-size: 18px;
-            font-weight: 600;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        button:hover {
-            background-color: #5e0f17;
-            transform: translateY(-2px);
-        }
-
-        .footer {
-            text-align: center;
-            margin-top: 30px;
-            color: #aaa;
-            font-size: 13px;
+            box-shadow: 0 0 0 3px rgba(121, 19, 29, 0.1);
         }
     </style>
 </head>
 
-<body>
-    <div class="container">
-        <h2>Confirm Payment</h2>
-
-        <!-- عرض البيانات -->
-        <div class="payment-info">
-            <div class="info-item">
-                <span class="info-label">Amount:</span>
-                <span
-                    class="info-value">{{ $course->admin_price > 0 ? number_format($course->admin_price, 2) : number_format($course->price, 2) }}
-                    ﷼</span>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen py-12 px-4">
+    <div class="max-w-3xl mx-auto">
+        <!-- Header Card -->
+        <div class="bg-gradient-to-r from-[#79131d] to-[#5a0f16] rounded-2xl shadow-2xl mb-6 p-8 text-white">
+            <div class="flex items-center justify-center mb-4">
+                <div class="bg-white/20 rounded-full p-4 backdrop-blur-sm">
+                    <i class="fas fa-credit-card text-4xl"></i>
+                </div>
             </div>
-            <div class="info-item">
-                <span class="info-label">Name:</span>
-                <span class="info-value">{{ Auth::user()->name }}</span>
-            </div>
-            <div class="info-item">
-                <span class="info-label">Email:</span>
-                <span class="info-value">{{ Auth::user()->email }}</span>
-            </div>
+            <h1 class="text-3xl md:text-4xl font-bold text-center mb-2">
+                {{ __('messages.payment_confirmation') ?? 'Payment Confirmation' }}
+            </h1>
+            <p class="text-center text-white/90">
+                {{ __('messages.complete_payment_info') ?? 'Please complete your payment information below' }}
+            </p>
         </div>
 
-        <!-- نموذج الدفع -->
-        <form action="{{ route('pay.initiate', $course) }}" method="POST">
-            @csrf
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="form-group">
-                    <label for="address">العنوان</label>
-                    <input type="text" name="address" id="address"
-                        class="w-full border border-gray-300 rounded px-3 py-2">
-                    @error('address')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="phone">رقم الهاتف</label>
-                    <input type="text" name="phone" id="phone"
-                        class="w-full border border-gray-300 rounded px-3 py-2">
-                    @error('phone')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="city">المدينة</label>
-                    <input type="text" name="city" id="city"
-                        class="w-full border border-gray-300 rounded px-3 py-2">
-                    @error('city')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="country">الدولة</label>
-                    <input type="text" name="country" id="country"
-                        class="w-full border border-gray-300 rounded px-3 py-2">
-                    @error('country')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="state">المحافظة / الولاية</label>
-                    <input type="text" name="state" id="state"
-                        class="w-full border border-gray-300 rounded px-3 py-2">
-                    @error('state')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
-                </div>
-
-                <div class="form-group">
-                    <label for="zip">الرمز البريدي</label>
-                    <input type="text" name="zip" id="zip"
-                        class="w-full border border-gray-300 rounded px-3 py-2">
-                    @error('zip')
-                        <span class="text-red-500 text-sm">{{ $message }}</span>
-                    @enderror
+        <!-- Main Card -->
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden">
+            <!-- Payment Summary -->
+            <div class="bg-gradient-to-r from-[#79131d]/5 to-[#5a0f16]/5 p-6 border-b border-gray-200">
+                <h2 class="text-xl font-bold text-gray-900 mb-4 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                    {{ __('messages.payment_summary') ?? 'Payment Summary' }}
+                </h2>
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }}">
+                        <span class="text-gray-600 font-medium">
+                            {{ __('messages.course') ?? 'Course' }}:
+                        </span>
+                        <span class="text-gray-900 font-semibold">
+                            {{ $course->title }}
+                        </span>
+                    </div>
+                    <div class="flex items-center justify-between {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }}">
+                        <span class="text-gray-600 font-medium">
+                            {{ __('messages.student') ?? 'Student' }}:
+                        </span>
+                        <span class="text-gray-900 font-semibold">
+                            {{ Auth::user()->name }}
+                        </span>
+                    </div>
+                    <div class="flex items-center justify-between {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }}">
+                        <span class="text-gray-600 font-medium">
+                            {{ __('messages.email') ?? 'Email' }}:
+                        </span>
+                        <span class="text-gray-900 font-semibold">
+                            {{ Auth::user()->email }}
+                        </span>
+                    </div>
+                    <div class="flex items-center justify-between {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }} pt-3 border-t border-gray-300">
+                        <span class="text-lg font-bold text-[#79131d]">
+                            {{ __('messages.total_amount') ?? 'Total Amount' }}:
+                        </span>
+                        <span class="text-2xl font-bold text-[#79131d]">
+                            @if(app()->getLocale() === 'ar')
+                                {{ number_format($course->admin_price > 0 ? $course->admin_price : $course->price, 2) }}
+                                <img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" 
+                                     alt="SAR" 
+                                     class="inline-block w-6 h-6 ml-1" 
+                                     style="vertical-align: middle;">
+                            @else
+                                <img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" 
+                                     alt="SAR" 
+                                     class="inline-block w-6 h-6 mr-1" 
+                                     style="vertical-align: middle;">
+                                {{ number_format($course->admin_price > 0 ? $course->admin_price : $course->price, 2) }}
+                            @endif
+                        </span>
+                    </div>
                 </div>
             </div>
 
-            <!-- بيانات مخفية -->
-            <input type="hidden" name="amount"
-                value="{{ $course->admin_price > 0 ? $course->admin_price : $course->price }}">
-            <input type="hidden" name="name" value="{{ Auth::user()->name }}">
-            <input type="hidden" name="email" value="{{ Auth::user()->email }}">
+            <!-- Payment Form -->
+            <form action="{{ route('pay.initiate', $course) }}" method="POST" class="p-8">
+                @csrf
 
-            <button type="submit"
-                class="mt-6 px-6 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300">
-                💳 Pay Now
-            </button>
-        </form>
+                <h2 class="text-2xl font-bold text-gray-900 mb-6 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                    {{ __('messages.billing_information') ?? 'Billing Information' }}
+                </h2>
 
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="form-group">
+                        <label for="address" class="block text-sm font-semibold text-gray-700 mb-2 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                            {{ __('messages.address') ?? 'Address' }}
+                        </label>
+                        <input type="text" 
+                               name="address" 
+                               id="address"
+                               required
+                               class="form-input w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none transition-all duration-200 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}"
+                               placeholder="{{ __('messages.enter_address') ?? 'Enter your address' }}">
+                        @error('address')
+                            <span class="text-red-500 text-sm mt-1 block {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">{{ $message }}</span>
+                        @enderror
+                    </div>
 
-        <div class="footer">
-            Secured by ClickPay
+                    <div class="form-group">
+                        <label for="phone" class="block text-sm font-semibold text-gray-700 mb-2 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                            {{ __('messages.phone') ?? 'Phone Number' }}
+                        </label>
+                        <input type="text" 
+                               name="phone" 
+                               id="phone"
+                               required
+                               class="form-input w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none transition-all duration-200 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}"
+                               placeholder="{{ __('messages.enter_phone') ?? 'Enter your phone number' }}">
+                        @error('phone')
+                            <span class="text-red-500 text-sm mt-1 block {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="city" class="block text-sm font-semibold text-gray-700 mb-2 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                            {{ __('messages.city') ?? 'City' }}
+                        </label>
+                        <input type="text" 
+                               name="city" 
+                               id="city"
+                               required
+                               class="form-input w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none transition-all duration-200 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}"
+                               placeholder="{{ __('messages.enter_city') ?? 'Enter your city' }}">
+                        @error('city')
+                            <span class="text-red-500 text-sm mt-1 block {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="country" class="block text-sm font-semibold text-gray-700 mb-2 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                            {{ __('messages.country') ?? 'Country' }}
+                        </label>
+                        <input type="text" 
+                               name="country" 
+                               id="country"
+                               required
+                               class="form-input w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none transition-all duration-200 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}"
+                               placeholder="{{ __('messages.enter_country') ?? 'Enter your country' }}">
+                        @error('country')
+                            <span class="text-red-500 text-sm mt-1 block {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="state" class="block text-sm font-semibold text-gray-700 mb-2 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                            {{ __('messages.state') ?? 'State / Province' }}
+                        </label>
+                        <input type="text" 
+                               name="state" 
+                               id="state"
+                               required
+                               class="form-input w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none transition-all duration-200 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}"
+                               placeholder="{{ __('messages.enter_state') ?? 'Enter your state' }}">
+                        @error('state')
+                            <span class="text-red-500 text-sm mt-1 block {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">{{ $message }}</span>
+                        @enderror
+                    </div>
+
+                    <div class="form-group">
+                        <label for="zip" class="block text-sm font-semibold text-gray-700 mb-2 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                            {{ __('messages.zip_code') ?? 'Zip Code' }}
+                        </label>
+                        <input type="text" 
+                               name="zip" 
+                               id="zip"
+                               required
+                               class="form-input w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:outline-none transition-all duration-200 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}"
+                               placeholder="{{ __('messages.enter_zip') ?? 'Enter your zip code' }}">
+                        @error('zip')
+                            <span class="text-red-500 text-sm mt-1 block {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <!-- Hidden Fields -->
+                <input type="hidden" name="amount" value="{{ $course->admin_price > 0 ? $course->admin_price : $course->price }}">
+                <input type="hidden" name="name" value="{{ Auth::user()->name }}">
+                <input type="hidden" name="email" value="{{ Auth::user()->email }}">
+
+                <!-- Submit Button -->
+                <div class="mt-8">
+                    <button type="submit" 
+                            class="w-full bg-gradient-to-r from-[#79131d] to-[#5a0f16] text-white font-bold py-4 px-6 rounded-xl hover:from-[#5a0f16] hover:to-[#79131d] transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
+                        <i class="fas fa-lock {{ app()->getLocale() === 'ar' ? 'ml-2' : 'mr-2' }}"></i>
+                        {{ __('messages.proceed_to_payment') ?? 'Proceed to Payment' }}
+                    </button>
+                </div>
+
+                <!-- Security Notice -->
+                <div class="mt-6 p-4 bg-green-50 border border-green-200 rounded-xl {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                    <p class="text-sm text-green-800">
+                        <i class="fas fa-shield-alt {{ app()->getLocale() === 'ar' ? 'ml-2' : 'mr-2' }}"></i>
+                        {{ __('messages.secure_payment') ?? 'Your payment is secured by ClickPay. All transactions are encrypted and secure.' }}
+                    </p>
+                </div>
+            </form>
         </div>
     </div>
 </body>

@@ -339,13 +339,29 @@ class SuperAdminController extends Controller
     public function upload(Request $request)
     {
         $data = $request->except('_token');
+        $signphoto = signphoto::first();
+        
         if (request()->hasFile('login')) {
+            // Delete old login image if exists
+            if ($signphoto && $signphoto->login && \Storage::disk('public')->exists($signphoto->login)) {
+                \Storage::disk('public')->delete($signphoto->login);
+            }
             $data['login'] = request()->file('login')->store('signs', 'public');
         }
         if (request()->hasFile('register')) {
+            // Delete old register image if exists
+            if ($signphoto && $signphoto->register && \Storage::disk('public')->exists($signphoto->register)) {
+                \Storage::disk('public')->delete($signphoto->register);
+            }
             $data['register'] = request()->file('register')->store('signs', 'public');
         }
-        signphoto::first()->update($data);
+        
+        if ($signphoto) {
+            $signphoto->update($data);
+        } else {
+            signphoto::create($data);
+        }
+        
         return redirect()->back()->with('success', 'تم التعديل بنجاح');
     }
 

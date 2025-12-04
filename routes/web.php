@@ -91,6 +91,24 @@ Route::group([], function () {
 Route::group([
     'middleware' => ['auth', CheckAdmin::class],
 ], function () {
+    // Staff Management Routes (Only for admin)
+    Route::group(['middleware' => function ($request, $next) {
+        if (auth()->user()->role !== 'admin') {
+            abort(403);
+        }
+        return $next($request);
+    }], function () {
+        Route::resource('admin/staff', \App\Http\Controllers\admin\StaffController::class)->names([
+            'index' => 'admin.staff.index',
+            'create' => 'admin.staff.create',
+            'store' => 'admin.staff.store',
+            'show' => 'admin.staff.show',
+            'edit' => 'admin.staff.edit',
+            'update' => 'admin.staff.update',
+            'destroy' => 'admin.staff.destroy',
+        ]);
+    });
+
     Route::controller(SuperAdminController::class)->group(function () {
         Route::get('/admin', 'index')->name('admin.index');
         Route::get('/admin/users', 'users')->name('admin.users');

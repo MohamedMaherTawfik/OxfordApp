@@ -143,7 +143,7 @@
                 <span class="info-label">Amount:</span>
                 <span
                     class="info-value">{{ $course->admin_price > 0 ? number_format($course->admin_price, 2) : number_format($course->price, 2) }}
-                    ﷼</span>
+                    <img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" alt="SAR" class="inline-block sar-symbol"></span>
             </div>
             <div class="info-item">
                 <span class="info-label">Name:</span>

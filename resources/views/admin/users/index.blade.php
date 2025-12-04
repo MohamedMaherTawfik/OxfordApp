@@ -1,111 +1,127 @@
 <x-panel>
-    {{-- Success Message --}}
-    @if (session('success'))
-        <div class="mb-4 p-3 rounded-lg bg-green-100 border border-green-400 text-green-700">
-            {{ session('success') }}
-        </div>
-    @endif
+    @include('components.messages')
 
-    {{-- Error Message --}}
-    @if (session('error'))
-        <div class="mb-4 p-3 rounded-lg bg-red-100 border border-red-400 text-red-700">
-            {{ session('error') }}
-        </div>
-    @endif
-
-    {{-- Validation Errors --}}
-    @if ($errors->any())
-        <div class="mb-4 p-3 rounded-lg bg-yellow-100 border border-yellow-400 text-yellow-700">
-            <ul class="list-disc list-inside">
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-
-    <div class="p-6 bg-gray-50 min-h-screen">
-        <!-- Search & Add Button -->
-        <div class="flex justify-between items-center mb-4">
-            {{-- <input id="searchInput" type="text" placeholder="Search by Name"
-                class="w-1/3 px-4 py-2 rounded-lg shadow-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-500" /> --}}
-            <div></div>
+    <div class="p-6 bg-gradient-to-br from-gray-50 via-white to-gray-50 min-h-screen">
+        <!-- Header -->
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-900 mb-2">إدارة المستخدمين</h1>
+                <p class="text-gray-600">عرض وإدارة جميع المستخدمين المسجلين</p>
+            </div>
             <a href="{{ route('admin.users.create') }}"
-                class="bg-[#73131DD0] text-white px-4 py-2 rounded-lg shadow hover:bg-[#73131d]">
-                Add User +
+                class="flex items-center gap-2 bg-gradient-to-r from-[#79131d] to-[#5a0f16] text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transform hover:scale-105 transition-all">
+                <i class="fas fa-user-plus"></i>
+                <span class="font-semibold">إضافة مستخدم جديد</span>
             </a>
-
         </div>
 
-        <!-- User List Headers -->
-        <div class="hidden md:grid grid-cols-7 gap-4 font-semibold text-gray-700 mb-2">
-            <div class="text-[#73131d]">User</div>
-            <div class="text-[#73131d]">Email</div>
-            <div class="text-[#73131d]">role</div>
-            <div class="text-[#73131d]">Join Date</div>
-            <div class="text-right text-[#73131d]">Action</div>
-        </div>
-
-
-        <!-- User List Container -->
-        @foreach ($users as $user)
-            <div class="grid grid-cols-7 gap-4 items-center p-4 rounded-lg shadow mb-2 bg-[#e4ce96]">
-                <!-- User Info -->
-                <div class="flex items-center gap-2">
-                    <div class="w-10 h-10 bg-gray-300 rounded-full">
-                        <img src="{{ $user->photo ? asset('storage/' . $user->photo) : asset('images/default-avatar.png') }}"
-                            alt="User Photo" class="w-full h-full object-cover rounded-full">
-                    </div>
+        <!-- Stats Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div class="bg-white rounded-xl shadow-md p-4 border-l-4 border-blue-500">
+                <div class="flex items-center justify-between">
                     <div>
-                        <div class="font-medium">{{ $user->name }}</div>
+                        <p class="text-gray-500 text-sm font-medium">إجمالي المستخدمين</p>
+                        <h3 class="text-2xl font-bold text-gray-900 mt-1">{{ $users->count() }}</h3>
                     </div>
-                </div>
-
-                <!-- Email -->
-                <div class="text-gray-700">{{ $user->email }}</div>
-
-                <!-- role -->
-                <div class="text-gray-700">{{ $user->role }}</div>
-
-                <!-- Join Date -->
-                <div class="text-gray-700">{{ $user->created_at }}</div>
-
-                <!-- Actions -->
-                <div class="flex justify-end items-center space-x-3 text-gray-600 text-lg">
-                    <a href="{{ route('admin.users.show', $user) }}" class="hover:text-blue-600"><i
-                            class="fas fa-eye"></i></a>
-                    <a href="{{ route('admin.users.edit', $user->id) }}" class="hover:text-yellow-600"><i
-                            class="fas fa-edit"></i></a>
-                    <form action="{{ route('admin.users.delete', $user->id) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button onclick="return confirm('Are you sure you want to delete this user?');" type="submit"
-                            class="hover:text-red-600">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </form>
+                    <div class="bg-blue-100 rounded-full p-3">
+                        <i class="fas fa-users text-blue-600 text-xl"></i>
+                    </div>
                 </div>
             </div>
-        @endforeach
+        </div>
 
+        <!-- Users Table -->
+        <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+            <div class="bg-gradient-to-r from-[#79131d] to-[#5a0f16] px-6 py-4">
+                <h2 class="text-lg font-bold text-white flex items-center">
+                    <i class="fas fa-list mr-3"></i>
+                    قائمة المستخدمين
+                </h2>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th class="px-6 py-3 text-right text-xs font-semibold text-gray-700 uppercase tracking-wider">المستخدم</th>
+                            <th class="px-6 py-3 text-right text-xs font-semibold text-gray-700 uppercase tracking-wider">البريد الإلكتروني</th>
+                            <th class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">الدور</th>
+                            <th class="px-6 py-3 text-right text-xs font-semibold text-gray-700 uppercase tracking-wider">تاريخ التسجيل</th>
+                            <th class="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">الإجراءات</th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        @forelse($users as $user)
+                            <tr class="hover:bg-gray-50 transition-colors">
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="flex items-center">
+                                        <img src="{{ $user->photo ? asset('storage/' . $user->photo) : 'https://ui-avatars.com/api/?name=' . urlencode($user->name) . '&background=79131d&color=fff' }}"
+                                            alt="{{ $user->name }}" 
+                                            class="w-10 h-10 rounded-full mr-3 border-2 border-gray-200">
+                                        <div>
+                                            <div class="text-sm font-semibold text-gray-900">{{ $user->name }}</div>
+                                            <div class="text-xs text-gray-500">ID: {{ $user->id }}</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <div class="text-sm text-gray-900">{{ $user->email }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center">
+                                    <span class="px-3 py-1 inline-flex text-xs leading-5 font-semibold rounded-full
+                                        @if($user->role === 'admin') bg-red-100 text-red-800
+                                        @elseif($user->role === 'teacher') bg-blue-100 text-blue-800
+                                        @elseif($user->role === 'staff') bg-purple-100 text-purple-800
+                                        @else bg-gray-100 text-gray-800
+                                        @endif">
+                                        {{ $user->role }}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                    {{ $user->created_at->format('Y-m-d') }}
+                                    <div class="text-xs text-gray-400">{{ $user->created_at->diffForHumans() }}</div>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap text-center text-sm font-medium">
+                                    <div class="flex items-center justify-center gap-2">
+                                        <a href="{{ route('admin.users.show', $user) }}" 
+                                           class="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                                           title="عرض">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{{ route('admin.users.edit', $user->id) }}" 
+                                           class="text-yellow-600 hover:text-yellow-900 p-2 rounded-lg hover:bg-yellow-50 transition-colors"
+                                           title="تعديل">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <form action="{{ route('admin.users.delete', $user->id) }}" method="POST" class="inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" 
+                                                    onclick="return confirm('هل أنت متأكد من حذف هذا المستخدم؟');"
+                                                    class="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-50 transition-colors"
+                                                    title="حذف">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="5" class="px-6 py-12 text-center">
+                                    <div class="flex flex-col items-center">
+                                        <i class="fas fa-users text-6xl text-gray-300 mb-4"></i>
+                                        <p class="text-gray-500 text-lg font-medium">لا يوجد مستخدمين</p>
+                                        <a href="{{ route('admin.users.create') }}" 
+                                           class="mt-4 text-[#79131d] hover:text-[#5a0f16] font-semibold">
+                                            إضافة مستخدم جديد
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-
-
-    <script>
-        const dropdownButton = document.getElementById('dropdownButton');
-        const dropdownMenu = document.getElementById('dropdownMenu');
-
-        dropdownButton.addEventListener('click', () => {
-            dropdownMenu.classList.toggle('hidden');
-        });
-
-        // Optional: Hide dropdown when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!dropdownButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
-                dropdownMenu.classList.add('hidden');
-            }
-        });
-    </script>
-
-
 </x-panel>

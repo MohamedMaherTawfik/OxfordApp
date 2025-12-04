@@ -1,6 +1,9 @@
 @php
     use App\Models\signphoto;
     $photo = signphoto::first();
+    
+    // إرجاع قيمة افتراضية إذا لم تكن هناك بيانات
+    $loginPhoto = $photo && $photo->login ? asset('storage/' . $photo->login) : asset('web/login.jpg');
 @endphp
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
@@ -41,7 +44,7 @@
 
         <!-- Left Side: Background Image with Enhanced Overlay -->
         <div class="md:w-1/2 w-full relative bg-cover bg-center h-64 md:h-auto overflow-hidden"
-            style="background-image: url('{{ asset('storage/' . $photo->login) ?? asset('web/login.jpg') }}');">
+            style="background-image: url('{{ $loginPhoto }}');">
             <div
                 class="absolute inset-0 bg-gradient-to-br from-[#79131d]/90 via-[#79131d]/80 to-[#5a0f16]/90 flex items-center justify-center p-10">
                 <div class="text-white text-center max-w-md space-y-6">

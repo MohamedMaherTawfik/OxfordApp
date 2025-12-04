@@ -1,6 +1,9 @@
 @php
     use App\Models\signphoto;
     $photo = signphoto::first();
+    
+    // إرجاع قيمة افتراضية إذا لم تكن هناك بيانات
+    $loginPhoto = $photo && $photo->login ? asset('storage/' . $photo->login) : asset('web/login.jpg');
 @endphp
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}" dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
@@ -12,6 +15,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('node_modules/flag-icons/css/flag-icons.min.css') }}">
     <style>
         body {
             font-family: 'Cairo', sans-serif;
@@ -41,7 +45,7 @@
 
         <!-- Left Side: Background Image with Enhanced Overlay -->
         <div class="md:w-1/2 w-full relative bg-cover bg-center h-64 md:h-auto overflow-hidden"
-            style="background-image: url('{{ asset('storage/' . $photo->login) ?? asset('web/login.jpg') }}');">
+            style="background-image: url('{{ $loginPhoto }}');">
             <div class="absolute inset-0 bg-gradient-to-br from-[#79131d]/90 via-[#79131d]/80 to-[#5a0f16]/90 flex items-center justify-center p-10">
                 <div class="text-white text-center max-w-md space-y-6">
                     <div class="mb-8">
@@ -68,7 +72,7 @@
                         <i class="fas fa-sign-in-alt text-3xl text-[#79131d]"></i>
                     </div>
                     <h2 class="text-4xl font-bold text-gray-900">{{ __('messages.login_title') }}</h2>
-                    <p class="text-gray-600">{{ __('messages.welcome_back') ?? 'مرحباً بعودتك' }}</p>
+                    <p class="text-gray-600">{{ __('messages.welcome_back') }}</p>
                 </div>
 
                 <form class="space-y-6" action="{{ route('signin') }}" method="POST">

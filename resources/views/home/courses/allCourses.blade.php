@@ -43,6 +43,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('node_modules/flag-icons/css/flag-icons.min.css') }}">
     <style>
         body {
             font-family: 'Cairo', sans-serif;
@@ -51,6 +52,16 @@
         /* RTL Support */
         [dir="rtl"] {
             direction: rtl;
+            text-align: right;
+        }
+        
+        [dir="rtl"] .course-card {
+            text-align: right;
+        }
+        
+        [dir="rtl"] .course-card h3,
+        [dir="rtl"] .course-card p,
+        [dir="rtl"] .course-card span {
             text-align: right;
         }
         
@@ -64,9 +75,165 @@
             margin-right: 0.25rem !important;
         }
         
+        [dir="rtl"] .mr-2 {
+            margin-right: 0 !important;
+            margin-left: 0.5rem !important;
+        }
+        
+        [dir="rtl"] .ml-2 {
+            margin-left: 0 !important;
+            margin-right: 0.5rem !important;
+        }
+        
+        [dir="rtl"] .mr-4 {
+            margin-right: 0 !important;
+            margin-left: 1rem !important;
+        }
+        
+        [dir="rtl"] .ml-4 {
+            margin-left: 0 !important;
+            margin-right: 1rem !important;
+        }
+        
+        [dir="rtl"] .space-x-2 > * + * {
+            margin-left: 0 !important;
+            margin-right: 0.5rem !important;
+        }
+        
         [dir="rtl"] .space-x-4 > * + * {
             margin-left: 0 !important;
             margin-right: 1rem !important;
+        }
+        
+        [dir="rtl"] .text-left {
+            text-align: right !important;
+        }
+        
+        [dir="rtl"] .text-right {
+            text-align: right !important;
+        }
+        
+        [dir="rtl"] .text-center {
+            text-align: right !important;
+        }
+        
+        /* Force RTL alignment for sidebar and filters in Arabic */
+        [dir="rtl"] .bg-white.p-5,
+        [dir="rtl"] .bg-white.p-5 * {
+            text-align: right !important;
+        }
+        
+        [dir="rtl"] label,
+        [dir="rtl"] h3,
+        [dir="rtl"] span:not(.fi) {
+            text-align: right !important;
+        }
+        
+        [dir="rtl"] .flex-row {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .justify-start {
+            justify-content: flex-end;
+        }
+        
+        [dir="rtl"] .justify-end {
+            justify-content: flex-start;
+        }
+        
+        [dir="rtl"] .justify-between {
+            flex-direction: row-reverse;
+        }
+        
+        [dir="rtl"] .left-2 {
+            left: auto !important;
+            right: 0.5rem !important;
+        }
+        
+        [dir="rtl"] .right-2 {
+            right: auto !important;
+            left: 0.5rem !important;
+        }
+        
+        [dir="rtl"] .pr-1 {
+            padding-right: 0 !important;
+            padding-left: 0.25rem !important;
+        }
+        
+        /* Professional Course Cards */
+        .course-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .course-card:hover {
+            transform: translateY(-8px);
+        }
+        
+        /* Smooth Image Zoom */
+        .course-card img {
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Badge Animation */
+        .course-card .badge {
+            animation: fadeInUp 0.5s ease-out;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Gradient Text */
+        .gradient-text {
+            background: linear-gradient(135deg, #79131d 0%, #5a0f16 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        /* Course Cards Grid Spacing - Better Visual Separation */
+        .courses-grid {
+            row-gap: 3rem;
+            column-gap: 2.5rem;
+        }
+        
+        @media (min-width: 640px) {
+            .courses-grid {
+                row-gap: 3.5rem;
+                column-gap: 3rem;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .courses-grid {
+                row-gap: 4rem;
+                column-gap: 3.5rem;
+            }
+        }
+        
+        /* Make entire card clickable */
+        .course-card {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .course-card:hover {
+            text-decoration: none;
+        }
+        
+        .course-card * {
+            pointer-events: none;
+        }
+        
+        .course-card .pointer-events-none {
+            pointer-events: none !important;
         }
     </style>
 </head>
@@ -77,30 +244,40 @@
     <div class="mt-10">.</div>
     <div class="mt-10">.</div>
 
-    <section class="py-6 px-4 sm:px-6 lg:px-8">
+    <section class="py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
         <div class="max-w-7xl mx-auto">
             <!-- Header -->
-            <div class="text-center lg:text-left mb-6">
-                <h2 class="text-3xl font-bold text-gray-900">{{ __('messages.featured') }}</h2>
-                <p class="text-gray-600">{{ __('messages.boost') }}</p>
+            <div class="{{ app()->getLocale() === 'ar' ? 'text-right' : 'text-center' }} mb-12">
+                <div class="inline-block mb-4">
+                    <span class="px-4 py-2 bg-[#79131d]/10 text-[#79131d] rounded-full text-sm font-semibold">
+                        {{ __('messages.featured') }}
+                    </span>
+                </div>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-8 bg-gradient-to-r from-[#79131d] to-[#5a0f16] bg-clip-text text-transparent">
+                    {{ __('messages.featured') }}
+                </h2>
+                <p class="text-lg text-gray-600 max-w-2xl {{ app()->getLocale() === 'ar' ? 'mr-0 ml-auto text-right' : 'mx-auto text-center' }} leading-relaxed mb-8">
+                    {{ __('messages.boost') }}
+                </p>
             </div>
 
             <!-- Main Content: Filters (Left) + Courses (Right) -->
-            <div class="flex flex-col lg:flex-row gap-8">
+            <div class="flex flex-col {{ app()->getLocale() === 'ar' ? 'lg:flex-row-reverse' : 'lg:flex-row' }} gap-8">
                 <!-- Filters Sidebar -->
-                <div class="w-full lg:w-64 flex-shrink-0">
+                <div class="w-full lg:w-64 flex-shrink-0 {{ app()->getLocale() === 'ar' ? 'order-2' : 'order-1' }}">
                     <div class="bg-white p-5 rounded-lg shadow sticky top-6">
                         <!-- Search -->
                         <div class="mb-6">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">{{ __('messages.search_courses') }}</label>
+                            <label class="block text-sm font-medium text-gray-700 mb-2 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">{{ __('messages.search_courses') ?? (app()->getLocale() === 'ar' ? 'ابحث عن الدورات' : 'Search Courses') }}</label>
                             <input type="text" x-model="search" placeholder="{{ __('messages.course_name') }}"
-                                class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#79131d] focus:border-transparent">
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-[#79131d] focus:border-transparent {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}"
+                                dir="{{ app()->getLocale() === 'ar' ? 'rtl' : 'ltr' }}">
                         </div>
 
                         <!-- Level -->
                         <div class="mb-6">
-                            <h3 class="text-gray-600 text-sm font-medium mb-3">{{ __('messages.level') }}</h3>
-                            <div class="flex flex-wrap gap-2">
+                            <h3 class="text-gray-600 text-sm font-medium mb-3 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">{{ __('messages.level') }}</h3>
+                            <div class="flex flex-wrap gap-2 {{ app()->getLocale() === 'ar' ? 'justify-end' : 'justify-start' }}">
                                 <button @click="level = level === 'Beginner' ? '' : 'Beginner'"
                                     :class="{
                                         'bg-blue-600 text-white border-blue-600': level === 'Beginner',
@@ -130,14 +307,14 @@
 
                         <!-- Categories -->
                         <div class="mb-6">
-                            <h3 class="text-gray-600 text-sm font-medium mb-3">{{ __('messages.categories') }}</h3>
-                            <div class="space-y-2 max-h-60 overflow-y-auto pr-1">
+                            <h3 class="text-gray-600 text-sm font-medium mb-3 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">{{ __('messages.categories') }}</h3>
+                            <div class="space-y-2 max-h-60 overflow-y-auto {{ app()->getLocale() === 'ar' ? 'pr-1' : 'pl-1' }}">
                                 @foreach ($categories as $item)
-                                    <label class="flex items-center space-x-2 cursor-pointer">
+                                    <label class="flex items-center {{ app()->getLocale() === 'ar' ? 'flex-row-reverse justify-end' : 'justify-start' }} cursor-pointer hover:bg-gray-50 p-2 rounded-md transition-colors">
                                         <input type="checkbox" x-model="selectedCategories"
                                             :value="'{{ $item->name }}'"
-                                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500">
-                                        <span class="text-gray-700 text-sm">{{ $item->name }}</span>
+                                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 {{ app()->getLocale() === 'ar' ? 'ml-2' : 'mr-2' }}">
+                                        <span class="text-gray-700 text-sm {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">{{ $item->name }}</span>
                                     </label>
                                 @endforeach
                             </div>
@@ -145,8 +322,8 @@
 
                         <!-- Price Range -->
                         <div class="mb-4">
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Price: <span x-text="minPrice"></span> – <span x-text="maxPrice"></span> ﷼
+                            <label class="block text-sm font-medium text-gray-700 mb-2 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                {{ __('messages.price_label') ?? __('messages.price') ?? (app()->getLocale() === 'ar' ? 'السعر:' : 'Price:') }} <span x-text="minPrice"></span> – <span x-text="maxPrice"></span> <img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" alt="SAR" class="inline-block" style="width: 1em; height: 1em; vertical-align: middle;">
                             </label>
                             <div class="flex items-center gap-2 mb-1">
                                 <input type="range" min="0" :max="globalMaxPrice" x-model="minPrice"
@@ -156,16 +333,16 @@
                                     @input="if (maxPrice < minPrice) minPrice = maxPrice"
                                     class="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer">
                             </div>
-                            <div class="flex justify-between text-xs text-gray-500">
-                                <span>0 ﷼</span>
-                                <span x-text="globalMaxPrice + ' ﷼'"></span>
+                            <div class="flex justify-between text-xs text-gray-500 {{ app()->getLocale() === 'ar' ? 'flex-row-reverse text-right' : 'text-left' }}">
+                                <span>0 <img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" alt="SAR" class="inline-block" style="width: 1em; height: 1em; vertical-align: middle;"></span>
+                                <span x-text="globalMaxPrice"></span> <img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" alt="SAR" class="inline-block" style="width: 1em; height: 1em; vertical-align: middle;">
                             </div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Courses Grid -->
-                <div class="flex-1">
+                <div class="flex-1 {{ app()->getLocale() === 'ar' ? 'order-1' : 'order-2' }}">
                     <div>
                         <!-- Loading Skeleton -->
                         <template x-if="isLoading">
@@ -182,65 +359,93 @@
                         </template>
 
                         <!-- Filtered Courses -->
-                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" x-show="!isLoading">
-                            <template x-for="course in filteredCourses" :key="course.id">
-                                <div
-                                    class="bg-white rounded-lg shadow-md transition hover:shadow-xl overflow-hidden flex flex-col">
-                                    <div class="relative h-48 overflow-hidden">
+                        <div class="courses-grid grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10" x-show="!isLoading">
+                            <template x-for="(course, index) in filteredCourses" :key="course.id">
+                                <a :href="window.authId === course.user_id ?
+                                    '{{ route('myCourse', ['slug' => '___SLUG___']) }}'.replace(
+                                        '___SLUG___', course.slug) :
+                                    course.url"
+                                    class="course-card group bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col border border-gray-100 hover:border-[#79131d]/20 transform hover:-translate-y-2 block cursor-pointer"
+                                    :class="index > 0 && index % 3 !== 0 ? 'mt-0' : ''">
+                                    <!-- Image Section with Overlay -->
+                                    <div class="relative h-56 overflow-hidden bg-gradient-to-br from-gray-200 to-gray-300">
                                         <img :src="course.cover_photo_url"
-                                            class="w-full h-full object-cover transition-transform duration-300 hover:scale-105">
-                                        <div class="absolute bottom-2 left-2 bg-[#000000C5] text-white text-xs px-2 py-1 rounded"
-                                            x-text="course.start_date_formatted">
-                                        </div>
-                                        <div class="absolute bottom-2 right-2 bg-[#000000B9] text-white text-xs px-2 py-1 rounded"
-                                            x-text="course.level">
-                                        </div>
-                                    </div>
-                                    <div class="p-6 flex-1 flex flex-col justify-between">
-                                        <div>
+                                            class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                                            :alt="course.title">
+                                        <!-- Gradient Overlay -->
+                                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                        
+                                        <!-- Badges -->
+                                        <div class="absolute top-3 {{ app()->getLocale() === 'ar' ? 'right-3' : 'left-3' }} flex flex-col gap-2">
                                             <span
-                                                class="inline-block mb-2 px-3 py-1 text-xs font-semibold text-[#e4ce96] bg-[#79131d] rounded-full"
+                                                class="badge px-3 py-1 text-xs font-bold text-white bg-[#79131d] rounded-full shadow-lg backdrop-blur-sm"
                                                 x-text="course.category_name">
                                             </span>
-                                            <h3 class="text-xl font-semibold text-gray-900" x-text="course.title"></h3>
-                                            <p class="text-gray-600 text-sm mb-3 line-clamp-3"
-                                                x-text="course.description_short"></p>
-                                            <p class="text-sm text-gray-500 mb-2 flex items-center">
-                                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fill-rule="evenodd"
-                                                        d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v3.586a1 1 0 00.293.707l2 2a1 1 0 001.414-1.414L11 9.586V6z"
-                                                        clip-rule="evenodd" />
-                                                </svg>
-                                                <span x-text="course.duration + ' hours'"></span>
-                                            </p>
+                                            <span class="badge px-3 py-1 text-xs font-semibold text-white bg-gradient-to-r from-[#e4ce96] to-[#d4be86] text-[#79131d] rounded-full shadow-lg"
+                                                x-text="course.level">
+                                            </span>
                                         </div>
-                                        <div
-                                            class="mt-auto border-t pt-4 text-sm text-gray-700 flex justify-between items-center">
-                                            <div>
-                                                <span class="font-bold">Instructor:</span>
-                                                <span class="opacity-60" x-text="course.instructor"></span>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <span class="text-yellow-400">★</span>
-                                                <span class="ml-1 text-gray-600"
-                                                    x-text="course.rating + ' (' + course.reviews_count + ')'"></span>
-                                            </div>
-                                        </div>
-                                        <div class="pt-4 flex items-center justify-between">
-                                            <span class="text-lg font-bold text-[#79131d]"
-                                                x-text="course.price + ' ﷼'"></span>
-                                            <a :href="window.authId === course.user_id ?
-                                                '{{ route('myCourse', ['slug' => '___SLUG___']) }}'.replace(
-                                                    '___SLUG___', course.slug) :
-                                                course.url"
-                                                class="px-4 py-2 bg-[#79131DD2] text-[#e4ce96] text-sm font-medium rounded-md hover:bg-[#79131d] transition">
-                                                <span
-                                                    x-text="window.authId === course.user_id ? '{{ __('messages.my_course') }}' : '{{ __('messages.subscribe_now') }}'"></span>
-                                            </a>
-
+                                        
+                                        <!-- Date Badge -->
+                                        <div class="absolute bottom-3 {{ app()->getLocale() === 'ar' ? 'right-3' : 'left-3' }} bg-white/95 backdrop-blur-sm text-gray-800 text-xs font-semibold px-3 py-1.5 rounded-lg shadow-md">
+                                            <i class="far fa-calendar-alt {{ app()->getLocale() === 'ar' ? 'ml-1' : 'mr-1' }}"></i>
+                                            <span x-text="course.start_date_formatted"></span>
                                         </div>
                                     </div>
-                                </div>
+                                    
+                                    <!-- Content Section -->
+                                    <div class="p-6 flex-1 flex flex-col {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                        <!-- Title -->
+                                        <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-[#79131d] transition-colors {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}" 
+                                            x-text="course.title"></h3>
+                                        
+                                        <!-- Description -->
+                                        <p class="text-gray-600 text-sm mb-4 line-clamp-2 flex-grow {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}"
+                                            x-text="course.description_short"></p>
+                                        
+                                        <!-- Course Info Icons -->
+                                        <div class="flex flex-wrap items-center gap-4 mb-4 text-sm text-gray-600">
+                                            <!-- Duration -->
+                                            <div class="flex items-center {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }} gap-1.5">
+                                                <div class="w-8 h-8 rounded-full bg-[#79131d]/10 flex items-center justify-center">
+                                                    <i class="far fa-clock text-[#79131d] text-xs"></i>
+                                                </div>
+                                                <span class="font-medium" x-text="course.duration + ' {{ __('messages.hours') ?? (app()->getLocale() === 'ar' ? 'ساعة' : 'hours') }}'"></span>
+                                            </div>
+                                            
+                                            <!-- Rating -->
+                                            <div class="flex items-center {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }} gap-1.5">
+                                                <div class="w-8 h-8 rounded-full bg-yellow-100 flex items-center justify-center">
+                                                    <i class="fas fa-star text-yellow-500 text-xs"></i>
+                                                </div>
+                                                <span class="font-medium" x-text="course.rating + ' (' + course.reviews_count + ')'"></span>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Instructor -->
+                                        <div class="flex items-center {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }} gap-2 mb-4 pb-4 border-b border-gray-200">
+                                            <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#79131d] to-[#5a0f16] flex items-center justify-center text-white font-bold text-sm">
+                                                <span x-text="course.instructor.charAt(0)"></span>
+                                            </div>
+                                            <div class="flex-1 {{ app()->getLocale() === 'ar' ? 'text-right' : 'text-left' }}">
+                                                <p class="text-xs text-gray-500 mb-0.5">{{ __('messages.instructor') ?? (app()->getLocale() === 'ar' ? 'المعلم' : 'Instructor') }}</p>
+                                                <p class="text-sm font-semibold text-gray-800" x-text="course.instructor"></p>
+                                            </div>
+                                        </div>
+                                        
+                                        <!-- Price and Button -->
+                                        <div class="flex items-center {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }} justify-between gap-3 mt-auto">
+                                            <div class="flex items-center {{ app()->getLocale() === 'ar' ? 'flex-row-reverse' : '' }} gap-1.5">
+                                                <span class="text-2xl font-bold text-[#79131d]" x-text="course.price"></span>
+                                                <img src="https://www.sama.gov.sa/ar-sa/Currency/Documents/Saudi_Riyal_Symbol-2.svg" alt="SAR" class="inline-block" style="width: 1.2em; height: 1.2em; vertical-align: middle;">
+                                            </div>
+                                            <div class="flex-1 px-5 py-2.5 bg-gradient-to-r from-[#79131d] to-[#5a0f16] text-white text-sm font-semibold rounded-xl hover:from-[#5a0f16] hover:to-[#79131d] transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105 text-center pointer-events-none">
+                                                <span
+                                                    x-text="window.authId === course.user_id ? '{{ __('messages.my_course') }}' : '{{ __('messages.subscribe_now') }}'"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
                             </template>
 
                             <template x-if="filteredCourses.length === 0 && !isLoading">

@@ -1,6 +1,7 @@
 @php
     use App\Models\signphoto;
     $photo = signphoto::first();
+    $registerPhoto = $photo && $photo->register ? asset('storage/' . $photo->register) : asset('web/teacher.jpg');
 @endphp
 
 <!DOCTYPE html>
@@ -42,7 +43,7 @@
 
         <!-- Left Side: Enhanced Background -->
         <div class="md:w-1/2 w-full relative bg-cover bg-center h-64 md:h-auto overflow-hidden"
-            style="background-image: url('{{ asset('storage/' . $photo->register) ?? asset('web/teacher.jpg') }}');">
+            style="background-image: url('{{ $registerPhoto }}');">
             <div class="absolute inset-0 bg-gradient-to-br from-[#79131d]/90 via-[#79131d]/80 to-[#5a0f16]/90 flex items-center justify-center p-10">
                 <div class="text-white text-center max-w-md space-y-6">
                     <div class="mb-8">
